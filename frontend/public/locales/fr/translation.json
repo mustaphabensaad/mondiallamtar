@@ -1,0 +1,120 @@
+{
+  "nav": {
+    "home":       "Accueil",
+    "teams":      "Équipes",
+    "matches":    "Matchs",
+    "standings":  "Classement",
+    "bracket":    "Tableau",
+    "live":       "En direct",
+    "login":      "Connexion",
+    "register":   "Inscription",
+    "logout":     "Déconnexion",
+    "dashboard":  "Tableau de bord",
+    "admin":      "Administration"
+  },
+  "auth": {
+    "login_title":       "Connexion",
+    "register_title":    "Inscription Capitaine",
+    "email":             "Email",
+    "password":          "Mot de passe",
+    "phone":             "Téléphone",
+    "login_btn":         "Se connecter",
+    "register_btn":      "S'inscrire",
+    "no_account":        "Pas de compte ?",
+    "have_account":      "Déjà un compte ?",
+    "register_link":     "Créer un compte",
+    "login_link":        "Se connecter",
+    "loading":           "Chargement..."
+  },
+  "home": {
+    "today_matches":  "Matchs du jour",
+    "top_scorers":    "Meilleurs buteurs",
+    "past_matches":   "Matchs passés",
+    "world_cup":      "Coupe du Monde 2026",
+    "sponsors":       "Sponsors",
+    "motm":           "Homme du match"
+  },
+  "team": {
+    "name":       "Nom de l'équipe",
+    "coach":      "Entraîneur",
+    "captain":    "Capitaine",
+    "players":    "Joueurs",
+    "group":      "Groupe",
+    "status": {
+      "pending":      "En attente",
+      "approved":     "Approuvée",
+      "rejected":     "Rejetée",
+      "disqualified": "Disqualifiée"
+    }
+  },
+  "player": {
+    "first_name":    "Prénom",
+    "last_name":     "Nom",
+    "dob":           "Date de naissance",
+    "phone":         "Téléphone",
+    "email":         "Email",
+    "jersey":        "Numéro de maillot",
+    "position":      "Poste",
+    "positions": {
+      "GK":  "Gardien",
+      "DEF": "Défenseur",
+      "MID": "Milieu",
+      "FWD": "Attaquant"
+    },
+    "goals":        "Buts",
+    "yellow_cards": "Cartons jaunes",
+    "red_cards":    "Cartons rouges"
+  },
+  "payment": {
+    "title":        "Paiement de l'inscription",
+    "instructions": "Effectuez un virement bancaire puis uploadez la preuve",
+    "upload":       "Uploader la preuve",
+    "status": {
+      "unpaid":         "Non payé",
+      "pending_review": "En cours de vérification",
+      "paid":           "Payé ✓"
+    }
+  },
+  "match": {
+    "vs":         "vs",
+    "live":       "EN DIRECT",
+    "finished":   "Terminé",
+    "scheduled":  "Programmé",
+    "cancelled":  "Annulé",
+    "half_time":  "Mi-temps",
+    "full_time":  "Fin du match",
+    "minute":     "min",
+    "goal":       "But",
+    "own_goal":   "CSC",
+    "yellow_card":"Carton jaune",
+    "red_card":   "Carton rouge",
+    "motm":       "Homme du match"
+  },
+  "admin": {
+    "dashboard":    "Tableau de bord",
+    "teams":        "Équipes",
+    "matches":      "Matchs",
+    "players":      "Joueurs",
+    "referees":     "Arbitres",
+    "tournament":   "Tournoi",
+    "reports":      "Rapports",
+    "approve":      "Approuver",
+    "reject":       "Rejeter",
+    "pending":      "En attente",
+    "settings":     "Paramètres"
+  },
+  "common": {
+    "loading":       "Chargement...",
+    "error":         "Une erreur est survenue",
+    "save":          "Enregistrer",
+    "cancel":        "Annuler",
+    "delete":        "Supprimer",
+    "edit":          "Modifier",
+    "view":          "Voir",
+    "coming_soon":   "Bientôt disponible",
+    "back":          "Retour",
+    "confirm":       "Confirmer",
+    "search":        "Rechercher",
+    "no_data":       "Aucune donnée"
+  }
+}

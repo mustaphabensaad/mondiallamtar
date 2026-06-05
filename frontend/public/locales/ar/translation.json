@@ -1,0 +1,120 @@
+{
+  "nav": {
+    "home":       "الرئيسية",
+    "teams":      "الفرق",
+    "matches":    "المباريات",
+    "standings":  "الترتيب",
+    "bracket":    "الجدول",
+    "live":       "مباشر",
+    "login":      "تسجيل الدخول",
+    "register":   "التسجيل",
+    "logout":     "تسجيل الخروج",
+    "dashboard":  "لوحة التحكم",
+    "admin":      "الإدارة"
+  },
+  "auth": {
+    "login_title":    "تسجيل الدخول",
+    "register_title": "تسجيل القائد",
+    "email":          "البريد الإلكتروني",
+    "password":       "كلمة المرور",
+    "phone":          "الهاتف",
+    "login_btn":      "دخول",
+    "register_btn":   "تسجيل",
+    "no_account":     "ليس لديك حساب؟",
+    "have_account":   "لديك حساب؟",
+    "register_link":  "إنشاء حساب",
+    "login_link":     "تسجيل الدخول",
+    "loading":        "جاري التحميل..."
+  },
+  "home": {
+    "today_matches": "مباريات اليوم",
+    "top_scorers":   "أفضل الهدافين",
+    "past_matches":  "المباريات السابقة",
+    "world_cup":     "كأس العالم 2026",
+    "sponsors":      "الرعاة",
+    "motm":          "أفضل لاعب في المباراة"
+  },
+  "team": {
+    "name":    "اسم الفريق",
+    "coach":   "المدرب",
+    "captain": "القائد",
+    "players": "اللاعبون",
+    "group":   "المجموعة",
+    "status": {
+      "pending":      "قيد الانتظار",
+      "approved":     "مقبول",
+      "rejected":     "مرفوض",
+      "disqualified": "مستبعد"
+    }
+  },
+  "player": {
+    "first_name":   "الاسم الأول",
+    "last_name":    "اللقب",
+    "dob":          "تاريخ الميلاد",
+    "phone":        "الهاتف",
+    "email":        "البريد الإلكتروني",
+    "jersey":       "رقم القميص",
+    "position":     "المركز",
+    "positions": {
+      "GK":  "حارس مرمى",
+      "DEF": "مدافع",
+      "MID": "وسط",
+      "FWD": "مهاجم"
+    },
+    "goals":        "الأهداف",
+    "yellow_cards": "البطاقات الصفراء",
+    "red_cards":    "البطاقات الحمراء"
+  },
+  "payment": {
+    "title":        "دفع رسوم التسجيل",
+    "instructions": "قم بإجراء تحويل بنكي ثم قم بتحميل إثبات الدفع",
+    "upload":       "رفع الإثبات",
+    "status": {
+      "unpaid":         "غير مدفوع",
+      "pending_review": "قيد المراجعة",
+      "paid":           "مدفوع ✓"
+    }
+  },
+  "match": {
+    "vs":          "ضد",
+    "live":        "مباشر",
+    "finished":    "انتهت",
+    "scheduled":   "مجدولة",
+    "cancelled":   "ملغاة",
+    "half_time":   "نصف الوقت",
+    "full_time":   "نهاية المباراة",
+    "minute":      "د",
+    "goal":        "هدف",
+    "own_goal":    "هدف عكسي",
+    "yellow_card": "بطاقة صفراء",
+    "red_card":    "بطاقة حمراء",
+    "motm":        "أفضل لاعب"
+  },
+  "admin": {
+    "dashboard":  "لوحة التحكم",
+    "teams":      "الفرق",
+    "matches":    "المباريات",
+    "players":    "اللاعبون",
+    "referees":   "الحكام",
+    "tournament": "البطولة",
+    "reports":    "التقارير",
+    "approve":    "قبول",
+    "reject":     "رفض",
+    "pending":    "قيد الانتظار",
+    "settings":   "الإعدادات"
+  },
+  "common": {
+    "loading":     "جاري التحميل...",
+    "error":       "حدث خطأ ما",
+    "save":        "حفظ",
+    "cancel":      "إلغاء",
+    "delete":      "حذف",
+    "edit":        "تعديل",
+    "view":        "عرض",
+    "coming_soon": "قريباً",
+    "back":        "رجوع",
+    "confirm":     "تأكيد",
+    "search":      "بحث",
+    "no_data":     "لا توجد بيانات"
+  }
+}

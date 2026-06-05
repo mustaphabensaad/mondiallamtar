@@ -1,0 +1,120 @@
+{
+  "nav": {
+    "home":       "Home",
+    "teams":      "Teams",
+    "matches":    "Matches",
+    "standings":  "Standings",
+    "bracket":    "Bracket",
+    "live":       "Live",
+    "login":      "Login",
+    "register":   "Register",
+    "logout":     "Logout",
+    "dashboard":  "Dashboard",
+    "admin":      "Admin"
+  },
+  "auth": {
+    "login_title":    "Login",
+    "register_title": "Captain Registration",
+    "email":          "Email",
+    "password":       "Password",
+    "phone":          "Phone",
+    "login_btn":      "Login",
+    "register_btn":   "Register",
+    "no_account":     "No account yet?",
+    "have_account":   "Already have an account?",
+    "register_link":  "Create account",
+    "login_link":     "Login",
+    "loading":        "Loading..."
+  },
+  "home": {
+    "today_matches": "Today's Matches",
+    "top_scorers":   "Top Scorers",
+    "past_matches":  "Past Matches",
+    "world_cup":     "World Cup 2026",
+    "sponsors":      "Sponsors",
+    "motm":          "Man of the Match"
+  },
+  "team": {
+    "name":    "Team Name",
+    "coach":   "Coach",
+    "captain": "Captain",
+    "players": "Players",
+    "group":   "Group",
+    "status": {
+      "pending":      "Pending",
+      "approved":     "Approved",
+      "rejected":     "Rejected",
+      "disqualified": "Disqualified"
+    }
+  },
+  "player": {
+    "first_name":   "First Name",
+    "last_name":    "Last Name",
+    "dob":          "Date of Birth",
+    "phone":        "Phone",
+    "email":        "Email",
+    "jersey":       "Jersey Number",
+    "position":     "Position",
+    "positions": {
+      "GK":  "Goalkeeper",
+      "DEF": "Defender",
+      "MID": "Midfielder",
+      "FWD": "Forward"
+    },
+    "goals":        "Goals",
+    "yellow_cards": "Yellow Cards",
+    "red_cards":    "Red Cards"
+  },
+  "payment": {
+    "title":        "Registration Payment",
+    "instructions": "Make a bank transfer then upload the proof",
+    "upload":       "Upload Proof",
+    "status": {
+      "unpaid":         "Unpaid",
+      "pending_review": "Under Review",
+      "paid":           "Paid ✓"
+    }
+  },
+  "match": {
+    "vs":          "vs",
+    "live":        "LIVE",
+    "finished":    "Finished",
+    "scheduled":   "Scheduled",
+    "cancelled":   "Cancelled",
+    "half_time":   "Half Time",
+    "full_time":   "Full Time",
+    "minute":      "min",
+    "goal":        "Goal",
+    "own_goal":    "Own Goal",
+    "yellow_card": "Yellow Card",
+    "red_card":    "Red Card",
+    "motm":        "Man of the Match"
+  },
+  "admin": {
+    "dashboard":  "Dashboard",
+    "teams":      "Teams",
+    "matches":    "Matches",
+    "players":    "Players",
+    "referees":   "Referees",
+    "tournament": "Tournament",
+    "reports":    "Reports",
+    "approve":    "Approve",
+    "reject":     "Reject",
+    "pending":    "Pending",
+    "settings":   "Settings"
+  },
+  "common": {
+    "loading":     "Loading...",
+    "error":       "Something went wrong",
+    "save":        "Save",
+    "cancel":      "Cancel",
+    "delete":      "Delete",
+    "edit":        "Edit",
+    "view":        "View",
+    "coming_soon": "Coming Soon",
+    "back":        "Back",
+    "confirm":     "Confirm",
+    "search":      "Search",
+    "no_data":     "No data"
+  }
+}
