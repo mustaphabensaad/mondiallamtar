@@ -5,6 +5,7 @@ import { teamService } from '../../services/tournament.service';
 import { useAuth } from '../../hooks/useAuth';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
+import EmptyState from '../../components/ui/EmptyState';
 
 const POS_COLOR = { GK: 'bg-yellow-500', DEF: 'bg-blue-500', MID: 'bg-green-500', FWD: 'bg-red-500' };
 
@@ -53,14 +54,21 @@ export default function CaptainDashboard() {
 
   if (!team) {
     return (
-      <div className="max-w-lg mx-auto px-4 py-16 text-center">
-        <div className="card p-12">
-          <p className="text-6xl mb-4">🏟️</p>
-          <h2 className="font-display font-bold text-xl text-gray-900 dark:text-white mb-2">
-            Pas encore d'équipe
-          </h2>
-          <p className="text-gray-500 text-sm mb-6">Créez votre équipe pour participer au Mundial Lamtar 2026</p>
-          <Link to="/captain/team" className="btn-primary">Créer mon équipe</Link>
+      <div className="max-w-lg mx-auto px-4 py-16">
+        <div className="card overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-primary to-green-400" />
+          <EmptyState
+            icon="🏟️"
+            title="Pas encore d'équipe"
+            subtitle="Créez votre équipe pour participer au Mundial Lamtar 2026 et commencer à inviter vos joueurs."
+            color="green"
+            size="lg"
+            action={
+              <Link to="/captain/team" className="btn-primary inline-flex items-center gap-2">
+                <span>+</span> Créer mon équipe
+              </Link>
+            }
+          />
         </div>
       </div>
     );

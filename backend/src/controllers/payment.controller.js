@@ -5,7 +5,8 @@ async function uploadProof(req, res, next) {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
-    const filePath = req.file.path.replace(/\\/g, '/');
+    const abs      = req.file.path.replace(/\\/g, '/');
+    const filePath = abs.substring(abs.indexOf('uploads/'));
 
     await db.query(
       `UPDATE teams SET payment_proof = ?, payment_status = 'pending_review', payment_date = NOW()

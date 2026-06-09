@@ -1,16 +1,20 @@
 import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { teamService, matchService } from '../services/tournament.service';
 import Badge from '../components/ui/Badge';
 import MatchCard from '../components/match/MatchCard';
 import Spinner from '../components/ui/Spinner';
+import EmptyState from '../components/ui/EmptyState';
+import PlayerModal from '../components/ui/PlayerModal';
 
 const POSITION_ORDER = { GK: 0, DEF: 1, MID: 2, FWD: 3 };
 
 export default function TeamDetail() {
   const { id }    = useParams();
   const { t }     = useTranslation();
+  const [selectedPlayerId, setSelectedPlayerId] = useState(null);
 
   const { data: team,    isLoading: tLoading } = useQuery({ queryKey: ['team', id],         queryFn: () => teamService.getById(id) });
   const { data: players, isLoading: pLoading } = useQuery({ queryKey: ['team-players', id], queryFn: () => teamService.getPlayers(id) });
@@ -31,6 +35,7 @@ export default function TeamDetail() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      {selectedPlayerId && <PlayerModal playerId={selectedPlayerId} onClose={() => setSelectedPlayerId(null)} />}
       <Link to="/teams" className="text-sm text-primary hover:underline mb-4 inline-block">← {t('nav.teams')}</Link>
 
       {/* Header */}
@@ -67,10 +72,18 @@ export default function TeamDetail() {
           </div>
           {pLoading ? (
             <div className="flex justify-center py-10"><Spinner /></div>
+          ) : sorted.length === 0 ? (
+            <EmptyState
+              icon="👥"
+              title="Effectif non complété"
+              subtitle="Les joueurs rejoindront cette équipe via invitation du capitaine."
+              color="blue"
+              size="md"
+            />
           ) : (
             <div className="divide-y divide-border-light dark:divide-border-dark">
               {sorted.map(p => (
-                <div key={p.id} className="flex items-center gap-3 px-4 py-3">
+                <div key={p.id} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/30 cursor-pointer transition-colors" onClick={() => setSelectedPlayerId(p.id)}>
                   <span className="w-7 text-center text-xs font-bold text-gray-400 shrink-0">
                     {p.jersey_number ?? '—'}
                   </span>
@@ -100,7 +113,13 @@ export default function TeamDetail() {
           {mLoading ? (
             <div className="flex justify-center py-6"><Spinner /></div>
           ) : !matches?.length ? (
-            <p className="text-gray-400 text-sm text-center py-6">{t('common.no_data')}</p>
+            <EmptyState
+              icon="⚽"
+              title="Aucun match programmé"
+              subtitle="Les matchs de cette équipe apparaîtront ici après le tirage au sort."
+              color="gray"
+              size="sm"
+            />
           ) : (
             <div className="flex flex-col gap-3">
               {matches.map(m => <MatchCard key={m.id} match={m} compact />)}

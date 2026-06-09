@@ -51,9 +51,9 @@ const REFEREES = [
 ];
 
 const SPONSORS = [
-  { name: 'Mobilis', logo: 'https://placehold.co/160x60/16a34a/ffffff?text=Mobilis', url: 'https://mobilis.dz',  order: 1 },
-  { name: 'Ooredoo', logo: 'https://placehold.co/160x60/dc2626/ffffff?text=Ooredoo', url: 'https://ooredoo.dz', order: 2 },
-  { name: 'Djezzy',  logo: 'https://placehold.co/160x60/d97706/000000?text=Djezzy',  url: 'https://djezzy.dz',  order: 3 },
+  { name: 'Mobilis', logo: 'https://placehold.co/160x60/16a34a/ffffff?text=Mobilis', url: 'https://mobilis.dz',  tier: 'gold',   order: 1 },
+  { name: 'Ooredoo', logo: 'https://placehold.co/160x60/dc2626/ffffff?text=Ooredoo', url: 'https://ooredoo.dz', tier: 'silver', order: 2 },
+  { name: 'Djezzy',  logo: 'https://placehold.co/160x60/d97706/000000?text=Djezzy',  url: 'https://djezzy.dz',  tier: 'bronze', order: 3 },
 ];
 
 const IMAGES = [
@@ -172,11 +172,38 @@ async function seed() {
   }
   console.log(`✓ ${TEAMS.length} teams created   (approved, paid, no group assigned)`);
 
+  // ── 2 extra test teams ───────────────────────────────────────────────────────
+  // Team 17 — fully valid (approved + paid)
+  const [c17] = await db.query(
+    'INSERT INTO users (email, password_hash, role, phone) VALUES (?, ?, "captain", ?)',
+    ['captain17@shabka.dz', captainHash, '0550000017']
+  );
+  await db.query(
+    `INSERT INTO teams
+       (tournament_id, captain_id, name, logo_path, coach_name, status, group_letter, payment_status)
+     VALUES (?, ?, ?, ?, ?, 'approved', NULL, 'paid')`,
+    [tournamentId, c17.insertId, 'Sahara FC', logo('Sahara FC', 16), 'Khaled Boudiaf']
+  );
+  console.log('✓ Team 17 created      Sahara FC (approved + paid)  captain17@shabka.dz');
+
+  // Team 18 — registered but no payment proof (pending + unpaid)
+  const [c18] = await db.query(
+    'INSERT INTO users (email, password_hash, role, phone) VALUES (?, ?, "captain", ?)',
+    ['captain18@shabka.dz', captainHash, '0550000018']
+  );
+  await db.query(
+    `INSERT INTO teams
+       (tournament_id, captain_id, name, logo_path, coach_name, status, group_letter, payment_status, payment_proof)
+     VALUES (?, ?, ?, ?, ?, 'pending', NULL, 'unpaid', NULL)`,
+    [tournamentId, c18.insertId, 'Oasis United', logo('Oasis United', 17), 'Rachid Maamar']
+  );
+  console.log('✓ Team 18 created      Oasis United (pending, no payment proof)  captain18@shabka.dz');
+
   // ── Sponsors ─────────────────────────────────────────────────────────────────
   for (const s of SPONSORS) {
     await db.query(
-      'INSERT INTO sponsors (tournament_id, name, logo_path, website_url, display_order) VALUES (?, ?, ?, ?, ?)',
-      [tournamentId, s.name, s.logo, s.url, s.order]
+      'INSERT INTO sponsors (tournament_id, name, logo_path, website_url, tier, display_order) VALUES (?, ?, ?, ?, ?, ?)',
+      [tournamentId, s.name, s.logo, s.url, s.tier, s.order]
     );
   }
   console.log(`✓ ${SPONSORS.length} sponsors created`);
@@ -200,6 +227,8 @@ async function seed() {
   console.log('Admin    : admin@shabka.dz           / admin123');
   console.log('Captains : captain1@shabka.dz …      / captain123');
   console.log('           captain16@shabka.dz');
+  console.log('           captain17@shabka.dz (Sahara FC — approved+paid)');
+  console.log('           captain18@shabka.dz (Oasis United — pending, no proof)');
   console.log('────────────────────────────────────────────────────');
   console.log('Next step: Admin → /admin/draw → Démarrer le tirage');
 

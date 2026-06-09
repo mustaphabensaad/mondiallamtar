@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { teamService } from '../../services/tournament.service';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
+import EmptyState from '../../components/ui/EmptyState';
 import toast from 'react-hot-toast';
 
 export default function PlayerInvites() {
@@ -38,9 +39,21 @@ export default function PlayerInvites() {
 
   if (teamLoading) return <div className="flex justify-center py-24"><Spinner size="lg" /></div>;
   if (!myTeam?.team) return (
-    <div className="max-w-xl mx-auto px-4 py-8 text-center">
-      <p className="text-gray-500 mb-4">You need to create a team first.</p>
-      <Link to="/captain/team" className="btn-primary inline-block">Create Team</Link>
+    <div className="max-w-lg mx-auto px-4 py-16">
+      <div className="card">
+        <EmptyState
+          icon="🏟️"
+          title="Équipe requise"
+          subtitle="Vous devez d'abord créer votre équipe avant de pouvoir inviter des joueurs."
+          color="green"
+          size="lg"
+          action={
+            <Link to="/captain/team" className="btn-primary inline-flex items-center gap-2">
+              <span>+</span> Créer mon équipe
+            </Link>
+          }
+        />
+      </div>
     </div>
   );
 
@@ -102,7 +115,13 @@ export default function PlayerInvites() {
         {invLoading ? (
           <div className="flex justify-center py-8"><Spinner /></div>
         ) : invites.length === 0 ? (
-          <p className="text-center py-8 text-gray-400 text-sm">No invitations yet. Generate links above to invite players.</p>
+          <EmptyState
+            icon="🔗"
+            title="Aucune invitation envoyée"
+            subtitle="Générez des liens d'invitation ci-dessus et envoyez-les à vos joueurs pour qu'ils s'inscrivent."
+            color="blue"
+            size="md"
+          />
         ) : (
           <div className="divide-y divide-border-light dark:divide-border-dark">
             {invites.map(p => (

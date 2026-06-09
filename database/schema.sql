@@ -218,6 +218,7 @@ CREATE TABLE sponsors (
   logo_path     VARCHAR(255),
   website_url   VARCHAR(255),
   display_order INT DEFAULT 0,
+  tier          ENUM('gold','silver','bronze') NOT NULL DEFAULT 'bronze',
   is_active     BOOLEAN DEFAULT TRUE,
   FOREIGN KEY (tournament_id) REFERENCES tournament(id)
 );

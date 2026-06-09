@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { adminService } from '../services/tournament.service';
 import Spinner from '../components/ui/Spinner';
+import EmptyState from '../components/ui/EmptyState';
 
 const PHASES = [
   { key: 'round_of_16',   label: 'Huitièmes',    short: '1/8' },
@@ -77,16 +78,37 @@ export default function TournamentBracket() {
 
   if (activePhasess.length === 0) {
     return (
-      <div className="max-w-lg mx-auto px-4 py-16 text-center">
-        <div className="card p-12">
-          <p className="text-6xl mb-4">🏆</p>
-          <h2 className="font-display font-bold text-xl text-gray-900 dark:text-white mb-2">
-            Phase à élimination directe
-          </h2>
-          <p className="text-gray-500 text-sm mb-6">
-            Le tableau apparaîtra ici une fois la phase de groupes terminée.
-          </p>
-          <Link to="/standings" className="btn-primary">Voir le classement des groupes</Link>
+      <div className="max-w-lg mx-auto px-4 py-16">
+        <div className="card overflow-hidden">
+          {/* Decorative top bar */}
+          <div className="h-1.5 bg-gradient-to-r from-primary via-green-400 to-secondary" />
+          <EmptyState
+            icon="🏆"
+            title="Phase éliminatoire à venir"
+            subtitle="Le tableau sera généré automatiquement à la fin de la phase de groupes. Les 2 premiers de chaque groupe se qualifient."
+            color="amber"
+            size="lg"
+            action={
+              <Link to="/standings" className="btn-primary text-sm py-2 px-5 inline-flex items-center gap-2">
+                <span>📊</span> Voir le classement
+              </Link>
+            }
+          />
+          {/* Steps hint */}
+          <div className="border-t border-gray-100 dark:border-gray-800 px-6 py-4">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Progression du tournoi</p>
+            <div className="flex items-center justify-center gap-1">
+              {['Inscriptions', 'Groupes', '1/8', 'QF', 'SF', 'Finale'].map((s, i) => (
+                <div key={s} className="flex items-center gap-1">
+                  <span className={`text-[10px] font-bold px-2 py-1 rounded-full
+                    ${i <= 1 ? 'bg-primary/10 text-primary' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'}`}>
+                    {s}
+                  </span>
+                  {i < 5 && <span className="text-gray-300 dark:text-gray-700 text-xs">›</span>}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );

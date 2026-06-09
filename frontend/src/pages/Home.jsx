@@ -1,20 +1,23 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { matchService } from '../services/tournament.service';
-import HeroCarousel   from '../components/home/HeroCarousel';
-import TodayMatches   from '../components/home/TodayMatches';
-import TopScorers     from '../components/home/TopScorers';
-import PastMatches    from '../components/home/PastMatches';
+import HeroCarousel    from '../components/home/HeroCarousel';
+import TodayMatches    from '../components/home/TodayMatches';
+import TopScorers      from '../components/home/TopScorers';
+import PastMatches     from '../components/home/PastMatches';
 import SponsorsSidebar from '../components/home/SponsorsSidebar';
-import MotmSidebar    from '../components/home/MotmSidebar';
-import MatchCard      from '../components/match/MatchCard';
-import Spinner        from '../components/ui/Spinner';
+import MotmSidebar     from '../components/home/MotmSidebar';
+import MatchCard       from '../components/match/MatchCard';
 
-function SectionCard({ title, icon, children, accent }) {
+function SectionCard({ title, icon, children, accent, className = '' }) {
   return (
-    <div className="bg-white dark:bg-[#111827] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
-      <div className={`flex items-center gap-2.5 px-4 sm:px-5 py-3.5 border-b border-gray-100 dark:border-gray-800 ${accent || ''}`}>
-        {icon && <span className="text-base">{icon}</span>}
+    <div className={`bg-white dark:bg-[#111827] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm ${className}`}>
+      <div className={`flex items-center gap-2.5 px-4 sm:px-5 py-3 border-b border-gray-100 dark:border-gray-800/80 ${accent || ''}`}>
+        {icon && (
+          <span className="w-7 h-7 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-sm shrink-0">
+            {icon}
+          </span>
+        )}
         <h2 className="font-display font-bold text-sm sm:text-base text-gray-900 dark:text-white">
           {title}
         </h2>
@@ -33,9 +36,19 @@ function LiveBanner() {
     refetchInterval: 15_000,
   });
   if (liveMatches.length === 0) return null;
+
   return (
-    <div className="flex flex-col gap-3">
-      {liveMatches.map(m => <MatchCard key={m.id} match={m} />)}
+    <div className="rounded-2xl border border-red-600/40 bg-gradient-to-br from-red-950/20 to-gray-900/10 dark:from-red-950/40 dark:to-transparent overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-red-700/30 bg-red-600/10">
+        <span className="live-badge text-[10px] px-2 py-0.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-white" />
+          EN DIRECT
+        </span>
+        <span className="text-xs font-semibold text-red-500">{liveMatches.length} match{liveMatches.length > 1 ? 's' : ''} en cours</span>
+      </div>
+      <div className="p-3 flex flex-col gap-3">
+        {liveMatches.map(m => <MatchCard key={m.id} match={m} />)}
+      </div>
     </div>
   );
 }
@@ -45,17 +58,17 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-[190px_1fr_190px] gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr_200px] gap-5">
 
-        {/* Left sidebar — Sponsors */}
-        <aside className="order-3 lg:order-1 space-y-5">
+        {/* ── Left sidebar: Sponsors ── */}
+        <aside className="order-3 lg:order-1 space-y-4">
           <SectionCard title={t('home.sponsors')} icon="🤝">
             <SponsorsSidebar />
           </SectionCard>
         </aside>
 
-        {/* Main */}
-        <div className="order-1 lg:order-2 flex flex-col gap-5">
+        {/* ── Main column ── */}
+        <div className="order-1 lg:order-2 flex flex-col gap-5 min-w-0">
           <HeroCarousel />
           <LiveBanner />
 
@@ -72,8 +85,8 @@ export default function Home() {
           </SectionCard>
         </div>
 
-        {/* Right sidebar — MOTM */}
-        <aside className="order-2 lg:order-3 space-y-5">
+        {/* ── Right sidebar: MOTM ── */}
+        <aside className="order-2 lg:order-3 space-y-4">
           <SectionCard title={t('home.motm')} icon="⭐">
             <MotmSidebar />
           </SectionCard>

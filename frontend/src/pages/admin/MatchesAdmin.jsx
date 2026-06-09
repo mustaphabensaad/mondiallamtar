@@ -36,9 +36,6 @@ function ActionForm({ actionKey, homePlayers, awayPlayers, homeTeam, awayTeam, o
   const isSub  = actionKey === 'substitution_in';
   const meta   = QUICK_ACTIONS.find(a => a.key === actionKey) || {};
 
-  // Per-player yellow card count to show in selector
-  // (passed as prop if needed — simplified here)
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}
       className="mt-3 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 p-4 space-y-3 animate-fade-in"
@@ -130,7 +127,7 @@ function ActionForm({ actionKey, homePlayers, awayPlayers, homeTeam, awayTeam, o
   );
 }
 
-// ── Team stats row (goals + cards) ─────────────────────────────────────────────
+// ── Team stats row ─────────────────────────────────────────────────────────────
 function TeamStatBadges({ events, teamId }) {
   const goals   = events.filter(e => e.team_id === teamId && ['goal','penalty_scored'].includes(e.event_type)).length;
   const yellows = events.filter(e => e.team_id === teamId && e.event_type === 'yellow_card').length;
@@ -148,7 +145,7 @@ function TeamStatBadges({ events, teamId }) {
 function LivePanel({ match, onClose }) {
   const qc = useQueryClient();
   const [activeAction, setActiveAction] = useState(null);
-  const { register: regMotm, watch: watchMotm } = useForm();
+  const { register: regMotm } = useForm();
 
   const { data: homePlayers = [] } = useQuery({
     queryKey: ['team-players', match.home_team_id],
@@ -171,28 +168,28 @@ function LivePanel({ match, onClose }) {
 
   const startMut = useMutation({
     mutationFn: () => matchService.start(match.id),
-    onSuccess: () => { invalidate(); toast.success('Match started!'); },
-    onError:   (e) => toast.error(e?.response?.data?.message || 'Error'),
+    onSuccess: () => { invalidate(); toast.success('Match démarré !'); },
+    onError:   (e) => toast.error(e?.response?.data?.message || 'Erreur'),
   });
   const endMut = useMutation({
     mutationFn: () => matchService.end(match.id, {}),
-    onSuccess: () => { invalidate(); toast.success('Match ended'); onClose(); },
-    onError:   (e) => toast.error(e?.response?.data?.message || 'Error'),
+    onSuccess: () => { invalidate(); toast.success('Match terminé'); onClose(); },
+    onError:   (e) => toast.error(e?.response?.data?.message || 'Erreur'),
   });
   const eventMut = useMutation({
     mutationFn: (vals) => matchService.addEvent(match.id, vals),
-    onSuccess: () => { invalidate(); setActiveAction(null); toast.success('Event added ✓'); },
-    onError:   (e) => toast.error(e?.response?.data?.message || 'Error'),
+    onSuccess: () => { invalidate(); setActiveAction(null); toast.success('Événement ajouté ✓'); },
+    onError:   (e) => toast.error(e?.response?.data?.message || 'Erreur'),
   });
   const delEventMut = useMutation({
     mutationFn: (eid) => matchService.deleteEvent(match.id, eid),
-    onSuccess: () => { invalidate(); toast.success('Event removed'); },
-    onError:   () => toast.error('Error'),
+    onSuccess: () => { invalidate(); toast.success('Événement supprimé'); },
+    onError:   () => toast.error('Erreur'),
   });
   const motmMut = useMutation({
     mutationFn: (pid) => matchService.setMotm(match.id, pid),
-    onSuccess: () => { invalidate(); toast.success('MOTM set ⭐'); },
-    onError:   () => toast.error('Error'),
+    onSuccess: () => { invalidate(); toast.success('MOTM défini ⭐'); },
+    onError:   () => toast.error('Erreur'),
   });
 
   const m      = matchData?.match  || match;
@@ -201,23 +198,20 @@ function LivePanel({ match, onClose }) {
   const isDone = m.status === 'finished';
   const allPlayers = [...homePlayers, ...awayPlayers];
 
-  // Group events
   const goalEvents = events.filter(e => ['goal','own_goal','penalty_scored','penalty_missed'].includes(e.event_type));
   const cardEvents = events.filter(e => ['yellow_card','red_card'].includes(e.event_type));
   const subEvents  = events.filter(e => ['substitution_in','substitution_out'].includes(e.event_type));
 
   return (
     <div className="space-y-4">
-
       {/* ── Scoreboard ── */}
-      <div className={`rounded-2xl p-5 text-center ${isLive
+      <div className={`relative rounded-2xl p-5 text-center ${isLive
         ? 'bg-gradient-to-br from-gray-900 via-red-950/30 to-gray-900 border border-red-700/40'
         : 'bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700'
       }`}>
         {isLive && <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500 via-red-400 to-red-500 rounded-t-2xl" />}
 
         <div className="grid grid-cols-3 items-center gap-4">
-          {/* Home team */}
           <div className="flex flex-col items-center gap-1">
             <img src={m.home_team_logo || `https://placehold.co/56x56/16a34a/ffffff?text=H`} alt=""
               className="w-14 h-14 rounded-2xl object-cover shadow-md" />
@@ -227,7 +221,6 @@ function LivePanel({ match, onClose }) {
             {mdLoading ? null : <TeamStatBadges events={events} teamId={m.home_team_id} />}
           </div>
 
-          {/* Score */}
           <div className="text-center">
             {(isLive || isDone) ? (
               <p className={`text-5xl font-black tabular-nums ${isLive ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
@@ -244,16 +237,15 @@ function LivePanel({ match, onClose }) {
               )}
               {isDone && (
                 <span className="inline-flex items-center gap-1 text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full">
-                  ✓ Finished
+                  ✓ Terminé
                 </span>
               )}
               {m.status === 'scheduled' && (
-                <span className="text-xs text-blue-400 font-semibold">Scheduled</span>
+                <span className="text-xs text-blue-400 font-semibold">Programmé</span>
               )}
             </div>
           </div>
 
-          {/* Away team */}
           <div className="flex flex-col items-center gap-1">
             <img src={m.away_team_logo || `https://placehold.co/56x56/1e40af/ffffff?text=A`} alt=""
               className="w-14 h-14 rounded-2xl object-cover shadow-md" />
@@ -264,7 +256,6 @@ function LivePanel({ match, onClose }) {
           </div>
         </div>
 
-        {/* Match meta */}
         {(m.venue || m.referee_name) && (
           <div className="flex items-center justify-center gap-4 mt-3 text-xs text-gray-400">
             {m.venue        && <span>📍 {m.venue}</span>}
@@ -272,32 +263,31 @@ function LivePanel({ match, onClose }) {
           </div>
         )}
 
-        {/* Controls */}
         <div className="flex justify-center gap-2 mt-4 flex-wrap">
           {m.status === 'scheduled' && (
             <button onClick={() => startMut.mutate()} disabled={startMut.isPending}
               className="btn-primary text-sm flex items-center gap-1.5 px-5">
               {startMut.isPending && <Spinner size="sm" />}
-              ▶ Start Match
+              ▶ Démarrer le match
             </button>
           )}
           {isLive && (
             <button
-              onClick={() => { if (confirm('End this match? This cannot be undone.')) endMut.mutate(); }}
+              onClick={() => { if (confirm('Terminer ce match ? Cette action est irréversible.')) endMut.mutate(); }}
               disabled={endMut.isPending}
               className="bg-red-600 text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-red-700 flex items-center gap-1.5 shadow-md transition-colors"
             >
               {endMut.isPending && <Spinner size="sm" />}
-              ⏹ End Match
+              ⏹ Terminer le match
             </button>
           )}
         </div>
       </div>
 
-      {/* ── Quick action buttons (live only) ── */}
+      {/* ── Quick actions (live only) ── */}
       {isLive && (
         <div>
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Quick Actions</p>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Actions rapides</p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
             {QUICK_ACTIONS.map(action => (
               <button
@@ -342,7 +332,7 @@ function LivePanel({ match, onClose }) {
               defaultValue={m.man_of_match_id || ''}
               onChange={e => e.target.value && motmMut.mutate(e.target.value)}
             >
-              <option value="">— Select MOTM —</option>
+              <option value="">— Sélectionner MOTM —</option>
               <optgroup label={m.home_team_name}>
                 {homePlayers.map(p => (
                   <option key={p.id} value={p.id}>#{p.jersey_number} {p.first_name} {p.last_name}</option>
@@ -359,49 +349,19 @@ function LivePanel({ match, onClose }) {
         </div>
       )}
 
-      {/* ── Events timeline (organized by type) ── */}
+      {/* ── Events timeline ── */}
       {events.length > 0 && (
         <div className="space-y-3">
-
-          {/* Goals */}
-          {goalEvents.length > 0 && (
-            <EventGroup
-              title="Goals"
-              icon="⚽"
-              events={goalEvents}
-              isLive={isLive}
-              onDelete={delEventMut.mutate}
-            />
-          )}
-
-          {/* Cards */}
-          {cardEvents.length > 0 && (
-            <EventGroup
-              title="Disciplinary"
-              icon="🟨"
-              events={cardEvents}
-              isLive={isLive}
-              onDelete={delEventMut.mutate}
-            />
-          )}
-
-          {/* Substitutions */}
-          {subEvents.length > 0 && (
-            <EventGroup
-              title="Substitutions"
-              icon="↕"
-              events={subEvents}
-              isLive={isLive}
-              onDelete={delEventMut.mutate}
-            />
-          )}
+          {goalEvents.length > 0 && <EventGroup title="Buts" icon="⚽" events={goalEvents} isLive={isLive} onDelete={delEventMut.mutate} />}
+          {cardEvents.length > 0 && <EventGroup title="Cartons" icon="🟨" events={cardEvents} isLive={isLive} onDelete={delEventMut.mutate} />}
+          {subEvents.length  > 0 && <EventGroup title="Remplacements" icon="↕" events={subEvents} isLive={isLive} onDelete={delEventMut.mutate} />}
         </div>
       )}
     </div>
   );
 }
 
-// ── Event group sub-component ─────────────────────────────────────────────────
+// ── Event group ────────────────────────────────────────────────────────────────
 function EventGroup({ title, icon, events, isLive, onDelete }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700">
@@ -426,10 +386,8 @@ function EventGroup({ title, icon, events, isLive, onDelete }) {
                 <button
                   onClick={() => onDelete(ev.id)}
                   className="text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-colors text-base leading-none shrink-0"
-                  title="Remove event"
-                >
-                  ✕
-                </button>
+                  title="Supprimer"
+                >✕</button>
               )}
             </div>
           );
@@ -440,9 +398,10 @@ function EventGroup({ title, icon, events, isLive, onDelete }) {
 }
 
 // ── Match list row ─────────────────────────────────────────────────────────────
-function MatchRow({ m, onManage }) {
+function MatchRow({ m, onManage, onEdit, onQuickStart }) {
   const isLive  = m.status === 'live';
   const isDone  = m.status === 'finished';
+  const isSched = m.status === 'scheduled';
 
   return (
     <div className={`flex items-center gap-3 px-4 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors group
@@ -468,42 +427,60 @@ function MatchRow({ m, onManage }) {
             className="w-7 h-7 rounded-lg object-cover shrink-0" />
         </div>
 
-        {/* Meta row */}
         <div className="flex items-center gap-3 mt-1 flex-wrap">
           {m.scheduled_at && (
             <span className="text-xs text-gray-400">
               🕐 {new Date(m.scheduled_at).toLocaleString([], { weekday:'short', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })}
             </span>
           )}
+          {m.referee_name && <span className="text-xs text-gray-400">🏁 {m.referee_name}</span>}
           {m.phase && (
             <span className="text-[10px] font-semibold bg-gray-100 dark:bg-gray-800 text-gray-500 px-2 py-0.5 rounded-full capitalize">
               {m.phase.replace(/_/g, ' ')}
             </span>
           )}
-          {/* Stat pills for finished matches */}
-          {isDone && m.home_score !== undefined && (
-            <>
-              {(m.yellow_cards_total > 0) && (
-                <span className="text-[10px] font-bold text-yellow-600 dark:text-yellow-400">🟨 {m.yellow_cards_total}</span>
-              )}
-              {(m.red_cards_total > 0) && (
-                <span className="text-[10px] font-bold text-red-500">🟥 {m.red_cards_total}</span>
-              )}
-            </>
+          {isDone && m.yellow_cards_total > 0 && (
+            <span className="text-[10px] font-bold text-yellow-600 dark:text-yellow-400">🟨 {m.yellow_cards_total}</span>
+          )}
+          {isDone && m.red_cards_total > 0 && (
+            <span className="text-[10px] font-bold text-red-500">🟥 {m.red_cards_total}</span>
           )}
         </div>
       </div>
 
-      {/* Right side */}
-      <div className="flex items-center gap-2 shrink-0">
+      {/* Right-side actions */}
+      <div className="flex items-center gap-1.5 shrink-0 flex-wrap justify-end">
         {isLive && (
           <span className="flex items-center gap-1 text-[10px] font-bold text-red-500 bg-red-100 dark:bg-red-900/30 px-2 py-1 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" /> LIVE
           </span>
         )}
-        {isDone && <Badge variant="finished">Finished</Badge>}
-        {m.status === 'scheduled' && <Badge variant="scheduled">Scheduled</Badge>}
+        {isDone && <Badge variant="finished">Terminé</Badge>}
+        {isSched && <Badge variant="scheduled">Programmé</Badge>}
 
+        {/* Edit button — scheduled only */}
+        {isSched && (
+          <button
+            onClick={() => onEdit(m)}
+            className="text-xs px-2.5 py-1.5 rounded-xl font-bold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            title="Modifier date / arbitre"
+          >
+            ✏️
+          </button>
+        )}
+
+        {/* Quick start — scheduled only */}
+        {isSched && (
+          <button
+            onClick={() => onQuickStart(m)}
+            className="text-xs px-3 py-1.5 rounded-xl font-bold bg-green-600 text-white hover:bg-green-700 transition-colors flex items-center gap-1"
+            title="Démarrer le match"
+          >
+            ▶ Start
+          </button>
+        )}
+
+        {/* Manage / view */}
         <button
           onClick={() => onManage(m)}
           className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-colors
@@ -511,10 +488,10 @@ function MatchRow({ m, onManage }) {
               ? 'bg-red-500 text-white hover:bg-red-600 shadow-md'
               : isDone
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                : 'bg-primary text-white hover:bg-primary/80'
+                : 'bg-primary/10 text-primary hover:bg-primary/20'
             }`}
         >
-          {isLive ? '🎮 Manage' : isDone ? '👁 View' : 'Manage'}
+          {isLive ? '🎮 Gérer' : isDone ? '👁 Voir' : '⚙️'}
         </button>
       </div>
     </div>
@@ -528,27 +505,59 @@ export default function MatchesAdmin() {
   const [tab, setTab]             = useState('all');
   const [liveMatch, setLiveMatch] = useState(null);
   const [creating, setCreating]   = useState(false);
+  const [editMatch, setEditMatch] = useState(null);  // match being edited
 
   const { data: matches = [], isLoading } = useQuery({
     queryKey: ['admin-matches'],
     queryFn:  () => matchService.getAll(),
     refetchInterval: 15000,
   });
-  const { data: teams = [] }   = useQuery({ queryKey: ['teams-all'],  queryFn: teamService.getAll });
+  const { data: teams = [] }    = useQuery({ queryKey: ['teams-all'],  queryFn: teamService.getAll });
   const { data: referees = [] } = useQuery({ queryKey: ['referees'],   queryFn: refereeService.getAll });
 
   const { register, handleSubmit, reset } = useForm();
+  const { register: regEdit, handleSubmit: handleEdit, reset: resetEdit, setValue: setEditVal } = useForm();
+
   const createMut = useMutation({
     mutationFn: matchService.create,
-    onSuccess:  () => { qc.invalidateQueries(['admin-matches']); setCreating(false); reset(); toast.success('Match created ✓'); },
-    onError:    (e) => toast.error(e?.response?.data?.message || 'Error'),
+    onSuccess:  () => { qc.invalidateQueries(['admin-matches']); setCreating(false); reset(); toast.success('Match créé ✓'); },
+    onError:    (e) => toast.error(e?.response?.data?.message || 'Erreur'),
   });
 
+  const updateMut = useMutation({
+    mutationFn: ({ id, data }) => matchService.update(id, data),
+    onSuccess:  () => { qc.invalidateQueries(['admin-matches']); setEditMatch(null); toast.success('Match modifié ✓'); },
+    onError:    (e) => toast.error(e?.response?.data?.message || 'Erreur'),
+  });
+
+  const startMut = useMutation({
+    mutationFn: (id) => matchService.start(id),
+    onSuccess:  () => { qc.invalidateQueries(['admin-matches']); toast.success('Match démarré !'); },
+    onError:    (e) => toast.error(e?.response?.data?.message || 'Erreur'),
+  });
+
+  function openEdit(m) {
+    setEditMatch(m);
+    // Pre-fill form with current values
+    const local = m.scheduled_at
+      ? new Date(m.scheduled_at).toISOString().slice(0, 16)
+      : '';
+    setEditVal('scheduled_at', local);
+    setEditVal('referee_id', m.referee_id || '');
+    setEditVal('venue', m.venue || '');
+  }
+
+  function handleQuickStart(m) {
+    if (confirm(`Démarrer "${m.home_team_name} vs ${m.away_team_name}" maintenant ?`)) {
+      startMut.mutate(m.id);
+    }
+  }
+
   const TABS = [
-    { key: 'all',       label: 'All',       count: matches.length },
-    { key: 'live',      label: 'Live',      count: matches.filter(m => m.status === 'live').length },
-    { key: 'scheduled', label: 'Scheduled', count: matches.filter(m => m.status === 'scheduled').length },
-    { key: 'finished',  label: 'Finished',  count: matches.filter(m => m.status === 'finished').length },
+    { key: 'all',       label: 'Tous',       count: matches.length },
+    { key: 'live',      label: 'En direct',  count: matches.filter(m => m.status === 'live').length },
+    { key: 'scheduled', label: 'Programmés', count: matches.filter(m => m.status === 'scheduled').length },
+    { key: 'finished',  label: 'Terminés',   count: matches.filter(m => m.status === 'finished').length },
   ];
 
   const filtered = matches.filter(m => tab === 'all' || m.status === tab);
@@ -563,11 +572,14 @@ export default function MatchesAdmin() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-display text-2xl font-bold text-gray-900 dark:text-white">Matches Management</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{matches.length} total · {liveCount > 0 && <span className="text-red-500 font-semibold">{liveCount} live</span>}</p>
+          <h1 className="font-display text-2xl font-bold text-gray-900 dark:text-white">Gestion des matchs</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {matches.length} au total
+            {liveCount > 0 && <span className="text-red-500 font-semibold ml-1">· {liveCount} en direct</span>}
+          </p>
         </div>
         <button onClick={() => setCreating(true)} className="btn-primary flex items-center gap-1.5 text-sm px-4 py-2">
-          + New Match
+          + Nouveau match
         </button>
       </div>
 
@@ -600,19 +612,25 @@ export default function MatchesAdmin() {
       ) : filtered.length === 0 ? (
         <div className="card p-14 text-center">
           <p className="text-4xl mb-3">⚽</p>
-          <p className="text-gray-400 font-semibold">No matches found</p>
+          <p className="text-gray-400 font-semibold">Aucun match trouvé</p>
         </div>
       ) : (
         <div className="card overflow-hidden">
           <div className="divide-y divide-gray-100 dark:divide-gray-800">
             {filtered.map(m => (
-              <MatchRow key={m.id} m={m} onManage={setLiveMatch} />
+              <MatchRow
+                key={m.id}
+                m={m}
+                onManage={setLiveMatch}
+                onEdit={openEdit}
+                onQuickStart={handleQuickStart}
+              />
             ))}
           </div>
         </div>
       )}
 
-      {/* Manage / Live modal — wide */}
+      {/* Manage / Live modal */}
       <Modal
         isOpen={!!liveMatch}
         onClose={() => setLiveMatch(null)}
@@ -622,56 +640,98 @@ export default function MatchesAdmin() {
         {liveMatch && <LivePanel match={liveMatch} onClose={() => setLiveMatch(null)} />}
       </Modal>
 
+      {/* Edit match modal */}
+      <Modal
+        isOpen={!!editMatch}
+        onClose={() => { setEditMatch(null); resetEdit(); }}
+        title={editMatch ? `Modifier — ${editMatch.home_team_name} vs ${editMatch.away_team_name}` : ''}
+      >
+        {editMatch && (
+          <form
+            onSubmit={handleEdit(v => updateMut.mutate({ id: editMatch.id, data: v }))}
+            className="space-y-4"
+          >
+            <div>
+              <label className="text-xs font-semibold text-gray-500 mb-1 block">Date &amp; Heure</label>
+              <input
+                {...regEdit('scheduled_at')}
+                type="datetime-local"
+                className="input w-full"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 mb-1 block">Arbitre</label>
+              <select {...regEdit('referee_id', { valueAsNumber: true })} className="input w-full">
+                <option value="">Aucun</option>
+                {referees.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-500 mb-1 block">Stade / Lieu</label>
+              <input {...regEdit('venue')} className="input w-full" placeholder="Nom du terrain" />
+            </div>
+            <div className="flex justify-end gap-2 pt-1">
+              <button type="button" onClick={() => { setEditMatch(null); resetEdit(); }} className="btn-secondary">
+                Annuler
+              </button>
+              <button type="submit" disabled={updateMut.isPending} className="btn-primary flex items-center gap-1.5">
+                {updateMut.isPending && <Spinner size="sm" />} Enregistrer
+              </button>
+            </div>
+          </form>
+        )}
+      </Modal>
+
       {/* Create match modal */}
-      <Modal isOpen={creating} onClose={() => { setCreating(false); reset(); }} title="Create Match">
+      <Modal isOpen={creating} onClose={() => { setCreating(false); reset(); }} title="Créer un match">
         <form onSubmit={handleSubmit(v => createMut.mutate(v))} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-semibold text-gray-500 mb-1 block">Home Team</label>
+              <label className="text-xs font-semibold text-gray-500 mb-1 block">Équipe domicile</label>
               <select {...register('home_team_id', { required: true, valueAsNumber: true })} className="input w-full">
-                <option value="">Select...</option>
+                <option value="">Sélectionner...</option>
                 {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 mb-1 block">Away Team</label>
+              <label className="text-xs font-semibold text-gray-500 mb-1 block">Équipe extérieur</label>
               <select {...register('away_team_id', { required: true, valueAsNumber: true })} className="input w-full">
-                <option value="">Select...</option>
+                <option value="">Sélectionner...</option>
                 {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
               </select>
             </div>
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-500 mb-1 block">Date &amp; Time</label>
+            <label className="text-xs font-semibold text-gray-500 mb-1 block">Date &amp; Heure</label>
             <input {...register('scheduled_at')} type="datetime-local" className="input w-full" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-semibold text-gray-500 mb-1 block">Referee</label>
+              <label className="text-xs font-semibold text-gray-500 mb-1 block">Arbitre</label>
               <select {...register('referee_id', { valueAsNumber: true })} className="input w-full">
-                <option value="">None</option>
+                <option value="">Aucun</option>
                 {referees.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-xs font-semibold text-gray-500 mb-1 block">Venue</label>
-              <input {...register('venue')} className="input w-full" placeholder="Stadium name" />
+              <label className="text-xs font-semibold text-gray-500 mb-1 block">Stade / Lieu</label>
+              <input {...register('venue')} className="input w-full" placeholder="Nom du terrain" />
             </div>
           </div>
           <div>
             <label className="text-xs font-semibold text-gray-500 mb-1 block">Phase</label>
             <select {...register('phase')} className="input w-full">
-              <option value="group">Group Stage</option>
-              <option value="round_of_16">Round of 16</option>
-              <option value="quarter_final">Quarter Final</option>
-              <option value="semi_final">Semi Final</option>
-              <option value="final">Final</option>
+              <option value="group">Phase de groupes</option>
+              <option value="round_of_16">Huitièmes de finale</option>
+              <option value="quarter_final">Quarts de finale</option>
+              <option value="semi_final">Demi-finales</option>
+              <option value="final">Finale</option>
             </select>
           </div>
           <div className="flex justify-end gap-2 pt-1">
-            <button type="button" onClick={() => { setCreating(false); reset(); }} className="btn-secondary">Cancel</button>
+            <button type="button" onClick={() => { setCreating(false); reset(); }} className="btn-secondary">Annuler</button>
             <button type="submit" disabled={createMut.isPending} className="btn-primary flex items-center gap-1.5">
-              {createMut.isPending && <Spinner size="sm" />} Create Match
+              {createMut.isPending && <Spinner size="sm" />} Créer
             </button>
           </div>
         </form>

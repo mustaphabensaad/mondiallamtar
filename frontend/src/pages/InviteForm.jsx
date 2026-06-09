@@ -16,6 +16,7 @@ const schema = z.object({
   position:      z.enum(['GK', 'DEF', 'MID', 'FWD']),
   jersey_number: z.coerce.number().int().min(1).max(99),
   phone:         z.string().optional(),
+  bio:           z.string().max(500).optional(),
 });
 
 export default function InviteForm() {
@@ -137,6 +138,20 @@ export default function InviteForm() {
           <div>
             <label className="block text-xs font-semibold mb-1">Phone (optional)</label>
             <input {...register('phone')} type="tel" className="input w-full" />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold mb-1">
+              Expérience / Bio <span className="text-gray-400 font-normal">(optionnel)</span>
+            </label>
+            <textarea
+              {...register('bio')}
+              rows={3}
+              maxLength={500}
+              placeholder="Ex: Joueur depuis 8 ans, ex-capitaine de l'équipe du lycée Ibn Khaldoun, spécialiste des coups francs..."
+              className="input w-full resize-none text-sm"
+            />
+            <p className="text-xs text-gray-400 mt-1">Clubs précédents, années de pratique, spécialité… max 500 caractères.</p>
           </div>
 
           <button

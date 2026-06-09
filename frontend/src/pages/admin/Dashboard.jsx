@@ -25,6 +25,7 @@ const NAV_ITEMS = [
   { to: '/admin/draw/schedule', icon: '📅', label: 'Programmer',    primary: false },
   { to: '/admin/players',       icon: '👥', label: 'Joueurs',       primary: false },
   { to: '/admin/referees',      icon: '🟡', label: 'Arbitres',      primary: false },
+  { to: '/admin/sponsors',      icon: '🤝', label: 'Sponsors',      primary: false },
   { to: '/admin/tournament',    icon: '⚙️', label: 'Tournoi',       primary: false },
   { to: '/admin/reports',       icon: '📊', label: 'Rapports',      primary: false },
 ];

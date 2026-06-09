@@ -35,6 +35,8 @@ export const teamService = {
 };
 
 export const playerService = {
+  getAll:        ()         => api.get('/api/players').then(r => r.data.players),
+  getById:       (id)       => api.get(`/api/players/${id}`).then(r => r.data.player),
   getTopScorers: (limit=10) => api.get('/api/players/top-scorers', { params:{limit} }).then(r => r.data.scorers),
   getInvite:     (token)    => api.get(`/api/players/invite/${token}`).then(r => r.data.player),
   submitInvite:  (token, d) => api.post(`/api/players/invite/${token}`, d).then(r => r.data),
@@ -52,6 +54,13 @@ export const refereeService = {
   create:  (data)   => api.post('/api/referees', data).then(r => r.data.referee),
   update:  (id,d)   => api.put(`/api/referees/${id}`, d).then(r => r.data.referee),
   remove:  (id)     => api.delete(`/api/referees/${id}`).then(r => r.data),
+};
+
+export const sponsorService = {
+  getAll:  ()       => api.get('/api/sponsors/all').then(r => r.data.sponsors),
+  create:  (data)   => api.post('/api/sponsors', data).then(r => r.data.sponsor),
+  update:  (id,d)   => api.put(`/api/sponsors/${id}`, d).then(r => r.data.sponsor),
+  remove:  (id)     => api.delete(`/api/sponsors/${id}`).then(r => r.data),
 };
 
 export const drawService = {

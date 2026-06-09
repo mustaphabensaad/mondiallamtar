@@ -41,7 +41,7 @@ async function getInviteInfo(req, res, next) {
 
 async function submitInviteForm(req, res, next) {
   try {
-    const { first_name, last_name, date_of_birth, phone, jersey_number, position } = req.body;
+    const { first_name, last_name, date_of_birth, phone, jersey_number, position, bio } = req.body;
     const [rows] = await db.query(
       'SELECT * FROM players WHERE invite_token = ?',
       [req.params.token]
@@ -51,16 +51,16 @@ async function submitInviteForm(req, res, next) {
     if (player.token_used && player.first_name) {
       return res.status(409).json({ message: 'Already submitted' });
     }
-    const photo_path = req.file ? `/uploads/players/${req.file.filename}` : null;
+    const photo_path = req.file ? `uploads/players/${req.file.filename}` : null;
     await db.query(
       `UPDATE players SET
          first_name = ?, last_name = ?, date_of_birth = ?, phone = ?,
-         jersey_number = ?, position = ?, token_used = TRUE
+         jersey_number = ?, position = ?, bio = ?, token_used = TRUE
          ${photo_path ? ', photo_path = ?' : ''}
        WHERE id = ?`,
       photo_path
-        ? [first_name, last_name, date_of_birth || null, phone, jersey_number, position, photo_path, player.id]
-        : [first_name, last_name, date_of_birth || null, phone, jersey_number, position, player.id]
+        ? [first_name, last_name, date_of_birth || null, phone, jersey_number, position, bio || null, photo_path, player.id]
+        : [first_name, last_name, date_of_birth || null, phone, jersey_number, position, bio || null, player.id]
     );
     res.json({ message: 'Profile submitted successfully' });
   } catch (err) {
@@ -68,4 +68,36 @@ async function submitInviteForm(req, res, next) {
   }
 }
 
-module.exports = { getTopScorers, getInviteInfo, submitInviteForm };
+async function getPlayerById(req, res, next) {
+  try {
+    const [rows] = await db.query(
+      `SELECT p.*, t.id AS team_id, t.name AS team_name, t.logo_path AS team_logo
+       FROM players p
+       JOIN teams t ON t.id = p.team_id
+       WHERE p.id = ?`,
+      [req.params.id]
+    );
+    if (!rows.length) return res.status(404).json({ message: 'Player not found' });
+    res.json({ player: rows[0] });
+  } catch (err) { next(err); }
+}
+
+async function getAllPlayers(req, res, next) {
+  try {
+    const [rows] = await db.query(
+      `SELECT p.id, p.first_name, p.last_name, p.photo_path, p.jersey_number,
+              p.position, p.goals, p.yellow_cards, p.red_cards, p.is_validated,
+              p.status, p.bio, p.date_of_birth,
+              t.id AS team_id, t.name AS team_name, t.logo_path AS team_logo
+       FROM players p
+       JOIN teams t ON t.id = p.team_id
+       WHERE p.first_name IS NOT NULL
+       ORDER BY p.goals DESC, p.first_name ASC`
+    );
+    res.json({ players: rows });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getTopScorers, getInviteInfo, submitInviteForm, getAllPlayers, getPlayerById };

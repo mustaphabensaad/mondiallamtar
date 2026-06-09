@@ -1,16 +1,19 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { teamService } from '../../services/tournament.service';
+import { teamService, matchService } from '../../services/tournament.service';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
+import EmptyState from '../../components/ui/EmptyState';
 import MatchCard from '../../components/match/MatchCard';
-import { matchService } from '../../services/tournament.service';
+import PlayerModal from '../../components/ui/PlayerModal';
 
 const POSITION_ORDER = { GK: 0, DEF: 1, MID: 2, FWD: 3 };
 
 export default function MyTeam() {
   const { t } = useTranslation();
+  const [selectedPlayerId, setSelectedPlayerId] = useState(null);
 
   const { data: myTeam, isLoading } = useQuery({
     queryKey: ['my-team'],
@@ -34,9 +37,21 @@ export default function MyTeam() {
   if (isLoading) return <div className="flex justify-center py-24"><Spinner size="lg" /></div>;
 
   if (!myTeam?.team) return (
-    <div className="max-w-xl mx-auto px-4 py-8 text-center">
-      <p className="text-gray-500 mb-4">You haven't created a team yet.</p>
-      <Link to="/captain/team" className="btn-primary inline-block">Create Team</Link>
+    <div className="max-w-lg mx-auto px-4 py-16">
+      <div className="card">
+        <EmptyState
+          icon="🏟️"
+          title="Pas encore d'équipe"
+          subtitle="Créez votre équipe pour participer au Mundial Lamtar 2026 et inviter vos joueurs."
+          color="green"
+          size="lg"
+          action={
+            <Link to="/captain/team" className="btn-primary inline-flex items-center gap-2">
+              <span>+</span> Créer mon équipe
+            </Link>
+          }
+        />
+      </div>
     </div>
   );
 
@@ -50,6 +65,7 @@ export default function MyTeam() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      {selectedPlayerId && <PlayerModal playerId={selectedPlayerId} onClose={() => setSelectedPlayerId(null)} />}
       <Link to="/captain/dashboard" className="text-sm text-primary hover:underline mb-4 inline-block">← {t('nav.dashboard')}</Link>
 
       {/* Header */}
@@ -87,14 +103,22 @@ export default function MyTeam() {
           {pLoading ? (
             <div className="flex justify-center py-10"><Spinner /></div>
           ) : sorted.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-400 text-sm">No players yet.</p>
-              <Link to="/captain/invites" className="btn-primary mt-3 inline-block text-xs">Generate Invite Links</Link>
-            </div>
+            <EmptyState
+              icon="👥"
+              title="Aucun joueur pour l'instant"
+              subtitle="Invitez vos joueurs via des liens uniques pour compléter votre effectif."
+              color="blue"
+              size="md"
+              action={
+                <Link to="/captain/invites" className="btn-primary text-sm py-2 px-4 inline-flex items-center gap-1.5">
+                  <span>🔗</span> Générer des invitations
+                </Link>
+              }
+            />
           ) : (
             <div className="divide-y divide-border-light dark:divide-border-dark">
               {sorted.map(p => (
-                <div key={p.id} className="flex items-center gap-3 px-4 py-3">
+                <div key={p.id} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/30 cursor-pointer transition-colors" onClick={() => setSelectedPlayerId(p.id)}>
                   <span className="w-7 text-center text-xs font-bold text-gray-400 shrink-0">{p.jersey_number ?? '—'}</span>
                   <img
                     src={p.photo_path || `https://placehold.co/40x40/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
@@ -123,7 +147,13 @@ export default function MyTeam() {
           {mLoading ? (
             <div className="flex justify-center py-6"><Spinner /></div>
           ) : matches.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center py-6">{t('common.no_data')}</p>
+            <EmptyState
+              icon="⚽"
+              title="Pas encore de matchs"
+              subtitle="Vos matchs apparaîtront ici après le tirage au sort."
+              color="gray"
+              size="sm"
+            />
           ) : (
             <div className="flex flex-col gap-3">
               {matches.map(m => <MatchCard key={m.id} match={m} compact />)}

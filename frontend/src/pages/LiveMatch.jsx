@@ -1,9 +1,37 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { matchService } from '../services/tournament.service';
 import { useSocket } from '../hooks/useSocket';
 import Spinner from '../components/ui/Spinner';
+
+function LiveTimer({ startedAt }) {
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!startedAt) return;
+    const start = new Date(startedAt).getTime();
+
+    function tick() {
+      const elapsed = Math.max(0, Date.now() - start);
+      setMinutes(Math.floor(elapsed / 60000));
+      setSeconds(Math.floor((elapsed % 60000) / 1000));
+    }
+
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [startedAt]);
+
+  return (
+    <span className="inline-flex items-center gap-1.5 text-sm font-black text-red-400 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-full tabular-nums">
+      <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse shrink-0" />
+      {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+    </span>
+  );
+}
 
 function LiveMatchCard({ match }) {
   const { t } = useTranslation();
@@ -23,12 +51,13 @@ function LiveMatchCard({ match }) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(239,68,68,0.05),transparent_60%)] pointer-events-none" />
 
       <div className="relative p-6 sm:p-8">
-        {/* Live badge */}
-        <div className="flex justify-center mb-6">
+        {/* Live badge + timer */}
+        <div className="flex justify-center items-center gap-2 mb-6">
           <span className="live-badge text-sm px-4 py-1.5">
             <span className="w-2 h-2 rounded-full bg-white inline-block" />
             {t('match.live')}
           </span>
+          <LiveTimer startedAt={match.started_at} />
         </div>
 
         {/* Teams + Score */}
