@@ -44,7 +44,7 @@ export default function Modal({ open, isOpen, onClose, title, children, size = '
         )}
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto max-h-[80vh]">
           {children}
         </div>
       </div>

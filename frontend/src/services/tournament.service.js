@@ -54,6 +54,15 @@ export const refereeService = {
   remove:  (id)     => api.delete(`/api/referees/${id}`).then(r => r.data),
 };
 
+export const drawService = {
+  getState:  ()                    => api.get('/api/draw').then(r => r.data),
+  init:      ()                    => api.post('/api/draw/init').then(r => r.data),
+  assign:    (teamId, groupLetter) => api.put('/api/draw/assign', { teamId, groupLetter }).then(r => r.data),
+  unassign:  (teamId)              => api.put('/api/draw/assign', { teamId, groupLetter: null }).then(r => r.data),
+  finalize:  ()                    => api.post('/api/draw/finalize').then(r => r.data),
+  reset:     ()                    => api.post('/api/draw/reset').then(r => r.data),
+};
+
 export const adminService = {
   getDashboard:        ()       => api.get('/api/admin/dashboard').then(r => r.data.stats),
   getPending:          ()       => api.get('/api/admin/teams/pending').then(r => r.data.teams),

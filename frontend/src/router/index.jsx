@@ -33,6 +33,9 @@ import PlayersAdmin    from '../pages/admin/PlayersAdmin';
 import RefereesAdmin   from '../pages/admin/RefereesAdmin';
 import TournamentAdmin from '../pages/admin/TournamentAdmin';
 import ReportsAdmin    from '../pages/admin/ReportsAdmin';
+import GroupDrawAdmin  from '../pages/admin/GroupDrawAdmin';
+import GroupSchedule   from '../pages/admin/GroupSchedule';
+import GroupDraw       from '../pages/GroupDraw';
 
 // ── Protected route wrapper ───────────────────────────────────────────────────
 function ProtectedRoute({ children, roles }) {
@@ -57,6 +60,7 @@ export const router = createBrowserRouter([
       { path: 'bracket',         element: <TournamentBracket /> },
       { path: 'live',            element: <LiveMatch /> },
       { path: 'terms',           element: <Terms /> },
+      { path: 'draw',            element: <GroupDraw /> },
 
       // Auth
       { path: 'login',    element: <Login /> },
@@ -123,6 +127,14 @@ export const router = createBrowserRouter([
           {
             path: 'reports',
             element: <ProtectedRoute roles={['admin']}><ReportsAdmin /></ProtectedRoute>,
+          },
+          {
+            path: 'draw',
+            element: <ProtectedRoute roles={['admin']}><GroupDrawAdmin /></ProtectedRoute>,
+          },
+          {
+            path: 'draw/schedule',
+            element: <ProtectedRoute roles={['admin']}><GroupSchedule /></ProtectedRoute>,
           },
         ],
       },

@@ -1,0 +1,48 @@
+# ── Credentials & secrets ────────────────────────────────────────────────────
+credientals.md
+credentials.md
+*.pem
+*.key
+secrets.*
+
+# ── Environment files ─────────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+# Allow the production template (no real values)
+!frontend/.env.production.example
+!backend/.env.example
+
+# ── Dependencies ──────────────────────────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# ── Build output ──────────────────────────────────────────────────────────────
+frontend/dist/
+dist/
+
+# ── Uploads (user-generated content, not source) ──────────────────────────────
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+logs/
+
+# ── OS & editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ── Vite cache ────────────────────────────────────────────────────────────────
+frontend/.vite/
+
+# ── Explicitly keep ───────────────────────────────────────────────────────────
+!DEPLOYMENT.md
+!CLAUDE.md
+!database/schema.sql

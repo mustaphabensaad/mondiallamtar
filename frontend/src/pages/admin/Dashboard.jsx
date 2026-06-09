@@ -19,12 +19,14 @@ const STAT_CONFIG = [
 ];
 
 const NAV_ITEMS = [
-  { to: '/admin/teams',      icon: '🏟️', label: 'Équipes',       primary: true  },
-  { to: '/admin/matches',    icon: '⚽', label: 'Matchs',        primary: false },
-  { to: '/admin/players',    icon: '👥', label: 'Joueurs',       primary: false },
-  { to: '/admin/referees',   icon: '🟡', label: 'Arbitres',      primary: false },
-  { to: '/admin/tournament', icon: '⚙️', label: 'Tournoi',       primary: false },
-  { to: '/admin/reports',    icon: '📊', label: 'Rapports',      primary: false },
+  { to: '/admin/teams',         icon: '🏟️', label: 'Équipes',       primary: true  },
+  { to: '/admin/draw',          icon: '🎲', label: 'Tirage',        primary: true  },
+  { to: '/admin/matches',       icon: '⚽', label: 'Matchs',        primary: false },
+  { to: '/admin/draw/schedule', icon: '📅', label: 'Programmer',    primary: false },
+  { to: '/admin/players',       icon: '👥', label: 'Joueurs',       primary: false },
+  { to: '/admin/referees',      icon: '🟡', label: 'Arbitres',      primary: false },
+  { to: '/admin/tournament',    icon: '⚙️', label: 'Tournoi',       primary: false },
+  { to: '/admin/reports',       icon: '📊', label: 'Rapports',      primary: false },
 ];
 
 export default function AdminDashboard() {
