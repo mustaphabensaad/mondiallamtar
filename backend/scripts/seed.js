@@ -62,53 +62,53 @@ const PLAYERS_PER_TEAM = [
 
 const ASSOCIATION_IMAGES = [
   {
-    title_fr: 'Bienvenue au Tournoi Shabka 2025',
-    title_ar: 'مرحباً بكم في بطولة شبكة 2025',
-    title_en: 'Welcome to Shabka Tournament 2025',
-    desc_fr:  'Le tournoi annuel de football associatif réunissant 16 équipes.',
-    desc_ar:  'البطولة السنوية لكرة القدم الجمعوية تجمع 16 فريقاً.',
-    desc_en:  'The annual associative football tournament gathering 16 teams.',
-    image:    'https://placehold.co/1200x500/0f172a/22c55e?text=Shabka+Tournament+2025',
+    title_fr: 'مونديال لمطار 2026',
+    title_ar: 'مونديال لمطار 2026',
+    title_en: 'Mundial Lamtar 2026',
+    desc_fr:  'From us to all – Creativity sans limite',
+    desc_ar:  'من عندنا للكل — إبداع بلا حدود',
+    desc_en:  'From us to all – Creativity sans limite',
+    image:    'https://placehold.co/1200x500/0f172a/22c55e?text=Mundial+Lamtar+2026',
     order:    1,
   },
   {
-    title_fr: 'Phase de Groupes en cours',
-    title_ar: 'دور المجموعات جارٍ',
-    title_en: 'Group Stage Underway',
-    desc_fr:  '4 groupes, 16 équipes, les meilleurs avancent.',
-    desc_ar:  '4 مجموعات، 16 فريقاً، الأفضل يتأهل.',
-    desc_en:  '4 groups, 16 teams, the best move on.',
-    image:    'https://placehold.co/1200x500/1e293b/d97706?text=Group+Stage',
+    title_fr: 'طبعة الوفاء 🦅',
+    title_ar: 'طبعة الوفاء 🦅',
+    title_en: 'Wafaa Edition 🦅',
+    desc_fr:  'تُهدى هذه النسخة إلى روح الشهيد الطيار بن نجة يوسف',
+    desc_ar:  'تُهدى هذه النسخة إلى روح الشهيد الطيار بن نجة يوسف',
+    desc_en:  'Dedicated to the memory of martyr pilot Ben Naja Youssef',
+    image:    'https://placehold.co/1200x500/1e293b/d97706?text=Edition+Wafaa',
     order:    2,
   },
   {
-    title_fr: 'Suivez les matchs en direct',
+    title_fr: 'تابع المباريات مباشرة',
     title_ar: 'تابع المباريات مباشرة',
     title_en: 'Watch Matches Live',
-    desc_fr:  'Scores, buts et cartons en temps réel.',
-    desc_ar:  'النتائج والأهداف والبطاقات في الوقت الفعلي.',
-    desc_en:  'Scores, goals and cards in real time.',
+    desc_fr:  'النتائج والأهداف والبطاقات في الوقت الفعلي — الملعب البلدي لمطار',
+    desc_ar:  'النتائج والأهداف والبطاقات في الوقت الفعلي — الملعب البلدي لمطار',
+    desc_en:  'Scores, goals and cards in real time — Municipal Stadium of Lamtar',
     image:    'https://placehold.co/1200x500/16a34a/ffffff?text=Live+Scores',
     order:    3,
   },
   {
-    title_fr: 'Inscrivez votre équipe',
-    title_ar: 'سجّل فريقك',
-    title_en: 'Register Your Team',
-    desc_fr:  'Inscription ouverte aux capitaines d\'équipe.',
-    desc_ar:  'التسجيل مفتوح لقادة الفرق.',
-    desc_en:  'Registration open for team captains.',
+    title_fr: 'سجّل فريقك الآن',
+    title_ar: 'سجّل فريقك الآن',
+    title_en: 'Register Your Team Now',
+    desc_fr:  '8 000 DZD / فريق · 6 لاعبين + 4 احتياط · لباس موحد إجباري',
+    desc_ar:  '8 000 دج / فريق · 6 لاعبين + 4 احتياط · لباس موحد إجباري',
+    desc_en:  '8,000 DZD / team · 6 players + 4 subs · uniform required',
     image:    'https://placehold.co/1200x500/1e40af/ffffff?text=Register+Now',
     order:    4,
   },
   {
-    title_fr: 'Coupe du Monde 2026 — Bientôt',
-    title_ar: 'كأس العالم 2026 — قريباً',
-    title_en: 'World Cup 2026 — Coming Soon',
-    desc_fr:  'Restez connectés pour suivre la Coupe du Monde.',
-    desc_ar:  'ابق متصلاً لمتابعة كأس العالم.',
-    desc_en:  'Stay tuned for World Cup coverage.',
-    image:    'https://placehold.co/1200x500/7c3aed/ffffff?text=World+Cup+2026',
+    title_fr: 'الكابتن 🦊 — شابكة ⚽',
+    title_ar: 'الكابتن 🦊 — شابكة ⚽',
+    title_en: 'El Capitan 🦊 — Chabka ⚽',
+    desc_fr:  'التميمة الرسمية #الكابتن · الكرة الرسمية #شابكة',
+    desc_ar:  'التميمة الرسمية #الكابتن · الكرة الرسمية #شابكة',
+    desc_en:  'Official mascot #ElCapitan · Official ball #Chabka',
+    image:    'https://placehold.co/1200x500/7c3aed/ffffff?text=El+Capitan+x+Chabka',
     order:    5,
   },
 ];
@@ -338,6 +338,20 @@ async function seed() {
   await createFinishedMatch(13, 15, 3, 2, 3, 3, 'D');
 
   console.log('Finished matches + events created');
+
+  // ── Recalculate group standings from finished matches ───────────────────────
+  await db.query('UPDATE group_standings SET played=0,won=0,drawn=0,lost=0,goals_for=0,goals_against=0');
+  const [finishedMatches] = await db.query("SELECT * FROM matches WHERE status='finished' AND phase='group'");
+  for (const m of finishedMatches) {
+    const hs = m.home_score, as_ = m.away_score;
+    await db.query(
+      'UPDATE group_standings SET played=played+1,goals_for=goals_for+?,goals_against=goals_against+?,won=won+?,drawn=drawn+?,lost=lost+? WHERE team_id=? AND group_id=?',
+      [hs,as_,hs>as_?1:0,hs===as_?1:0,hs<as_?1:0,m.home_team_id,m.group_id]);
+    await db.query(
+      'UPDATE group_standings SET played=played+1,goals_for=goals_for+?,goals_against=goals_against+?,won=won+?,drawn=drawn+?,lost=lost+? WHERE team_id=? AND group_id=?',
+      [as_,hs,as_>hs?1:0,as_===hs?1:0,as_<hs?1:0,m.away_team_id,m.group_id]);
+  }
+  console.log('Group standings recalculated');
 
   // ── Live match (A vs B first teams) ─────────────────────────────────────────
   const liveHome = teamIds[0];

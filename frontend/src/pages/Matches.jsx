@@ -5,7 +5,12 @@ import { matchService } from '../services/tournament.service';
 import MatchCard from '../components/match/MatchCard';
 import Spinner from '../components/ui/Spinner';
 
-const FILTERS = ['all', 'live', 'scheduled', 'finished'];
+const FILTERS = [
+  { key: 'all',       label: 'Tous',    icon: '⚽' },
+  { key: 'live',      label: null,      icon: '🔴' },
+  { key: 'scheduled', label: null,      icon: '📅' },
+  { key: 'finished',  label: null,      icon: '✓'  },
+];
 
 export default function Matches() {
   const { t } = useTranslation();
@@ -19,29 +24,45 @@ export default function Matches() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="font-display text-2xl font-bold mb-6">{t('nav.matches')}</h1>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="page-header mb-0">{t('nav.matches')}</h1>
+        {filter === 'live' && matches.length > 0 && (
+          <span className="live-badge">
+            <span className="w-1.5 h-1.5 rounded-full bg-white" />
+            {matches.length} en direct
+          </span>
+        )}
+      </div>
 
       {/* Filter tabs */}
-      <div className="flex gap-2 mb-6 flex-wrap">
-        {FILTERS.map(f => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-colors
-              ${filter === f
-                ? 'bg-primary text-white'
-                : 'bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark hover:border-primary'
-              }`}
-          >
-            {f === 'all' ? t('common.view') + ' all' : t(`match.${f}`)}
-          </button>
-        ))}
+      <div className="flex gap-2 mb-6 p-1 bg-gray-100 dark:bg-gray-800/60 rounded-2xl">
+        {FILTERS.map(f => {
+          const label = f.label || t(`match.${f.key}`);
+          return (
+            <button
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-150
+                ${filter === f.key
+                  ? 'bg-white dark:bg-[#111827] text-gray-900 dark:text-white shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                }`}
+            >
+              <span className="text-base">{f.icon}</span>
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-16"><Spinner size="lg" /></div>
+        <div className="flex justify-center py-20"><Spinner size="lg" /></div>
       ) : matches.length === 0 ? (
-        <p className="text-center text-gray-400 py-16">{t('common.no_data')}</p>
+        <div className="text-center py-20">
+          <p className="text-5xl mb-4">🏟️</p>
+          <p className="text-gray-500 font-semibold">{t('common.no_data')}</p>
+        </div>
       ) : (
         <div className="flex flex-col gap-3">
           {matches.map(m => <MatchCard key={m.id} match={m} />)}

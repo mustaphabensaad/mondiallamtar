@@ -51,12 +51,16 @@ async function submitInviteForm(req, res, next) {
     if (player.token_used && player.first_name) {
       return res.status(409).json({ message: 'Already submitted' });
     }
+    const photo_path = req.file ? `/uploads/players/${req.file.filename}` : null;
     await db.query(
       `UPDATE players SET
          first_name = ?, last_name = ?, date_of_birth = ?, phone = ?,
          jersey_number = ?, position = ?, token_used = TRUE
+         ${photo_path ? ', photo_path = ?' : ''}
        WHERE id = ?`,
-      [first_name, last_name, date_of_birth || null, phone, jersey_number, position, player.id]
+      photo_path
+        ? [first_name, last_name, date_of_birth || null, phone, jersey_number, position, photo_path, player.id]
+        : [first_name, last_name, date_of_birth || null, phone, jersey_number, position, player.id]
     );
     res.json({ message: 'Profile submitted successfully' });
   } catch (err) {

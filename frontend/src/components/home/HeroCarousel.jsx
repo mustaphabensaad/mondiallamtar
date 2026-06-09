@@ -21,9 +21,16 @@ export default function HeroCarousel() {
 
   if (images.length === 0) {
     return (
-      <div className="card overflow-hidden h-52 sm:h-72 bg-gradient-to-r from-primary/20 to-secondary/20
-                      flex items-center justify-center text-gray-400 text-sm">
-        Loading carousel...
+      <div className="card overflow-hidden h-52 sm:h-72 bg-gradient-to-br from-primary/20 via-secondary/10 to-primary/5 flex flex-col items-center justify-center text-center px-6">
+        <p className="text-5xl mb-3">🏆</p>
+        <h2 className="font-display font-black text-2xl sm:text-3xl text-gray-900 dark:text-white leading-tight mb-1">
+          مونديال لمطار 2026
+        </h2>
+        <p className="text-primary font-bold text-sm sm:text-base mb-1">#مونديال_لمطار_2026</p>
+        <p className="text-gray-500 dark:text-gray-400 text-xs italic">From us to all – Creativity sans limite</p>
+        <div className="mt-3 px-3 py-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-xl text-xs text-amber-800 dark:text-amber-300">
+          🦅 طبعة الوفاء — إلى روح الشهيد الطيار بن نجة يوسف
+        </div>
       </div>
     );
   }

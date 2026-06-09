@@ -1,19 +1,40 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { useAuthStore } from '../store/auth.store';
-import ComingSoon from '../pages/ComingSoon';
 
-// ── Implemented pages ─────────────────────────────────────────────────────────
-import Home       from '../pages/Home';
-import Teams      from '../pages/Teams';
-import Matches    from '../pages/Matches';
-import Standings  from '../pages/Standings';
-import Login      from '../pages/auth/Login';
-import Register   from '../pages/auth/Register';
+// ── Public pages ───────────────────────────────────────────────────────────────
+import Home              from '../pages/Home';
+import Teams             from '../pages/Teams';
+import TeamDetail        from '../pages/TeamDetail';
+import Matches           from '../pages/Matches';
+import MatchDetail       from '../pages/MatchDetail';
+import Standings         from '../pages/Standings';
+import TournamentBracket from '../pages/TournamentBracket';
+import LiveMatch         from '../pages/LiveMatch';
+import Terms             from '../pages/Terms';
+import InviteForm        from '../pages/InviteForm';
+
+// ── Auth pages ─────────────────────────────────────────────────────────────────
+import Login    from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
+
+// ── Captain pages ──────────────────────────────────────────────────────────────
 import CaptainDashboard from '../pages/captain/Dashboard';
-import AdminDashboard   from '../pages/admin/Dashboard';
+import TeamSetup        from '../pages/captain/TeamSetup';
+import PlayerInvites    from '../pages/captain/PlayerInvites';
+import Payment          from '../pages/captain/Payment';
+import MyTeam           from '../pages/captain/MyTeam';
 
-// ─── Protected route wrapper ──────────────────────────────────────────────────
+// ── Admin pages ────────────────────────────────────────────────────────────────
+import AdminDashboard  from '../pages/admin/Dashboard';
+import TeamsAdmin      from '../pages/admin/TeamsAdmin';
+import MatchesAdmin    from '../pages/admin/MatchesAdmin';
+import PlayersAdmin    from '../pages/admin/PlayersAdmin';
+import RefereesAdmin   from '../pages/admin/RefereesAdmin';
+import TournamentAdmin from '../pages/admin/TournamentAdmin';
+import ReportsAdmin    from '../pages/admin/ReportsAdmin';
+
+// ── Protected route wrapper ───────────────────────────────────────────────────
 function ProtectedRoute({ children, roles }) {
   const { user } = useAuthStore();
   if (!user) return <Navigate to="/login" replace />;
@@ -27,20 +48,22 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       // Public
-      { index: true,     element: <Home /> },
-      { path: 'teams',   element: <Teams /> },
-      { path: 'matches', element: <Matches /> },
-      { path: 'standings', element: <Standings /> },
-      { path: 'bracket', element: <ComingSoon title="Tournament Bracket" /> },
-      { path: 'live',    element: <ComingSoon title="Live Match" /> },
-      { path: 'terms',   element: <ComingSoon title="Terms & Conditions" /> },
+      { index: true,             element: <Home /> },
+      { path: 'teams',           element: <Teams /> },
+      { path: 'teams/:id',       element: <TeamDetail /> },
+      { path: 'matches',         element: <Matches /> },
+      { path: 'matches/:id',     element: <MatchDetail /> },
+      { path: 'standings',       element: <Standings /> },
+      { path: 'bracket',         element: <TournamentBracket /> },
+      { path: 'live',            element: <LiveMatch /> },
+      { path: 'terms',           element: <Terms /> },
 
       // Auth
       { path: 'login',    element: <Login /> },
       { path: 'register', element: <Register /> },
 
-      // Player invite (public token link) — Phase 2
-      { path: 'join/:token', element: <ComingSoon title="Player Registration" /> },
+      // Player invite (public token link)
+      { path: 'join/:token', element: <InviteForm /> },
 
       // Captain — protected
       {
@@ -52,19 +75,19 @@ export const router = createBrowserRouter([
           },
           {
             path: 'team',
-            element: <ProtectedRoute roles={['captain']}><ComingSoon title="Team Setup" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['captain']}><TeamSetup /></ProtectedRoute>,
           },
           {
             path: 'invites',
-            element: <ProtectedRoute roles={['captain']}><ComingSoon title="Player Invites" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['captain']}><PlayerInvites /></ProtectedRoute>,
           },
           {
             path: 'payment',
-            element: <ProtectedRoute roles={['captain']}><ComingSoon title="Payment" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['captain']}><Payment /></ProtectedRoute>,
           },
           {
             path: 'my-team',
-            element: <ProtectedRoute roles={['captain']}><ComingSoon title="My Team" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['captain']}><MyTeam /></ProtectedRoute>,
           },
         ],
       },
@@ -79,27 +102,27 @@ export const router = createBrowserRouter([
           },
           {
             path: 'teams',
-            element: <ProtectedRoute roles={['admin']}><ComingSoon title="Teams Management" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['admin']}><TeamsAdmin /></ProtectedRoute>,
           },
           {
             path: 'matches',
-            element: <ProtectedRoute roles={['admin']}><ComingSoon title="Matches Management" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['admin']}><MatchesAdmin /></ProtectedRoute>,
           },
           {
             path: 'players',
-            element: <ProtectedRoute roles={['admin']}><ComingSoon title="Players Management" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['admin']}><PlayersAdmin /></ProtectedRoute>,
           },
           {
             path: 'referees',
-            element: <ProtectedRoute roles={['admin']}><ComingSoon title="Referees Management" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['admin']}><RefereesAdmin /></ProtectedRoute>,
           },
           {
             path: 'tournament',
-            element: <ProtectedRoute roles={['admin']}><ComingSoon title="Tournament Settings" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['admin']}><TournamentAdmin /></ProtectedRoute>,
           },
           {
             path: 'reports',
-            element: <ProtectedRoute roles={['admin']}><ComingSoon title="Reports" /></ProtectedRoute>,
+            element: <ProtectedRoute roles={['admin']}><ReportsAdmin /></ProtectedRoute>,
           },
         ],
       },

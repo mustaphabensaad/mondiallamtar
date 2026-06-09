@@ -36,6 +36,9 @@ app.use('/api/matches',     require('./routes/match.routes'));
 app.use('/api/groups',      require('./routes/group.routes'));
 app.use('/api/sponsors',    require('./routes/sponsor.routes'));
 app.use('/api/admin',       require('./routes/admin.routes'));
+app.use('/api/payment',     require('./routes/payment.routes'));
+app.use('/api/referees',    require('./routes/referee.routes'));
+app.use('/api/knockout',    require('./routes/knockout.routes'));
 app.use('/api/association-images', require('./routes/association.routes'));
 
 // ─── Health check ─────────────────────────────────────────────────────────────
