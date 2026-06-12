@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { matchService, refereeService, tournamentService } from '../../services/tournament.service';
+import { matchService, refereeService, tournamentService, groupService } from '../../services/tournament.service';
 import Spinner from '../../components/ui/Spinner';
 import Button from '../../components/ui/Button';
 
@@ -86,6 +86,21 @@ export default function GroupSchedule() {
     }
   };
 
+  const [generating, setGenerating] = useState(false);
+  const handleGenerateSchedules = async () => {
+    if (!confirm('Générer les matchs de groupes (rotation équitable : J1: 1v3,2v4 | J2: 1v4,2v3 | J3: 1v2,3v4) ?\nLes matchs déjà programmés non démarrés seront remplacés.')) return;
+    setGenerating(true);
+    try {
+      const res = await groupService.generateSchedules();
+      toast.success(`${res.created} matchs générés ✓`);
+      qc.invalidateQueries(['group-matches-schedule']);
+    } catch (e) {
+      toast.error(e?.response?.data?.message || 'Erreur lors de la génération');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   if (matchesLoading) return <div className="flex justify-center py-20"><Spinner size="lg" /></div>;
 
   return (
@@ -99,14 +114,24 @@ export default function GroupSchedule() {
           <h1 className="text-2xl font-black text-gray-900 dark:text-white">Programmer les matchs de groupes</h1>
           <p className="text-gray-500 text-sm mt-0.5">Définissez l'heure et l'arbitre — les équipes sont déjà fixées</p>
         </div>
-        <div className="text-right">
-          <p className="text-2xl font-black text-gray-900 dark:text-white">{scheduled}/{total}</p>
-          <p className="text-xs text-gray-500">matchs programmés</p>
-          <div className="h-1.5 w-32 bg-gray-100 dark:bg-gray-800 rounded-full mt-2 overflow-hidden">
-            <div
-              className="h-full bg-primary rounded-full transition-all duration-500"
-              style={{ width: total ? `${(scheduled / total) * 100}%` : '0%' }}
-            />
+        <div className="flex flex-col items-end gap-3">
+          <button
+            onClick={handleGenerateSchedules}
+            disabled={generating}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white text-sm font-bold shadow-md transition-colors"
+          >
+            {generating ? <Spinner size="sm" /> : '⚽'}
+            Générer les matchs (rotation équitable)
+          </button>
+          <div className="text-right">
+            <p className="text-2xl font-black text-gray-900 dark:text-white">{scheduled}/{total}</p>
+            <p className="text-xs text-gray-500">matchs programmés</p>
+            <div className="h-1.5 w-32 bg-gray-100 dark:bg-gray-800 rounded-full mt-2 overflow-hidden">
+              <div
+                className="h-full bg-primary rounded-full transition-all duration-500"
+                style={{ width: total ? `${(scheduled / total) * 100}%` : '0%' }}
+              />
+            </div>
           </div>
         </div>
       </div>

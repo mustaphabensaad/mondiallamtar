@@ -33,14 +33,25 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#0a0f1e]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#0a0f1e]/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'url(/bg.png)',
+          backgroundRepeat: 'repeat',
+          backgroundSize: '300px',
+          opacity: 0.06,
+        }}
+      />
+      <div className="relative max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
 
         {/* ── Logo ── */}
         <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-green-400 flex items-center justify-center text-white font-black text-sm shadow-sm group-hover:scale-105 group-hover:shadow-md group-hover:shadow-primary/30 transition-all duration-200">
-            M
-          </div>
+          <img
+            src="/logo.png"
+            alt="Mundial Lamtar 2026"
+            className="w-9 h-9 rounded-xl object-cover shadow-sm group-hover:scale-105 group-hover:shadow-md transition-all duration-200"
+          />
           <div className="leading-tight">
             <span className="text-[17px] font-black font-display text-gray-900 dark:text-white">Mundial</span>
             <span className="hidden sm:inline text-[11px] font-bold text-gray-400 ml-1.5 uppercase tracking-widest">
@@ -138,7 +149,7 @@ export default function Navbar() {
 
       {/* ── Mobile menu ── */}
       {menuOpen && (
-        <nav className="lg:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-[#0a0f1e] px-3 py-3 flex flex-col gap-0.5 animate-float-up">
+        <nav className="lg:hidden relative border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-[#0a0f1e] px-3 py-3 flex flex-col gap-0.5 animate-float-up">
           {navLinks.map(({ to, label, icon, live }) => (
             <Link
               key={to}

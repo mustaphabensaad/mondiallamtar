@@ -42,7 +42,7 @@ export default function HeroCarousel() {
         <div className="absolute top-4 right-6 w-20 h-20 rounded-full bg-primary/10 blur-2xl" />
         <div className="absolute bottom-4 left-6 w-24 h-24 rounded-full bg-secondary/10 blur-2xl" />
 
-        <p className="text-5xl mb-3 relative">🏆</p>
+        <img src="/logo.png" alt="Mundial Lamtar 2026" className="w-24 h-24 rounded-2xl object-cover mx-auto mb-3 relative shadow-xl" />
         <h2 className="relative font-display font-black text-2xl sm:text-3xl text-white leading-tight mb-1">
           مونديال لمطار 2026
         </h2>

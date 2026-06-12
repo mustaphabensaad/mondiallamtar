@@ -11,14 +11,14 @@ const app    = express();
 const server = http.createServer(app);
 const io     = new Server(server, {
   cors: {
-    origin:  process.env.FRONTEND_URL || 'http://localhost:5174',
+    origin:  process.env.FRONTEND_URL || 'http://localhost:5173',
     methods: ['GET', 'POST'],
   },
 });
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(helmet());
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5174' }));
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

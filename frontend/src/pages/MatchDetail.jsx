@@ -35,14 +35,14 @@ function LiveTimer({ startedAt }) {
 }
 
 const EVENT_META = {
-  goal:             { icon: '⚽', label: 'But',            color: 'text-green-500'  },
-  own_goal:         { icon: '⚽', label: 'Csc',            color: 'text-red-400'    },
-  penalty_scored:   { icon: '⚽', label: 'Penalty',        color: 'text-green-500'  },
-  penalty_missed:   { icon: '✗',  label: 'Penalty raté',   color: 'text-red-400'    },
-  yellow_card:      { icon: '🟨', label: 'Avertissement',  color: 'text-yellow-500' },
-  red_card:         { icon: '🟥', label: 'Expulsion',      color: 'text-red-500'    },
-  substitution_in:  { icon: '↑',  label: 'Entrée',         color: 'text-blue-400'   },
-  substitution_out: { icon: '↓',  label: 'Sortie',         color: 'text-orange-400' },
+  goal:             { icon: '⚽', labelKey: 'match.goal',          color: 'text-green-500'  },
+  own_goal:         { icon: '⚽', labelKey: 'match.own_goal',       color: 'text-red-400'    },
+  penalty_scored:   { icon: '⚽', labelKey: 'match.penalty',        color: 'text-green-500'  },
+  penalty_missed:   { icon: '✗',  labelKey: 'match.penalty_missed', color: 'text-red-400'    },
+  yellow_card:      { icon: '🟨', labelKey: 'match.warning',        color: 'text-yellow-500' },
+  red_card:         { icon: '🟥', labelKey: 'match.expulsion',      color: 'text-red-500'    },
+  substitution_in:  { icon: '↑',  labelKey: 'match.sub_in',         color: 'text-blue-400'   },
+  substitution_out: { icon: '↓',  labelKey: 'match.sub_out',        color: 'text-orange-400' },
 };
 
 export default function MatchDetail() {
@@ -66,7 +66,7 @@ export default function MatchDetail() {
   if (!data?.match) return (
     <div className="text-center py-24">
       <p className="text-4xl mb-3">🔍</p>
-      <p className="text-gray-500">Match introuvable</p>
+      <p className="text-gray-500">{t('match.not_found')}</p>
     </div>
   );
 
@@ -181,20 +181,20 @@ export default function MatchDetail() {
         <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111827] shadow-sm">
           <div className="px-5 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center gap-2 bg-gray-50 dark:bg-gray-800/40">
             <span className="text-base">📋</span>
-            <h2 className="font-display font-bold text-sm text-gray-900 dark:text-white">Événements du match</h2>
-            <span className="ml-auto text-xs text-gray-400">{events.length} événements</span>
+            <h2 className="font-display font-bold text-sm text-gray-900 dark:text-white">{t('match.events_title')}</h2>
+            <span className="ml-auto text-xs text-gray-400">{events.length} {t('match.events_count')}</span>
           </div>
           <div className="divide-y divide-gray-50 dark:divide-gray-800">
             {events.map(ev => {
               const isHome = ev.team_id === match.home_team_id;
-              const meta   = EVENT_META[ev.event_type] || { icon: '•', label: ev.event_type, color: 'text-gray-400' };
+              const meta   = EVENT_META[ev.event_type] || { icon: '•', labelKey: null, color: 'text-gray-400' };
               return (
                 <div key={ev.id} className={`flex items-center gap-3 px-5 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors ${!isHome ? 'flex-row-reverse' : ''}`}>
                   <span className={`text-lg w-7 text-center shrink-0 ${meta.color}`}>{meta.icon}</span>
                   <span className="text-xs font-black text-gray-400 w-8 text-center shrink-0 tabular-nums">{ev.minute}'</span>
                   <div className={`flex-1 ${!isHome ? 'text-right' : ''}`}>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">{ev.player_name}</p>
-                    <p className={`text-xs ${meta.color} font-medium`}>{meta.label}</p>
+                    <p className={`text-xs ${meta.color} font-medium`}>{meta.labelKey ? t(meta.labelKey) : ev.event_type}</p>
                   </div>
                 </div>
               );

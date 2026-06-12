@@ -63,6 +63,10 @@ export const sponsorService = {
   remove:  (id)     => api.delete(`/api/sponsors/${id}`).then(r => r.data),
 };
 
+export const groupService = {
+  generateSchedules: () => api.post('/api/groups/generate-schedules').then(r => r.data),
+};
+
 export const drawService = {
   getState:  ()                    => api.get('/api/draw').then(r => r.data),
   init:      ()                    => api.post('/api/draw/init').then(r => r.data),

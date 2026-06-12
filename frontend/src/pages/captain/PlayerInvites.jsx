@@ -43,13 +43,13 @@ export default function PlayerInvites() {
       <div className="card">
         <EmptyState
           icon="🏟️"
-          title="Équipe requise"
-          subtitle="Vous devez d'abord créer votre équipe avant de pouvoir inviter des joueurs."
+          title={t('invites.team_required')}
+          subtitle={t('invites.team_required_sub')}
           color="green"
           size="lg"
           action={
             <Link to="/captain/team" className="btn-primary inline-flex items-center gap-2">
-              <span>+</span> Créer mon équipe
+              <span>+</span> {t('captain.create_team')}
             </Link>
           }
         />
@@ -61,11 +61,11 @@ export default function PlayerInvites() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Link to="/captain/dashboard" className="text-sm text-primary hover:underline mb-4 inline-block">← {t('nav.dashboard')}</Link>
 
-      <h1 className="font-display text-2xl font-bold mb-6">Player Invitations</h1>
+      <h1 className="font-display text-2xl font-bold mb-6">{t('invites.title')}</h1>
 
       {/* Generate section */}
       <div className="card p-5 mb-6">
-        <h2 className="font-display font-bold mb-3">Generate New Links</h2>
+        <h2 className="font-display font-bold mb-3">{t('invites.generate_title')}</h2>
         <div className="flex items-center gap-3">
           <input
             type="number"
@@ -81,25 +81,25 @@ export default function PlayerInvites() {
             className="btn-primary flex items-center gap-2"
           >
             {genMut.isPending && <Spinner size="sm" />}
-            Generate
+            {t('invites.generate_btn')}
           </button>
         </div>
-        <p className="text-xs text-gray-400 mt-2">Each link can be used by one player to complete their registration.</p>
+        <p className="text-xs text-gray-400 mt-2">{t('invites.generate_info')}</p>
       </div>
 
       {/* Newly generated links */}
       {newLinks.length > 0 && (
         <div className="card p-5 mb-6 border-2 border-primary/30">
-          <h2 className="font-display font-bold mb-3 text-primary">New Links — Copy &amp; Send to Players</h2>
+          <h2 className="font-display font-bold mb-3 text-primary">{t('invites.new_links_title')}</h2>
           <div className="flex flex-col gap-2">
             {newLinks.map((link, i) => (
               <div key={i} className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg px-3 py-2">
                 <span className="flex-1 text-xs font-mono truncate text-primary">{link}</span>
                 <button
-                  onClick={() => { navigator.clipboard.writeText(link); toast.success('Copied!'); }}
+                  onClick={() => { navigator.clipboard.writeText(link); toast.success(t('invites.copied')); }}
                   className="text-xs btn-secondary px-2 py-1"
                 >
-                  Copy
+                  {t('invites.copy')}
                 </button>
               </div>
             ))}
@@ -110,15 +110,15 @@ export default function PlayerInvites() {
       {/* Existing invites */}
       <div className="card overflow-hidden">
         <div className="px-4 py-3 border-b border-border-light dark:border-border-dark">
-          <h2 className="font-display font-bold">All Invitations</h2>
+          <h2 className="font-display font-bold">{t('invites.all_title')}</h2>
         </div>
         {invLoading ? (
           <div className="flex justify-center py-8"><Spinner /></div>
         ) : invites.length === 0 ? (
           <EmptyState
             icon="🔗"
-            title="Aucune invitation envoyée"
-            subtitle="Générez des liens d'invitation ci-dessus et envoyez-les à vos joueurs pour qu'ils s'inscrivent."
+            title={t('invites.none_title')}
+            subtitle={t('invites.none_sub')}
             color="blue"
             size="md"
           />
@@ -138,7 +138,7 @@ export default function PlayerInvites() {
                       <p className="text-xs text-gray-500">#{p.jersey_number} · {p.position}</p>
                     </>
                   ) : (
-                    <p className="text-gray-400 text-sm italic">Pending registration</p>
+                    <p className="text-gray-400 text-sm italic">{t('invites.pending_reg')}</p>
                   )}
                 </div>
                 <Badge variant={p.validation_status}>{p.validation_status}</Badge>

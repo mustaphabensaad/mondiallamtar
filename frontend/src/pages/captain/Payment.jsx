@@ -8,9 +8,9 @@ import Spinner from '../../components/ui/Spinner';
 import toast from 'react-hot-toast';
 
 const STATUS_INFO = {
-  unpaid:          { label: 'Not Paid',         color: 'text-red-500',    bg: 'bg-red-50 dark:bg-red-900/20' },
-  pending_review:  { label: 'Under Review',     color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-900/20' },
-  paid:            { label: 'Confirmed',         color: 'text-green-600',  bg: 'bg-green-50 dark:bg-green-900/20' },
+  unpaid:          { labelKey: 'payment.not_paid_label',    color: 'text-red-500',    bg: 'bg-red-50 dark:bg-red-900/20' },
+  pending_review:  { labelKey: 'payment.under_review_label', color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-900/20' },
+  paid:            { labelKey: 'payment.confirmed_label',   color: 'text-green-600',  bg: 'bg-green-50 dark:bg-green-900/20' },
 };
 
 export default function Payment() {
@@ -35,7 +35,7 @@ export default function Payment() {
       qc.invalidateQueries(['payment-status']);
       setFile(null);
       setPreview(null);
-      toast.success('Payment proof uploaded! Awaiting confirmation.');
+      toast.success(t('payment.uploaded_toast'));
     },
     onError: (e) => toast.error(e?.response?.data?.message || 'Upload failed'),
   });
@@ -57,7 +57,7 @@ export default function Payment() {
     <div className="max-w-lg mx-auto px-4 py-8">
       <Link to="/captain/dashboard" className="text-sm text-primary hover:underline mb-4 inline-block">← {t('nav.dashboard')}</Link>
 
-      <h1 className="font-display text-2xl font-bold mb-6">Registration Payment</h1>
+      <h1 className="font-display text-2xl font-bold mb-6">{t('payment.title')}</h1>
 
       {/* Status card */}
       <div className={`card p-6 mb-6 ${info.bg}`}>
@@ -66,11 +66,11 @@ export default function Payment() {
             {status === 'paid' ? '✓' : status === 'pending_review' ? '⏳' : '!'}
           </div>
           <div>
-            <p className="font-bold text-lg">{info.label}</p>
+            <p className="font-bold text-lg">{t(info.labelKey)}</p>
             <p className="text-sm text-gray-500">
-              {status === 'unpaid' && 'Upload your payment proof to complete registration.'}
-              {status === 'pending_review' && 'Your proof has been submitted. Admin will confirm shortly.'}
-              {status === 'paid' && 'Your registration fee has been confirmed. Good luck!'}
+              {status === 'unpaid' && t('payment.not_paid_desc')}
+              {status === 'pending_review' && t('payment.under_review_desc')}
+              {status === 'paid' && t('payment.paid_desc')}
             </p>
           </div>
         </div>
@@ -79,14 +79,14 @@ export default function Payment() {
       {/* Payment info */}
       {status !== 'paid' && (
         <div className="card p-5 mb-6">
-          <h2 className="font-display font-bold mb-3 flex items-center gap-2">💳 Payment Instructions</h2>
+          <h2 className="font-display font-bold mb-3 flex items-center gap-2">💳 {t('payment.title')}</h2>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between border-b border-border-light dark:border-border-dark pb-3">
-              <span className="text-gray-500">Registration Fee</span>
-              <span className="font-black text-primary text-lg">8 000 DZD</span>
+              <span className="text-gray-500">{t('payment.fee_label')}</span>
+              <span className="font-black text-primary text-lg">{t('payment.fee_amount')}</span>
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed">
-              Transfer the fee directly to one of the tournament organisers, then upload your proof of payment below.
+              {t('payment.transfer_info')}
             </p>
             <div className="space-y-2">
               {[
@@ -106,7 +106,7 @@ export default function Payment() {
       {/* Upload */}
       {status !== 'paid' && (
         <div className="card p-5">
-          <h2 className="font-display font-bold mb-3">Upload Proof of Payment</h2>
+          <h2 className="font-display font-bold mb-3">{t('payment.upload_title')}</h2>
           <div
             onClick={() => fileRef.current?.click()}
             className="border-2 border-dashed border-border-light dark:border-border-dark rounded-xl p-8 text-center cursor-pointer hover:border-primary/50 transition-colors"
@@ -116,8 +116,8 @@ export default function Payment() {
             ) : (
               <>
                 <p className="text-3xl mb-2">📎</p>
-                <p className="text-sm text-gray-500">Click to select image or PDF</p>
-                <p className="text-xs text-gray-400 mt-1">JPG, PNG, or PDF · max 5 MB</p>
+                <p className="text-sm text-gray-500">{t('payment.select_file')}</p>
+                <p className="text-xs text-gray-400 mt-1">{t('payment.file_info')}</p>
               </>
             )}
             {file && !preview && <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{file.name}</p>}
@@ -131,7 +131,7 @@ export default function Payment() {
               className="btn-primary w-full mt-4 flex items-center justify-center gap-2"
             >
               {uploadMut.isPending && <Spinner size="sm" />}
-              Submit Payment Proof
+              {t('payment.submit')}
             </button>
           )}
         </div>

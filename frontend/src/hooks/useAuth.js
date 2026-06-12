@@ -10,8 +10,8 @@ export function useAuth() {
     return data.user;
   }
 
-  async function register(email, password, phone) {
-    const { data } = await api.post('/api/auth/register', { email, password, phone });
+  async function register(email, password, phone, team_role = 'captain') {
+    const { data } = await api.post('/api/auth/register', { email, password, phone, team_role });
     setAuth(data.user, data.token);
     return data.user;
   }

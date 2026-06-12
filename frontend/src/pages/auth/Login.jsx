@@ -28,7 +28,7 @@ export default function Login() {
   async function onSubmit({ email, password }) {
     try {
       const loggedUser = await login(email, password);
-      toast.success('Bienvenue !');
+      toast.success(t('auth.welcome'));
       navigate(loggedUser.role === 'admin' ? '/admin' : '/captain/dashboard', { replace: true });
     } catch (err) {
       toast.error(err.response?.data?.message || t('common.error'));
@@ -43,9 +43,11 @@ export default function Login() {
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
         <div className="relative text-center text-white">
-          <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-6 shadow-2xl">
-            🏆
-          </div>
+          <img
+            src="/logo.png"
+            alt="Mundial Lamtar 2026"
+            className="w-32 h-32 rounded-3xl object-cover mx-auto mb-6 shadow-2xl"
+          />
           <h1 className="font-display font-black text-4xl mb-2">مونديال لمطار</h1>
           <p className="text-2xl font-bold text-primary-light mb-3">2026</p>
           <p className="text-green-400/80 italic text-sm mb-8">From us to all – Creativity sans limite</p>
@@ -75,14 +77,14 @@ export default function Login() {
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="text-center mb-8 lg:hidden">
-            <span className="text-4xl">🏆</span>
-            <h1 className="font-display font-black text-2xl mt-2 text-gradient">مونديال لمطار 2026</h1>
+            <img src="/logo.png" alt="Mundial Lamtar 2026" className="w-20 h-20 rounded-2xl object-cover mx-auto mb-2 shadow-lg" />
+            <h1 className="font-display font-black text-2xl text-gradient">مونديال لمطار 2026</h1>
           </div>
 
           <div className="bg-white dark:bg-[#111827] rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl p-8">
             <div className="mb-8">
               <h2 className="font-display font-black text-2xl text-gray-900 dark:text-white">{t('auth.login_title')}</h2>
-              <p className="text-gray-500 text-sm mt-1">Connectez-vous à votre espace capitaine</p>
+              <p className="text-gray-500 text-sm mt-1">{t('auth.connect_caption')}</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
@@ -97,7 +99,7 @@ export default function Login() {
                   placeholder="vous@exemple.com"
                   autoComplete="email"
                 />
-                {errors.email && <p className="text-red-500 text-xs mt-1.5">Email invalide</p>}
+                {errors.email && <p className="text-red-500 text-xs mt-1.5">{t('auth.invalid_email')}</p>}
               </div>
 
               <div>
@@ -134,7 +136,7 @@ export default function Login() {
                 <div className="w-full border-t border-gray-200 dark:border-gray-700" />
               </div>
               <div className="relative flex justify-center text-xs text-gray-400 bg-white dark:bg-[#111827] px-3">
-                ou
+                {t('auth.or')}
               </div>
             </div>
 

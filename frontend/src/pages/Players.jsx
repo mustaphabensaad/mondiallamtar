@@ -10,10 +10,10 @@ import PlayerModal from '../components/ui/PlayerModal';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const POSITION_META = {
-  GK:  { label: 'Gardien',    color: 'bg-yellow-500',  text: 'text-yellow-600 dark:text-yellow-400',  border: 'border-yellow-400/40', glow: 'shadow-yellow-200/50 dark:shadow-yellow-900/20' },
-  DEF: { label: 'Défenseur',  color: 'bg-blue-500',    text: 'text-blue-600 dark:text-blue-400',      border: 'border-blue-400/40',   glow: 'shadow-blue-200/50 dark:shadow-blue-900/20'   },
-  MID: { label: 'Milieu',     color: 'bg-green-500',   text: 'text-green-600 dark:text-green-400',    border: 'border-green-400/40',  glow: 'shadow-green-200/50 dark:shadow-green-900/20' },
-  FWD: { label: 'Attaquant',  color: 'bg-red-500',     text: 'text-red-600 dark:text-red-400',        border: 'border-red-400/40',    glow: 'shadow-red-200/50 dark:shadow-red-900/20'     },
+  GK:  { color: 'bg-yellow-500',  text: 'text-yellow-600 dark:text-yellow-400',  border: 'border-yellow-400/40', glow: 'shadow-yellow-200/50 dark:shadow-yellow-900/20' },
+  DEF: { color: 'bg-blue-500',    text: 'text-blue-600 dark:text-blue-400',      border: 'border-blue-400/40',   glow: 'shadow-blue-200/50 dark:shadow-blue-900/20'   },
+  MID: { color: 'bg-green-500',   text: 'text-green-600 dark:text-green-400',    border: 'border-green-400/40',  glow: 'shadow-green-200/50 dark:shadow-green-900/20' },
+  FWD: { color: 'bg-red-500',     text: 'text-red-600 dark:text-red-400',        border: 'border-red-400/40',    glow: 'shadow-red-200/50 dark:shadow-red-900/20'     },
 };
 
 const POSITIONS = ['all', 'GK', 'DEF', 'MID', 'FWD'];
@@ -27,6 +27,7 @@ function photoUrl(path) {
 
 // ── Single player card ─────────────────────────────────────────────────────────
 function PlayerCard({ player, onClick }) {
+  const { t } = useTranslation();
   const pos  = POSITION_META[player.position] || POSITION_META.MID;
   const age  = player.date_of_birth
     ? Math.floor((Date.now() - new Date(player.date_of_birth)) / (365.25 * 24 * 3600 * 1000))
@@ -83,14 +84,14 @@ function PlayerCard({ player, onClick }) {
 
         <div className="flex items-center gap-2 mt-1.5 flex-wrap justify-center">
           <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${pos.color} text-white`}>
-            {pos.label}
+            {t(`player.positions.${player.position}`)}
           </span>
           {age && (
-            <span className="text-[11px] text-gray-400 font-medium">{age} ans</span>
+            <span className="text-[11px] text-gray-400 font-medium">{age} {t('player.years')}</span>
           )}
           {!player.is_validated && (
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
-              En attente
+              {t('player.pending_status')}
             </span>
           )}
         </div>
@@ -114,7 +115,7 @@ function PlayerCard({ player, onClick }) {
       {/* Bio */}
       {player.bio && (
         <div className="mx-4 mb-3 px-3 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/40 border border-dashed border-gray-200 dark:border-gray-700">
-          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Expérience</p>
+          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">{t('player.experience')}</p>
           <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3">
             {player.bio}
           </p>
@@ -123,9 +124,9 @@ function PlayerCard({ player, onClick }) {
 
       {/* Stats row */}
       <div className="mt-auto mx-4 mb-4 grid grid-cols-3 divide-x divide-gray-100 dark:divide-gray-800 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800">
-        <StatCell icon="⚽" value={player.goals}        label="Buts"     highlight={player.goals > 0}    color="text-green-600 dark:text-green-400" />
-        <StatCell icon="🟨" value={player.yellow_cards} label="Jaunes"   highlight={player.yellow_cards > 0} color="text-yellow-600 dark:text-yellow-400" />
-        <StatCell icon="🟥" value={player.red_cards}    label="Rouges"   highlight={player.red_cards > 0}   color="text-red-500"  />
+        <StatCell icon="⚽" value={player.goals}        label={t('player.goals')}        highlight={player.goals > 0}        color="text-green-600 dark:text-green-400" />
+        <StatCell icon="🟨" value={player.yellow_cards} label={t('player.yellow_cards')} highlight={player.yellow_cards > 0} color="text-yellow-600 dark:text-yellow-400" />
+        <StatCell icon="🟥" value={player.red_cards}    label={t('player.red_cards')}    highlight={player.red_cards > 0}    color="text-red-500" />
       </div>
     </div>
   );
@@ -187,10 +188,10 @@ export default function Players() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
           <h1 className="font-display text-3xl font-black text-gray-900 dark:text-white">
-            Joueurs
+            {t('player.page_title')}
           </h1>
           <p className="text-gray-500 text-sm mt-1">
-            {players.length} joueurs inscrits · {totalGoals} buts au total
+            {players.length} {t('player.registered_count')} · {totalGoals} {t('player.goals_total')}
           </p>
         </div>
 
@@ -199,7 +200,7 @@ export default function Players() {
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
           <input
             type="text"
-            placeholder="Rechercher un joueur…"
+            placeholder={t('player.search')}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="input w-full pl-8 text-sm"
@@ -226,7 +227,7 @@ export default function Players() {
                     : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
-                {pos === 'all' ? 'Tous' : meta.label}
+                {pos === 'all' ? t('player.all_positions') : t(`player.positions.${pos}`)}
               </button>
             );
           })}
@@ -239,7 +240,7 @@ export default function Players() {
             onChange={e => setTeamFilter(e.target.value)}
             className="input text-sm py-1.5 px-3 rounded-xl"
           >
-            <option value="all">Toutes les équipes</option>
+            <option value="all">{t('player.all_teams')}</option>
             {teams.map(t => (
               <option key={t.id} value={t.id}>{t.name}</option>
             ))}
@@ -249,12 +250,12 @@ export default function Players() {
         {/* Result count */}
         {(position !== 'all' || teamFilter !== 'all' || search) && (
           <span className="flex items-center text-xs text-gray-400 font-medium">
-            {filtered.length} résultat{filtered.length !== 1 ? 's' : ''}
+            {filtered.length} {t('player.registered_count')}
             <button
               onClick={() => { setPosition('all'); setTeamFilter('all'); setSearch(''); }}
               className="ml-2 text-primary hover:underline"
             >
-              Réinitialiser
+              {t('player.reset')}
             </button>
           </span>
         )}
@@ -266,10 +267,8 @@ export default function Players() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon="👤"
-          title={search || position !== 'all' ? 'Aucun joueur trouvé' : 'Aucun joueur inscrit'}
-          subtitle={search || position !== 'all'
-            ? 'Essayez de modifier vos filtres de recherche.'
-            : 'Les joueurs apparaîtront ici une fois que les capitaines auront envoyé les invitations.'}
+          title={search || position !== 'all' ? t('player.no_found') : t('player.none_registered')}
+          subtitle={search || position !== 'all' ? t('player.no_found_sub') : t('player.none_registered_sub')}
           color="blue"
           size="lg"
         />

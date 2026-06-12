@@ -59,13 +59,13 @@ export default function CaptainDashboard() {
           <div className="h-1 bg-gradient-to-r from-primary to-green-400" />
           <EmptyState
             icon="🏟️"
-            title="Pas encore d'équipe"
-            subtitle="Créez votre équipe pour participer au Mundial Lamtar 2026 et commencer à inviter vos joueurs."
+            title={t('captain.no_team')}
+            subtitle={t('captain.no_team_sub')}
             color="green"
             size="lg"
             action={
               <Link to="/captain/team" className="btn-primary inline-flex items-center gap-2">
-                <span>+</span> Créer mon équipe
+                <span>+</span> {t('captain.create_team')}
               </Link>
             }
           />
@@ -117,7 +117,7 @@ export default function CaptainDashboard() {
         {!paymentOk && (
           <div className="relative mt-4 bg-amber-500/20 border border-amber-500/30 rounded-xl px-4 py-2.5 flex items-center gap-2 text-amber-300 text-xs">
             <span className="text-base">⚠️</span>
-            <span>Paiement en attente · <Link to="/captain/payment" className="underline font-bold">Compléter le paiement</Link></span>
+            <span>{t('captain.payment_warning')} · <Link to="/captain/payment" className="underline font-bold">{t('captain.complete_payment')}</Link></span>
           </div>
         )}
       </div>
@@ -129,21 +129,21 @@ export default function CaptainDashboard() {
           gradient="from-blue-50 to-indigo-50 border-blue-200 dark:from-blue-900/20 dark:to-indigo-900/20 dark:border-blue-800"
         />
         <StatCard
-          value={validated} label="Validés" icon="✅"
+          value={validated} label={t('captain.validated')} icon="✅"
           gradient="from-green-50 to-emerald-50 border-green-200 dark:from-green-900/20 dark:to-emerald-900/20 dark:border-green-800"
         />
         <StatCard
-          value={totalGoals} label="Buts" icon="⚽"
+          value={totalGoals} label={t('captain.goals')} icon="⚽"
           gradient="from-amber-50 to-yellow-50 border-amber-200 dark:from-amber-900/20 dark:to-yellow-900/20 dark:border-amber-800"
         />
       </div>
 
       {/* Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-        <ActionCard to="/captain/invites"  icon="📨" label="Gérer les joueurs"  desc="Invitations & roster" color="bg-blue-100 dark:bg-blue-900/30" />
-        <ActionCard to="/captain/payment"  icon="💳" label="Paiement"           desc={paymentOk ? '✓ Confirmé' : '8 000 DZD en attente'} color="bg-green-100 dark:bg-green-900/30" />
-        <ActionCard to="/captain/team"     icon="⚙️" label="Mon équipe"         desc="Modifier les infos"   color="bg-purple-100 dark:bg-purple-900/30" />
-        <ActionCard to="/captain/my-team"  icon="👕" label="Effectif complet"   desc="Voir tous les joueurs" color="bg-orange-100 dark:bg-orange-900/30" />
+        <ActionCard to="/captain/invites"  icon="📨" label={t('captain.manage_players')}  desc={t('captain.manage_roster')} color="bg-blue-100 dark:bg-blue-900/30" />
+        <ActionCard to="/captain/payment"  icon="💳" label={t('captain.payment_label')}   desc={paymentOk ? t('captain.payment_confirmed') : t('captain.payment_amount')} color="bg-green-100 dark:bg-green-900/30" />
+        <ActionCard to="/captain/team"     icon="⚙️" label={t('captain.my_team')}         desc={t('captain.edit_info')} color="bg-purple-100 dark:bg-purple-900/30" />
+        <ActionCard to="/captain/my-team"  icon="👕" label={t('captain.full_roster')}     desc={t('captain.see_players')} color="bg-orange-100 dark:bg-orange-900/30" />
       </div>
 
       {/* Players table */}
@@ -151,7 +151,7 @@ export default function CaptainDashboard() {
         <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800">
           <div className="px-5 py-3.5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-gray-800/40">
             <h3 className="font-bold text-sm text-gray-900 dark:text-white">{t('team.players')}</h3>
-            <span className="text-xs text-gray-400">{players.length} joueurs</span>
+            <span className="text-xs text-gray-400">{players.length} {t('captain.players_count')}</span>
           </div>
           <div className="divide-y divide-gray-50 dark:divide-gray-800 bg-white dark:bg-[#111827]">
             {players.map(p => (
@@ -174,7 +174,7 @@ export default function CaptainDashboard() {
                   </div>
                 </div>
                 <Badge variant={p.is_validated ? 'approved' : 'pending'}>
-                  {p.is_validated ? 'Actif' : 'En attente'}
+                  {p.is_validated ? t('captain.active') : t('captain.pending')}
                 </Badge>
               </div>
             ))}

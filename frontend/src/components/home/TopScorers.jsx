@@ -47,8 +47,8 @@ export default function TopScorers({ limit = 8 }) {
   if (scorers.length === 0) return (
     <EmptyState
       icon="⚽"
-      title="Classement en attente"
-      subtitle="Les meilleurs buteurs apparaîtront ici dès le début des matchs."
+      title={t('home.no_scorers_title')}
+      subtitle={t('home.no_scorers_sub')}
       color="green"
       size="sm"
     />

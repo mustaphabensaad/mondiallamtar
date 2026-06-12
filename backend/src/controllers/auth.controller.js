@@ -6,9 +6,10 @@ const { signToken } = require('../utils/helpers');
 // ─── Validation schemas ──────────────────────────────────────────────────────
 
 const registerSchema = Joi.object({
-  email:    Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-  phone:    Joi.string().allow('').optional(),
+  email:     Joi.string().email().required(),
+  password:  Joi.string().min(6).required(),
+  phone:     Joi.string().allow('').optional(),
+  team_role: Joi.string().valid('captain', 'coach').default('captain'),
 });
 
 const loginSchema = Joi.object({
@@ -32,7 +33,7 @@ async function register(req, res, next) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { email, password, phone } = value;
+    const { email, password, phone, team_role } = value;
 
     const [existing] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
     if (existing.length > 0) {
@@ -41,8 +42,8 @@ async function register(req, res, next) {
 
     const password_hash = await bcrypt.hash(password, 12);
     const [result] = await db.query(
-      'INSERT INTO users (email, password_hash, role, phone) VALUES (?, ?, "captain", ?)',
-      [email, password_hash, phone || null]
+      'INSERT INTO users (email, password_hash, role, team_role, phone) VALUES (?, ?, "captain", ?, ?)',
+      [email, password_hash, team_role, phone || null]
     );
 
     const userId = result.insertId;
@@ -50,7 +51,7 @@ async function register(req, res, next) {
 
     res.status(201).json({
       token,
-      user: { id: userId, email, role: 'captain', phone: phone || null },
+      user: { id: userId, email, role: 'captain', team_role, phone: phone || null },
     });
   } catch (err) {
     next(err);

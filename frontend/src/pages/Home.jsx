@@ -30,6 +30,7 @@ function SectionCard({ title, icon, children, accent, className = '' }) {
 }
 
 function LiveBanner() {
+  const { t } = useTranslation();
   const { data: liveMatches = [] } = useQuery({
     queryKey: ['matches-live'],
     queryFn:  matchService.getLive,
@@ -42,9 +43,9 @@ function LiveBanner() {
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-red-700/30 bg-red-600/10">
         <span className="live-badge text-[10px] px-2 py-0.5">
           <span className="w-1.5 h-1.5 rounded-full bg-white" />
-          EN DIRECT
+          {t('match.live')}
         </span>
-        <span className="text-xs font-semibold text-red-500">{liveMatches.length} match{liveMatches.length > 1 ? 's' : ''} en cours</span>
+        <span className="text-xs font-semibold text-red-500">{t(liveMatches.length > 1 ? 'home.live_matches_pl' : 'home.live_matches', { count: liveMatches.length })}</span>
       </div>
       <div className="p-3 flex flex-col gap-3">
         {liveMatches.map(m => <MatchCard key={m.id} match={m} />)}

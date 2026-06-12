@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { matchService } from '../../services/tournament.service';
 import MatchCard from '../match/MatchCard';
 import Spinner from '../ui/Spinner';
 import EmptyState from '../ui/EmptyState';
 
 export default function PastMatches({ limit = 6 }) {
+  const { t } = useTranslation();
   const { data: matches = [], isLoading } = useQuery({
     queryKey: ['matches-finished', limit],
     queryFn:  () => matchService.getAll({ status: 'finished', limit }),
@@ -15,8 +17,8 @@ export default function PastMatches({ limit = 6 }) {
   if (matches.length === 0) return (
     <EmptyState
       icon="🏁"
-      title="Aucun résultat pour l'instant"
-      subtitle="Les résultats des matchs terminés s'afficheront ici."
+      title={t('home.no_past_title')}
+      subtitle={t('home.no_past_sub')}
       color="gray"
       size="sm"
     />

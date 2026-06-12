@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { tournamentService } from '../../services/tournament.service';
 import Spinner from '../ui/Spinner';
 
 const TIER_CONFIG = {
   gold: {
-    label:     'Partenaire Or',
+    labelKey:  'home.partner_gold',
     icon:      '🥇',
     headerBg:  'bg-gradient-to-r from-yellow-500/15 to-amber-400/10',
     headerText:'text-yellow-600 dark:text-yellow-400',
@@ -17,7 +18,7 @@ const TIER_CONFIG = {
     ring:      'ring-yellow-300/40',
   },
   silver: {
-    label:     'Partenaire Argent',
+    labelKey:  'home.partner_silver',
     icon:      '🥈',
     headerBg:  'bg-gradient-to-r from-slate-300/20 to-gray-200/10',
     headerText:'text-slate-500 dark:text-slate-400',
@@ -30,7 +31,7 @@ const TIER_CONFIG = {
     ring:      'ring-slate-300/40',
   },
   bronze: {
-    label:     'Partenaire Bronze',
+    labelKey:  'home.partner_bronze',
     icon:      '🥉',
     headerBg:  'bg-gradient-to-r from-orange-400/15 to-amber-300/10',
     headerText:'text-orange-600 dark:text-orange-500',
@@ -85,6 +86,7 @@ function SponsorCard({ sponsor, isGold }) {
 }
 
 function TierSection({ tier, sponsors }) {
+  const { t } = useTranslation();
   if (!sponsors.length) return null;
   const cfg = TIER_CONFIG[tier];
   const isGold = tier === 'gold';
@@ -95,7 +97,7 @@ function TierSection({ tier, sponsors }) {
       <div className={`flex items-center gap-1.5 rounded-lg px-2 py-1 mb-2 ${cfg.headerBg}`}>
         <span className="text-sm leading-none">{cfg.icon}</span>
         <span className={`text-[9px] font-black uppercase tracking-[0.12em] ${cfg.headerText}`}>
-          {cfg.label}
+          {t(cfg.labelKey)}
         </span>
         <span className={`ml-auto text-[9px] font-bold ${cfg.headerText} opacity-60`}>
           {sponsors.length}
@@ -113,6 +115,7 @@ function TierSection({ tier, sponsors }) {
 }
 
 export default function SponsorsSidebar() {
+  const { t } = useTranslation();
   const { data: sponsors = [], isLoading } = useQuery({
     queryKey: ['sponsors'],
     queryFn:  tournamentService.getSponsors,
@@ -128,8 +131,8 @@ export default function SponsorsSidebar() {
         🤝
       </div>
       <div>
-        <p className="text-[11px] font-bold text-gray-500 dark:text-gray-400">Partenaires à venir</p>
-        <p className="text-[10px] text-gray-400 mt-0.5">Contactez-nous pour sponsoriser</p>
+        <p className="text-[11px] font-bold text-gray-500 dark:text-gray-400">{t('home.sponsors_coming')}</p>
+        <p className="text-[10px] text-gray-400 mt-0.5">{t('home.sponsors_contact')}</p>
       </div>
     </div>
   );

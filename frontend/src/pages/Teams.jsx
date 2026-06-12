@@ -69,7 +69,7 @@ function TeamCard({ team }) {
         {/* Player count */}
         <div className="text-right shrink-0 flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/10">
           <p className="text-xl font-black text-primary leading-none">{team.player_count ?? 0}</p>
-          <p className="text-[9px] text-gray-400 font-medium mt-0.5">joueurs</p>
+          <p className="text-[9px] text-gray-400 font-medium mt-0.5">{t('team.players')}</p>
         </div>
       </div>
     </Link>
@@ -101,7 +101,7 @@ export default function Teams() {
         <div>
           <h1 className="page-header mb-1">{t('nav.teams')}</h1>
           <p className="text-gray-500 text-sm">
-            <span className="font-semibold text-primary">{teams.length}</span> équipes participantes
+            <span className="font-semibold text-primary">{teams.length}</span> {t('team.participating')}
           </p>
         </div>
 
@@ -116,7 +116,7 @@ export default function Teams() {
                   : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
-              Par groupe
+              {t('team.by_group')}
             </button>
             <button
               onClick={() => setViewMode('all')}
@@ -126,7 +126,7 @@ export default function Teams() {
                   : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
-              Tous
+              {t('team.all')}
             </button>
           </div>
         )}
@@ -138,8 +138,8 @@ export default function Teams() {
         <div className="card">
           <EmptyState
             icon="🏟️"
-            title="Inscriptions en cours"
-            subtitle="Aucune équipe approuvée pour le moment. Les équipes apparaîtront ici après validation."
+            title={t('team.no_approved_title')}
+            subtitle={t('team.no_approved_sub')}
             color="green"
             size="lg"
           />
@@ -161,10 +161,10 @@ export default function Teams() {
                 </div>
                 <div>
                   <h2 className="font-display font-bold text-lg leading-tight">
-                    {letter === '_' ? 'Sans groupe' : `${t('team.group')} ${letter}`}
+                    {letter === '_' ? t('team.no_group') : `${t('team.group')} ${letter}`}
                   </h2>
                   <p className="text-xs text-gray-400">
-                    {groupTeams.length} équipe{groupTeams.length > 1 ? 's' : ''}
+                    {groupTeams.length} {t('team.teams_count')}
                   </p>
                 </div>
                 <div className="flex-1 h-px bg-gradient-to-r from-gray-200 dark:from-gray-700 to-transparent ml-2" />

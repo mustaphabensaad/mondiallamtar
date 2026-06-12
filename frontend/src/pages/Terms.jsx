@@ -3,108 +3,113 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 const CONTACTS = [
-  { name: 'حماني أيوب',  role: 'إدارة المونديال',       phone: '0670062056', whatsapp: true,  telegram: true },
-  { name: 'عبادة محمد',  role: 'إدارة المونديال',       phone: '0665181513', whatsapp: true,  telegram: true },
-  { name: 'حمودة حليش', role: 'مسؤول انضمام الفرق',   phone: '0698748579', whatsapp: false, telegram: false },
+  { name: 'حماني أيوب',  role: 'رئاسة مشتركة — اللجنة المنظمة', phone: '0670062056', whatsapp: true,  telegram: true },
+  { name: 'عبادة محمد',  role: 'رئاسة مشتركة — اللجنة المنظمة', phone: '0665181513', whatsapp: true,  telegram: true },
+  { name: 'حمودة حليش', role: 'مسؤول انضمام الفرق',              phone: '0698748579', whatsapp: false, telegram: false },
 ];
 
-const ARTICLES = [
+const CHAPTERS = [
   {
-    num: '١', icon: '🏗️', title: 'الهيكل التنظيمي',
-    color: 'from-blue-500 to-indigo-600',
-    items: [
-      'تُنظَّم البطولة على مرحلتين: دور المجموعات ثم الأدوار الإقصائية',
-      'دور المجموعات: كل فريق يواجه باقي فرق مجموعته مرة واحدة',
-      'الأدوار الإقصائية: أفضل فريقين من كل مجموعة يتأهلان (ربع النهائي ← نصف النهائي ← النهائي)',
+    id: 'ch1', icon: '👥', gradient: 'from-blue-600 to-indigo-700', titleKey: 'terms.ch1_title',
+    articles: [
+      { num: '١', icon: '🏗️', titleKey: 'terms.ch1_art1_title', color: 'from-blue-500 to-indigo-600',
+        itemKeys: ['terms.ch1_art1_item0', 'terms.ch1_art1_item1'] },
+      { num: '٢', icon: '🎂', titleKey: 'terms.ch1_art2_title', color: 'from-sky-500 to-blue-600',
+        itemKeys: ['terms.ch1_art2_item0', 'terms.ch1_art2_item1', 'terms.ch1_art2_item2'] },
+      { num: '٣', icon: '📌', titleKey: 'terms.ch1_art3_title', color: 'from-indigo-500 to-violet-600',
+        itemKeys: ['terms.ch1_art3_item0', 'terms.ch1_art3_item1'] },
+      { num: '٤', icon: '🔄', titleKey: 'terms.ch1_art4_title', color: 'from-violet-500 to-purple-600',
+        itemKeys: ['terms.ch1_art4_item0', 'terms.ch1_art4_item1', 'terms.ch1_art4_item2'] },
+      { num: '٥', icon: '🎽', titleKey: 'terms.ch1_art5_title', color: 'from-cyan-500 to-sky-600',
+        itemKeys: ['terms.ch1_art5_item0', 'terms.ch1_art5_item1', 'terms.ch1_art5_item2'] },
+      { num: '٦', icon: '📱', titleKey: 'terms.ch1_art6_title', color: 'from-teal-500 to-emerald-600',
+        itemKeys: ['terms.ch1_art6_item0', 'terms.ch1_art6_item1', 'terms.ch1_art6_item2'] },
     ],
   },
   {
-    num: '٢', icon: '📊', title: 'نظام النقاط والترتيب',
-    color: 'from-emerald-500 to-teal-600',
-    points: true,
-    items: [
-      'عند تساوي النقاط: فارق الأهداف ← الأهداف المسجلة ← المواجهة المباشرة',
-      'في حال التعادل التام يُلجأ إلى القرعة بحضور ممثلي الفريقين',
+    id: 'ch2', icon: '⚽', gradient: 'from-green-600 to-emerald-700', titleKey: 'terms.ch2_title',
+    articles: [
+      { num: '٧',  icon: '⏱️', titleKey: 'terms.ch2_art1_title', color: 'from-green-500 to-emerald-600',
+        itemKeys: ['terms.ch2_art1_item0', 'terms.ch2_art1_item1'] },
+      { num: '٨',  icon: '🔢', titleKey: 'terms.ch2_art2_title', color: 'from-emerald-500 to-teal-600',
+        itemKeys: ['terms.ch2_art2_item0'] },
+      { num: '٩',  icon: '🔁', titleKey: 'terms.ch2_art3_title', color: 'from-teal-500 to-cyan-600',
+        itemKeys: ['terms.ch2_art3_item0', 'terms.ch2_art3_item1'] },
+      { num: '١٠', icon: '🧤', titleKey: 'terms.ch2_art4_title', color: 'from-cyan-500 to-blue-600',
+        itemKeys: ['terms.ch2_art4_item0', 'terms.ch2_art4_item1'] },
+      { num: '١١', icon: '🚧', titleKey: 'terms.ch2_art5_title', color: 'from-blue-500 to-indigo-600',
+        itemKeys: ['terms.ch2_art5_item0', 'terms.ch2_art5_item1'] },
+      { num: '١٢', icon: '📅', titleKey: 'terms.ch2_art6_title', color: 'from-indigo-500 to-violet-600',
+        itemKeys: ['terms.ch2_art6_item0', 'terms.ch2_art6_item1'] },
     ],
   },
   {
-    num: '٣', icon: '⚽', title: 'قواعد المباريات',
-    color: 'from-green-500 to-emerald-600',
-    items: [
-      'مدة المباراة: شوطان × ٢٠ دقيقة مع استراحة ٥ دقائق',
-      'في الأدوار الإقصائية عند التعادل: وقت إضافي ٢ × ٥ دقائق ثم ركلات الترجيح',
-      'تبديلات غير محدودة من قائمة الـ 4 احتياطيين — اللاعب المُبدَّل يمكنه العودة',
-      'الكرة الرسمية للبطولة: #شابكة',
+    id: 'ch3', icon: '🟥', gradient: 'from-red-600 to-rose-700', titleKey: 'terms.ch3_title',
+    articles: [
+      { num: '١٣', icon: '💰', titleKey: 'terms.ch3_art1_title', color: 'from-red-500 to-rose-600',
+        table: true,
+        rowKeys: [
+          { vKey: 'terms.ch3_art1_row0_v', pKey: 'terms.ch3_art1_row0_p', sev: 'med'  },
+          { vKey: 'terms.ch3_art1_row1_v', pKey: 'terms.ch3_art1_row1_p', sev: 'high' },
+          { vKey: 'terms.ch3_art1_row2_v', pKey: 'terms.ch3_art1_row2_p', sev: 'high' },
+        ],
+        itemKeys: ['terms.ch3_art1_item0', 'terms.ch3_art1_item1'] },
+      { num: '١٤', icon: '🔒', titleKey: 'terms.ch3_art2_title', color: 'from-rose-500 to-pink-600',
+        itemKeys: ['terms.ch3_art2_item0'] },
+      { num: '١٥', icon: '🚫', titleKey: 'terms.ch3_art3_title', color: 'from-orange-500 to-red-600',
+        itemKeys: ['terms.ch3_art3_item0', 'terms.ch3_art3_item1'] },
+      { num: '١٦', icon: '⬜', titleKey: 'terms.ch3_art4_title', color: 'from-slate-400 to-gray-600',
+        itemKeys: ['terms.ch3_art4_item0', 'terms.ch3_art4_item1'] },
+      { num: '١٧', icon: '🛡️', titleKey: 'terms.ch3_art5_title', color: 'from-amber-500 to-orange-600',
+        itemKeys: ['terms.ch3_art5_item0', 'terms.ch3_art5_item1'] },
+      { num: '١٨', icon: '🤝', titleKey: 'terms.ch3_art6_title', color: 'from-red-600 to-rose-700',
+        itemKeys: ['terms.ch3_art6_item0', 'terms.ch3_art6_item1'] },
     ],
   },
   {
-    num: '٤', icon: '📋', title: 'شروط اللاعبين والتسجيل',
-    color: 'from-violet-500 to-purple-600',
-    items: [
-      'يجب تسليم قائمة اللاعبين كاملة قبل انطلاق أولى مباريات الفريق',
-      'لا يُسمح بأي إضافة أو تعديل في القائمة بعد انطلاق البطولة إلا بإذن الإدارة',
-      'لاعب مسجل في فريق لا يحق له اللعب مع فريق آخر في نفس البطولة',
-      'اكتشاف لاعب غير مسجل = فوز للفريق المنافس + عقوبة على الفريق المخالف',
+    id: 'ch4', icon: '⚖️', gradient: 'from-violet-600 to-purple-700', titleKey: 'terms.ch4_title',
+    articles: [
+      { num: '١٩', icon: '💻', titleKey: 'terms.ch4_art1_title', color: 'from-violet-500 to-purple-600',
+        itemKeys: ['terms.ch4_art1_item0'] },
+      { num: '٢٠', icon: '🟡', titleKey: 'terms.ch4_art2_title', color: 'from-purple-500 to-fuchsia-600',
+        itemKeys: ['terms.ch4_art2_item0', 'terms.ch4_art2_item1'] },
+      { num: '٢١', icon: '📋', titleKey: 'terms.ch4_art3_title', color: 'from-fuchsia-500 to-pink-600',
+        itemKeys: ['terms.ch4_art3_item0', 'terms.ch4_art3_item1', 'terms.ch4_art3_item2'] },
     ],
   },
   {
-    num: '٥', icon: '⏱️', title: 'الغياب والتأخر',
-    color: 'from-orange-500 to-amber-600',
-    items: [
-      'مهلة الانتظار: ١٠ دقائق فقط من الموعد المحدد',
-      'التأخر أكثر من ١٠ دقائق = خسارة بالتغيب (٣–٠) والنقاط لصالح الخصم',
-      'الغياب مرتين = استبعاد من البطولة دون استرداد رسوم التسجيل',
-      'الحد الأدنى للمشاركة: ٥ لاعبين — وإلا تُعتبر المباراة خسارة بالتغيب',
+    id: 'ch5', icon: '🦅', gradient: 'from-amber-600 to-orange-700', titleKey: 'terms.ch5_title',
+    articles: [
+      { num: '٢٢', icon: '🕊️', titleKey: 'terms.ch5_art1_title', color: 'from-amber-500 to-yellow-600',
+        itemKeys: ['terms.ch5_art1_item0', 'terms.ch5_art1_item1'] },
+      { num: '٢٣', icon: '🏘️', titleKey: 'terms.ch5_art2_title', color: 'from-orange-500 to-amber-600',
+        itemKeys: ['terms.ch5_art2_item0'] },
+      { num: '٢٤', icon: '👑', titleKey: 'terms.ch5_art3_title', color: 'from-yellow-500 to-orange-500',
+        itemKeys: ['terms.ch5_art3_item0'] },
+      { num: '٢٥', icon: '✍️', titleKey: 'terms.ch5_art4_title', color: 'from-orange-600 to-red-600',
+        itemKeys: ['terms.ch5_art4_item0'] },
+      { num: '٢٦', icon: '📜', titleKey: 'terms.ch5_art5_title', color: 'from-red-600 to-rose-700',
+        itemKeys: ['terms.ch5_art5_item0'] },
     ],
   },
-  {
-    num: '٦', icon: '🟥', title: 'الانضباط والعقوبات',
-    color: 'from-red-500 to-rose-600',
-    table: true,
-    rows: [
-      { v: 'بطاقة حمراء مباشرة',                    p: 'إيقاف المباراة التالية + غرامة محتملة',  sev: 'high' },
-      { v: 'بطاقتان صفراوان في المباراة',           p: 'طرد فوري = مباراة إيقاف',               sev: 'high' },
-      { v: 'بطاقتان صفراوان تراكميتان في البطولة', p: 'إيقاف مباراة واحدة',                    sev: 'med'  },
-      { v: 'ثلاث بطاقات صفراء تراكمية',            p: 'إيقاف مبارتين',                         sev: 'med'  },
-      { v: 'التعدي على الحكم أو إهانته',            p: 'إيقاف فوري + استبعاد محتمل',           sev: 'crit' },
-      { v: 'الشغب وإثارة الفوضى',                  p: 'استبعاد الفريق بأكمله',                  sev: 'crit' },
-      { v: 'لاعب غير مسجل',                        p: 'خسارة المباراة ٠–٣ + غرامة',             sev: 'high' },
-    ],
-  },
-  {
-    num: '٧', icon: '🎽', title: 'اللباس والمعدات',
-    color: 'from-cyan-500 to-sky-600',
-    items: [
-      'اللباس الموحد (قميص + شورت + جوارب) إجباري لجميع اللاعبين المشاركين',
-      'في حال تشابه الألوان: الفريق الضيف يغيّر لباسه',
-      'القمصان تحمل أرقاماً ثابتة متطابقة مع قائمة التسجيل',
-      'حارس المرمى يرتدي لباساً مختلف اللون عن لاعبيه وعن خصومه',
-    ],
-  },
-  {
-    num: '٨', icon: '⚖️', title: 'الاحتجاجات والطعون',
-    color: 'from-slate-500 to-gray-600',
-    items: [
-      'احتجاج رسمي كتابي مقبول خلال ٢٤ ساعة من نهاية المباراة',
-      'يُرفق الاحتجاج بتأمين قدره ١ 000 دج — يُسترد إن قُبل الاحتجاج',
-      'لجنة الانضباط تبت خلال ٤٨ ساعة وقراراتها نهائية',
-      'قرارات التحكيم الميدانية لا تقبل الطعن',
-    ],
-  },
-  {
-    num: '٩', icon: '🏆', title: 'الجوائز والتتويج',
-    color: 'from-yellow-500 to-amber-500',
-    awards: true,
-  },
-  {
-    num: '١٠', icon: '📌', title: 'أحكام عامة',
-    color: 'from-pink-500 to-rose-500',
-    items: [
-      'تحتفظ الإدارة بحق تعديل أي بند من هذا القانون مع إشعار الفرق المعنية',
-      'كل حالة غير منصوص عليها تبت فيها لجنة التنظيم وقرارها نهائي',
-      'المشاركة في البطولة تعني القبول الكامل بجميع بنود هذا القانون',
-    ],
-  },
+];
+
+const COMMITTEES = [
+  { num: '1', icon: '📋', color: 'from-blue-500 to-indigo-600',
+    titleKey: 'terms.committee1_title', membersKey: 'terms.committee1_members',
+    taskKeys: ['terms.committee1_task0','terms.committee1_task1','terms.committee1_task2','terms.committee1_task3'] },
+  { num: '2', icon: '🏟️', color: 'from-green-500 to-emerald-600',
+    titleKey: 'terms.committee2_title', membersKey: 'terms.committee2_members',
+    taskKeys: ['terms.committee2_task0','terms.committee2_task1','terms.committee2_task2'] },
+  { num: '3', icon: '⚖️', color: 'from-yellow-500 to-orange-600',
+    titleKey: 'terms.committee3_title', membersKey: 'terms.committee3_members',
+    taskKeys: ['terms.committee3_task0','terms.committee3_task1','terms.committee3_task2','terms.committee3_task3'] },
+  { num: '4', icon: '💻', color: 'from-violet-500 to-purple-600',
+    titleKey: 'terms.committee4_title', membersKey: 'terms.committee4_members',
+    taskKeys: ['terms.committee4_task0','terms.committee4_task1','terms.committee4_task2'] },
+  { num: '5', icon: '📸', color: 'from-pink-500 to-rose-600',
+    titleKey: 'terms.committee5_title', membersKey: 'terms.committee5_members',
+    taskKeys: ['terms.committee5_task0','terms.committee5_task1','terms.committee5_task2'] },
 ];
 
 const SEV_STYLE = {
@@ -114,9 +119,10 @@ const SEV_STYLE = {
 };
 
 function ArticleCard({ article, open, onToggle }) {
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === 'rtl';
   return (
     <div className="rounded-2xl overflow-hidden border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
-      {/* Header */}
       <button
         onClick={onToggle}
         className="w-full flex items-center gap-4 px-5 py-4 text-right bg-white dark:bg-[#111827] hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
@@ -124,7 +130,7 @@ function ArticleCard({ article, open, onToggle }) {
         <span className={`shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${article.color} flex items-center justify-center text-white font-black text-sm shadow-sm`}>
           {article.num}
         </span>
-        <span className="flex-1 font-bold text-base text-gray-900 dark:text-gray-100">{article.icon} {article.title}</span>
+        <span className="flex-1 font-bold text-base text-gray-900 dark:text-gray-100">{article.icon} {t(article.titleKey)}</span>
         <svg
           className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
           fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -133,43 +139,24 @@ function ArticleCard({ article, open, onToggle }) {
         </svg>
       </button>
 
-      {/* Body */}
       {open && (
-        <div className="px-5 pb-5 pt-2 bg-gray-50/60 dark:bg-gray-900/40 text-sm leading-relaxed" dir="rtl">
-
-          {/* Points mini-grid */}
-          {article.points && (
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              {[
-                { label: 'فوز',    pts: '3',  bg: 'bg-green-500',  shadow: 'shadow-green-200 dark:shadow-green-900' },
-                { label: 'تعادل', pts: '1',  bg: 'bg-amber-500',  shadow: 'shadow-amber-200 dark:shadow-amber-900' },
-                { label: 'خسارة', pts: '0',  bg: 'bg-red-500',    shadow: 'shadow-red-200 dark:shadow-red-900' },
-              ].map(r => (
-                <div key={r.label} className={`${r.bg} ${r.shadow} shadow-md rounded-xl p-3 text-center text-white`}>
-                  <p className="font-black text-2xl leading-none">{r.pts}</p>
-                  <p className="text-xs mt-1 opacity-90 font-semibold">{r.label}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Discipline table */}
+        <div className={`px-5 pb-5 pt-2 bg-gray-50/60 dark:bg-gray-900/40 text-sm leading-relaxed ${isRtl ? 'dir-rtl' : ''}`} dir={isRtl ? 'rtl' : 'ltr'}>
           {article.table && (
-            <div className="rounded-xl overflow-hidden border border-border-light dark:border-border-dark mb-2">
+            <div className="rounded-xl overflow-hidden border border-border-light dark:border-border-dark mb-3">
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-gray-100 dark:bg-gray-800">
-                    <th className="text-right px-4 py-2.5 font-bold text-gray-700 dark:text-gray-300">المخالفة</th>
-                    <th className="text-right px-4 py-2.5 font-bold text-gray-700 dark:text-gray-300">العقوبة</th>
+                    <th className="text-right px-4 py-2.5 font-bold text-gray-700 dark:text-gray-300">{t('terms.table_violation')}</th>
+                    <th className="text-right px-4 py-2.5 font-bold text-gray-700 dark:text-gray-300">{t('terms.table_penalty')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-light dark:divide-border-dark">
-                  {article.rows.map((row, i) => (
+                  {article.rowKeys.map((row, i) => (
                     <tr key={i} className="bg-white dark:bg-[#111827] hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors">
-                      <td className="px-4 py-2.5 text-gray-600 dark:text-gray-400">{row.v}</td>
+                      <td className="px-4 py-2.5 text-gray-600 dark:text-gray-400">{t(row.vKey)}</td>
                       <td className="px-4 py-2.5">
                         <span className={`inline-block px-2 py-0.5 rounded-lg text-xs font-semibold ${SEV_STYLE[row.sev]}`}>
-                          {row.p}
+                          {t(row.pKey)}
                         </span>
                       </td>
                     </tr>
@@ -179,37 +166,12 @@ function ArticleCard({ article, open, onToggle }) {
             </div>
           )}
 
-          {/* Awards */}
-          {article.awards && (
-            <div className="space-y-2 mb-2">
-              {[
-                { icon: '🥇', label: 'البطل',    desc: 'كأس البطولة + ميداليات + جائزة مالية' },
-                { icon: '🥈', label: 'الوصيف',   desc: 'ميداليات + جائزة مالية' },
-                { icon: '🥉', label: 'الثالث',   desc: 'ميداليات + جائزة مالية' },
-                { icon: '🏅', label: 'الهداف',   desc: 'جائزة أفضل هداف في البطولة' },
-                { icon: '⭐', label: 'أفضل لاعب', desc: 'جائزة أفضل لاعب في البطولة' },
-                { icon: '🧤', label: 'أفضل حارس', desc: 'جائزة أفضل حارس مرمى' },
-                { icon: '🤝', label: 'روح الرياضة', desc: 'جائزة الفريق الأكثر نبلاً وانضباطاً' },
-              ].map(a => (
-                <div key={a.label} className="flex items-center gap-3 bg-white dark:bg-[#111827] rounded-xl px-4 py-2.5 border border-border-light dark:border-border-dark">
-                  <span className="text-2xl shrink-0">{a.icon}</span>
-                  <div>
-                    <p className="font-bold text-gray-900 dark:text-gray-100 text-xs">{a.label}</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs">{a.desc}</p>
-                  </div>
-                </div>
-              ))}
-              <p className="text-xs text-gray-400 italic pt-1 pr-1">* قيم الجوائز المالية تُعلَن رسمياً قبيل انطلاق البطولة</p>
-            </div>
-          )}
-
-          {/* Regular bullet list */}
-          {article.items && (
+          {article.itemKeys && (
             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-              {article.items.map((item, i) => (
+              {article.itemKeys.map((key, i) => (
                 <li key={i} className="flex items-start gap-2.5">
                   <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                  <span>{item}</span>
+                  <span>{t(key)}</span>
                 </li>
               ))}
             </ul>
@@ -220,8 +182,59 @@ function ArticleCard({ article, open, onToggle }) {
   );
 }
 
-export default function Terms() {
+function ChapterHeader({ chapter }) {
   const { t } = useTranslation();
+  return (
+    <div className={`flex items-center gap-3 bg-gradient-to-r ${chapter.gradient} rounded-2xl px-5 py-3.5 text-white shadow-md mb-3`}>
+      <span className="text-2xl">{chapter.icon}</span>
+      <span className="font-display font-black text-sm tracking-wide">{t(chapter.titleKey)}</span>
+    </div>
+  );
+}
+
+function CommitteeCard({ committee }) {
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === 'rtl';
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-2xl overflow-hidden border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+      <button
+        onClick={() => setOpen(p => !p)}
+        className="w-full flex items-center gap-4 px-5 py-4 text-right bg-white dark:bg-[#111827] hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+      >
+        <span className={`shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${committee.color} flex items-center justify-center text-white font-black text-sm shadow-sm`}>
+          {committee.num}
+        </span>
+        <div className="flex-1 text-right">
+          <p className="font-bold text-base text-gray-900 dark:text-gray-100">{committee.icon} {t(committee.titleKey)}</p>
+          <p className="text-xs text-gray-400">{t(committee.membersKey)}</p>
+        </div>
+        <svg
+          className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="px-5 pb-5 pt-2 bg-gray-50/60 dark:bg-gray-900/40 text-sm leading-relaxed" dir={isRtl ? 'rtl' : 'ltr'}>
+          <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+            {committee.taskKeys.map((key, i) => (
+              <li key={i} className="flex items-start gap-2.5">
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                <span>{t(key)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function Terms() {
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === 'rtl';
   const [openArticle, setOpenArticle] = useState(null);
 
   function toggle(num) {
@@ -229,7 +242,7 @@ export default function Terms() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8" dir="rtl">
+    <div className="max-w-3xl mx-auto px-4 py-8" dir={isRtl ? 'rtl' : 'ltr'}>
 
       {/* Back */}
       <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-primary transition-colors mb-6 group">
@@ -241,22 +254,18 @@ export default function Terms() {
 
       {/* ── HERO ── */}
       <div className="relative rounded-3xl overflow-hidden mb-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-xl">
-        {/* decorative rings */}
         <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
 
         <div className="relative px-8 py-10 text-center text-white">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-500 shadow-lg mb-5 text-4xl">
-            🏆
-          </div>
+          <img src="/logo.png" alt="Mundial Lamtar 2026" className="w-20 h-20 rounded-2xl object-cover mx-auto mb-5 shadow-lg" />
           <h1 className="font-display text-3xl sm:text-4xl font-black mb-1 tracking-tight">مونديال لمطار 2026</h1>
           <p className="text-primary font-bold text-base mb-1">#مونديال_لمطار_2026</p>
-          <p className="text-gray-400 text-sm italic mb-6">From us to all – Creativity sans limite</p>
+          <p className="text-gray-400 text-sm italic mb-6">{t('terms.subtitle')}</p>
 
-          {/* Tribute banner */}
           <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 rounded-2xl px-5 py-2.5 text-amber-300 text-sm">
             <span className="text-xl">🦅</span>
-            <span>طبعة الوفاء — إلى روح الشهيد الطيار <strong className="text-amber-200">بن نجة يوسف</strong></span>
+            <span>{t('terms.tribute')}</span>
           </div>
         </div>
       </div>
@@ -264,40 +273,122 @@ export default function Terms() {
       {/* ── QUICK STATS ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {[
-          { icon: '📍', label: 'الملعب',          value: 'الملعب البلدي — لمطار',  gradient: 'from-blue-500/10 to-indigo-500/10',   border: 'border-blue-200  dark:border-blue-900' },
-          { icon: '💰', label: 'رسوم التسجيل',    value: '8 000 دج / فريق',        gradient: 'from-green-500/10 to-emerald-500/10', border: 'border-green-200 dark:border-green-900' },
-          { icon: '👥', label: 'التشكيلة',        value: '6 + 4 احتياط',           gradient: 'from-violet-500/10 to-purple-500/10', border: 'border-violet-200 dark:border-violet-900' },
-          { icon: '🎽', label: 'اللباس',          value: 'موحد إجباري',            gradient: 'from-orange-500/10 to-amber-500/10',  border: 'border-orange-200 dark:border-orange-900' },
+          { icon: '📍', labelKey: 'terms.stat_venue_label',    valueKey: 'terms.stat_venue_value',    gradient: 'from-blue-500/10 to-indigo-500/10',   border: 'border-blue-200  dark:border-blue-900' },
+          { icon: '💰', labelKey: 'terms.stat_fee_label',      valueKey: 'terms.stat_fee_value',      gradient: 'from-green-500/10 to-emerald-500/10', border: 'border-green-200 dark:border-green-900' },
+          { icon: '⏱️', labelKey: 'terms.stat_duration_label', valueKey: 'terms.stat_duration_value', gradient: 'from-orange-500/10 to-amber-500/10',  border: 'border-orange-200 dark:border-orange-900' },
+          { icon: '👥', labelKey: 'terms.stat_squad_label',    valueKey: 'terms.stat_squad_value',    gradient: 'from-violet-500/10 to-purple-500/10', border: 'border-violet-200 dark:border-violet-900' },
         ].map(item => (
-          <div key={item.label} className={`bg-gradient-to-br ${item.gradient} border ${item.border} rounded-2xl p-4 text-center`}>
+          <div key={item.labelKey} className={`bg-gradient-to-br ${item.gradient} border ${item.border} rounded-2xl p-4 text-center`}>
             <p className="text-3xl mb-2">{item.icon}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{item.label}</p>
-            <p className="text-xs font-bold text-gray-800 dark:text-gray-200 leading-tight">{item.value}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{t(item.labelKey)}</p>
+            <p className="text-xs font-bold text-gray-800 dark:text-gray-200 leading-tight">{t(item.valueKey)}</p>
           </div>
         ))}
       </div>
 
-      {/* ── BASIC LAW ── */}
-      <div className="mb-8">
-        {/* Section header */}
-        <div className="flex items-center gap-3 mb-5">
+      {/* ── CONSTITUTION (26 articles) ── */}
+      <div className="mb-10">
+        <div className="flex items-center gap-3 mb-6">
           <div className="flex-1 h-px bg-gradient-to-r from-primary/40 to-transparent" />
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
             <span className="text-lg">📜</span>
-            <span className="font-display font-black text-sm text-primary tracking-wide">القانون الأساسي للدورة</span>
+            <span className="font-display font-black text-sm text-primary tracking-wide">{t('terms.constitution_title')}</span>
           </div>
           <div className="flex-1 h-px bg-gradient-to-l from-primary/40 to-transparent" />
         </div>
 
-        <div className="space-y-3">
-          {ARTICLES.map(article => (
-            <ArticleCard
-              key={article.num}
-              article={article}
-              open={openArticle === article.num}
-              onToggle={() => toggle(article.num)}
-            />
+        <div className="space-y-6">
+          {CHAPTERS.map(chapter => (
+            <div key={chapter.id}>
+              <ChapterHeader chapter={chapter} />
+              <div className="space-y-2 mr-1">
+                {chapter.articles.map(article => (
+                  <ArticleCard
+                    key={article.num}
+                    article={article}
+                    open={openArticle === article.num}
+                    onToggle={() => toggle(article.num)}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── ORGANIZATIONAL STRUCTURE ── */}
+      <div className="mb-10">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="flex-1 h-px bg-gradient-to-r from-violet-400/40 to-transparent" />
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20">
+            <span className="text-lg">🏛️</span>
+            <span className="font-display font-black text-sm text-violet-600 dark:text-violet-400 tracking-wide">{t('terms.org_title')}</span>
+          </div>
+          <div className="flex-1 h-px bg-gradient-to-l from-violet-400/40 to-transparent" />
+        </div>
+
+        {/* Presidency */}
+        <div className="rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-amber-500/30 p-5 mb-4 text-center text-white shadow-lg">
+          <p className="text-2xl mb-2">👑</p>
+          <p className="font-display font-black text-base mb-1 text-amber-300">{t('terms.presidency_title')}</p>
+          <p className="text-sm text-gray-300 mb-3">{t('terms.presidency_names')}</p>
+          <div className="flex flex-wrap justify-center gap-2 text-xs">
+            {[0,1,2,3,4].map(i => (
+              <span key={i} className="bg-amber-500/20 border border-amber-500/30 text-amber-300 px-3 py-1 rounded-full">
+                {t(`terms.presidency_role${i}`)}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Golden rules */}
+        <div className="rounded-2xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 p-5 mb-4">
+          <p className="font-bold text-sm text-amber-700 dark:text-amber-400 mb-3 flex items-center gap-2">
+            {t('terms.golden_rules_title')}
+          </p>
+          <ul className="space-y-2 text-xs text-amber-800 dark:text-amber-300">
+            {[0,1,2,3].map((i) => (
+              <li key={i} className="flex items-start gap-2">
+                <span className="font-black text-amber-600 dark:text-amber-400 shrink-0">{i + 1}.</span>
+                <span>{t(`terms.golden_rule${i}`)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* 5 committees */}
+        <p className="text-xs text-gray-400 text-center mb-3">{t('terms.committees_title')}</p>
+        <div className="space-y-2">
+          {COMMITTEES.map(c => (
+            <CommitteeCard key={c.num} committee={c} />
+          ))}
+        </div>
+      </div>
+
+      {/* ── COMMITMENT FORM ── */}
+      <div className="mb-10 rounded-2xl border border-border-light dark:border-border-dark overflow-hidden">
+        <div className="bg-gradient-to-r from-slate-700 to-gray-800 px-5 py-4 flex items-center gap-3">
+          <span className="text-2xl">📝</span>
+          <p className="font-display font-black text-white text-sm">{t('terms.commitment_title')}</p>
+        </div>
+        <div className="bg-white dark:bg-[#111827] px-5 py-5 text-sm text-gray-600 dark:text-gray-400 space-y-3 leading-relaxed" dir={isRtl ? 'rtl' : 'ltr'}>
+          <p>
+            {t('terms.commitment_p1')} <span className="inline-block border-b border-dashed border-gray-400 w-40 align-bottom" />&nbsp;
+            {t('terms.commitment_p2_pre')}{' '}
+            <span className="font-bold text-gray-800 dark:text-gray-200">{t('terms.commitment_doc')}</span>{' '}
+            {t('terms.commitment_p2_post')}
+          </p>
+          <p>{t('terms.commitment_p3')}</p>
+          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex-1">
+              <p className="text-xs text-gray-400 mb-1">{t('terms.commitment_sig_label')}</p>
+              <div className="border-b border-dashed border-gray-300 dark:border-gray-700 h-8" />
+            </div>
+            <div className="sm:w-44">
+              <p className="text-xs text-gray-400 mb-1">{t('terms.commitment_date_label')}</p>
+              <p className="text-sm text-gray-500 border-b border-dashed border-gray-300 dark:border-gray-700 h-8 flex items-end pb-0.5">.... / .... / 2026</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -306,16 +397,12 @@ export default function Terms() {
         <div className="rounded-2xl border border-border-light dark:border-border-dark bg-white dark:bg-[#111827] p-5 space-y-3">
           <p className="font-display font-bold text-base flex items-center gap-2">
             <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white text-sm">🎙️</span>
-            التغطية الإعلامية
+            {t('terms.media_title')}
           </p>
-          {[
-            'تغطية إعلامية وتصوير لجميع المباريات 📸',
-            'منصة إلكترونية للنتائج والترتيب لحظة بلحظة 📊',
-            'مفاجآت ستُكشف قريباً 🎁',
-          ].map((t, i) => (
+          {[0,1,2].map(i => (
             <div key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0" />
-              <span>{t}</span>
+              <span>{t(`terms.media_item${i}`)}</span>
             </div>
           ))}
         </div>
@@ -323,16 +410,12 @@ export default function Terms() {
         <div className="rounded-2xl border border-border-light dark:border-border-dark bg-white dark:bg-[#111827] p-5 space-y-3">
           <p className="font-display font-bold text-base flex items-center gap-2">
             <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center text-white text-sm">🟡</span>
-            التحكيم
+            {t('terms.refereeing_title')}
           </p>
-          {[
-            'طاقم فيدرالي ذو خبرة في البطولات الوطنية',
-            'تقنية VAR لضمان حق كل فريق ✅',
-            'قرارات الحكام نهائية وغير قابلة للاستئناف',
-          ].map((t, i) => (
+          {[0,1,2].map(i => (
             <div key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500 shrink-0" />
-              <span>{t}</span>
+              <span>{t(`terms.refereeing_item${i}`)}</span>
             </div>
           ))}
         </div>
@@ -344,7 +427,7 @@ export default function Terms() {
           <div className="flex-1 h-px bg-gradient-to-r from-green-400/40 to-transparent" />
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20">
             <span className="text-lg">📞</span>
-            <span className="font-display font-black text-sm text-green-600 dark:text-green-400 tracking-wide">التواصل والتسجيل</span>
+            <span className="font-display font-black text-sm text-green-600 dark:text-green-400 tracking-wide">{t('terms.contact_title')}</span>
           </div>
           <div className="flex-1 h-px bg-gradient-to-l from-green-400/40 to-transparent" />
         </div>
@@ -384,7 +467,6 @@ export default function Terms() {
             </div>
           ))}
 
-          {/* Email + Social */}
           <div className="grid sm:grid-cols-2 gap-3 mt-2">
             <a
               href="mailto:mundiallamtar.contact@gmail.com"
@@ -392,7 +474,7 @@ export default function Terms() {
             >
               <span className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center text-xl shrink-0">📩</span>
               <div className="min-w-0">
-                <p className="text-xs text-gray-400 mb-0.5">البريد الإلكتروني</p>
+                <p className="text-xs text-gray-400 mb-0.5">{t('terms.email_label')}</p>
                 <p className="text-xs font-semibold text-primary truncate group-hover:underline">mundiallamtar.contact@gmail.com</p>
               </div>
             </a>
@@ -411,12 +493,12 @@ export default function Terms() {
       <div className="grid grid-cols-2 gap-4 mb-8">
         <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-200 dark:border-orange-900 p-5 text-center">
           <p className="text-4xl mb-2">🦊</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-widest font-semibold">التميمة الرسمية</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-widest font-semibold">{t('terms.mascot_label')}</p>
           <p className="font-display font-black text-lg text-orange-600 dark:text-orange-400">#الكابتن</p>
         </div>
         <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-200 dark:border-green-900 p-5 text-center">
           <p className="text-4xl mb-2">⚽</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-widest font-semibold">الكرة الرسمية</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-widest font-semibold">{t('terms.ball_label')}</p>
           <p className="font-display font-black text-lg text-green-600 dark:text-green-400">#شابكة</p>
         </div>
       </div>
@@ -425,13 +507,13 @@ export default function Terms() {
       <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary via-green-600 to-emerald-700 p-8 text-center text-white shadow-xl">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.1),transparent_60%)] pointer-events-none" />
         <p className="text-3xl mb-3">🚀</p>
-        <h2 className="font-display font-black text-2xl mb-1">هل فريقكم مستعد؟</h2>
-        <p className="text-white/80 text-sm mb-6">سجّلوا الآن واكتبوا اسمكم في تاريخ البطولة</p>
+        <h2 className="font-display font-black text-2xl mb-1">{t('terms.cta_title')}</h2>
+        <p className="text-white/80 text-sm mb-6">{t('terms.cta_sub')}</p>
         <Link
           to="/register"
           className="inline-block bg-white text-primary font-bold text-sm px-8 py-3 rounded-2xl hover:bg-gray-50 transition-colors shadow-md hover:shadow-lg"
         >
-          سجّل فريقك الآن ←
+          {t('terms.cta_btn')}
         </Link>
       </div>
 

@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { matchService } from '../../services/tournament.service';
 import MatchCard from '../match/MatchCard';
 import Spinner from '../ui/Spinner';
 import EmptyState from '../ui/EmptyState';
 
 export default function TodayMatches() {
+  const { t } = useTranslation();
   const { data: matches = [], isLoading } = useQuery({
     queryKey: ['matches-today'],
     queryFn:  matchService.getToday,
@@ -16,8 +18,8 @@ export default function TodayMatches() {
   if (matches.length === 0) return (
     <EmptyState
       icon="📅"
-      title="Pas de match aujourd'hui"
-      subtitle="Revenez bientôt — les matchs apparaîtront ici dès qu'ils seront programmés."
+      title={t('home.no_today_title')}
+      subtitle={t('home.no_today_sub')}
       color="blue"
       size="sm"
     />

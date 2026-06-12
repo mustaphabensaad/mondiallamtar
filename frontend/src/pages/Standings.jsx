@@ -4,15 +4,15 @@ import { tournamentService } from '../services/tournament.service';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 
-const COL_HEADERS = [
-  { key: 'played',        label: 'J',   title: 'Joués' },
-  { key: 'won',           label: 'G',   title: 'Gagnés',      color: 'text-green-600 dark:text-green-400' },
-  { key: 'drawn',         label: 'N',   title: 'Nuls',         color: 'text-yellow-600 dark:text-yellow-400' },
-  { key: 'lost',          label: 'P',   title: 'Perdus',       color: 'text-red-500 dark:text-red-400' },
-  { key: 'goals_for',     label: 'BP',  title: 'Buts pour' },
-  { key: 'goals_against', label: 'BC',  title: 'Buts contre' },
-  { key: 'goal_diff',     label: '+/-', title: 'Différence de buts' },
-  { key: 'points',        label: 'Pts', title: 'Points', bold: true },
+const COL_HEADER_KEYS = [
+  { key: 'played',        label: 'J',   titleKey: 'standings.col_played' },
+  { key: 'won',           label: 'G',   titleKey: 'standings.col_won',   color: 'text-green-600 dark:text-green-400' },
+  { key: 'drawn',         label: 'N',   titleKey: 'standings.col_drawn', color: 'text-yellow-600 dark:text-yellow-400' },
+  { key: 'lost',          label: 'P',   titleKey: 'standings.col_lost',  color: 'text-red-500 dark:text-red-400' },
+  { key: 'goals_for',     label: 'BP',  titleKey: 'standings.col_gf' },
+  { key: 'goals_against', label: 'BC',  titleKey: 'standings.col_ga' },
+  { key: 'goal_diff',     label: '+/-', titleKey: 'standings.col_gd' },
+  { key: 'points',        label: 'Pts', titleKey: 'standings.col_pts', bold: true },
 ];
 
 const GROUP_GRADIENTS = [
@@ -29,6 +29,7 @@ const RANK_ICONS = { 1: '🥇', 2: '🥈' };
 function StandingsTable({ group, gi }) {
   const { t } = useTranslation();
   const [grad, rowBg] = GROUP_GRADIENTS[gi % GROUP_GRADIENTS.length];
+  const COL_HEADERS = COL_HEADER_KEYS.map(h => ({ ...h, title: t(h.titleKey) }));
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm
@@ -41,11 +42,11 @@ function StandingsTable({ group, gi }) {
         </div>
         <div>
           <h2 className="font-display font-bold text-white leading-tight">{t('team.group')} {group.letter}</h2>
-          <p className="text-white/60 text-[11px]">{group.teams.length} équipes</p>
+          <p className="text-white/60 text-[11px]">{group.teams.length} {t('team.teams_count')}</p>
         </div>
         <div className="ml-auto flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-full">
           <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse" />
-          <span className="text-[10px] text-white/70 font-semibold uppercase tracking-wide">Live</span>
+          <span className="text-[10px] text-white/70 font-semibold uppercase tracking-wide">{t('match.live')}</span>
         </div>
       </div>
 
@@ -55,7 +56,7 @@ function StandingsTable({ group, gi }) {
           <thead>
             <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/20">
               <th className="text-left px-3 sm:px-4 py-2.5 text-[10px] font-black text-gray-400 uppercase tracking-widest w-8">#</th>
-              <th className="text-left px-2 py-2.5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Équipe</th>
+              <th className="text-left px-2 py-2.5 text-[10px] font-black text-gray-400 uppercase tracking-widest">{t('standings.team_col')}</th>
               {COL_HEADERS.map(h => (
                 <th key={h.key} title={h.title}
                   className={`text-center px-1.5 py-2.5 text-[10px] font-black uppercase tracking-widest w-8
@@ -98,7 +99,7 @@ function StandingsTable({ group, gi }) {
                         </span>
                         {qualified && (
                           <span className="text-[9px] bg-primary/10 text-primary px-1 py-0.5 rounded font-black uppercase tracking-wide hidden sm:inline-block mt-0.5">
-                            Qualifié
+                            {t('standings.qualified')}
                           </span>
                         )}
                       </div>
@@ -136,7 +137,7 @@ function StandingsTable({ group, gi }) {
       {/* Legend */}
       <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/40 border-t border-gray-100 dark:border-gray-800 flex items-center gap-2 text-xs text-gray-400">
         <span>🥇🥈</span>
-        <span>Top 2 qualifiés pour les quarts de finale</span>
+        <span>{t('standings.top2_legend')}</span>
       </div>
     </div>
   );
@@ -157,13 +158,13 @@ export default function Standings() {
         <div>
           <h1 className="page-header mb-1">{t('nav.standings')}</h1>
           <p className="text-gray-500 text-sm">
-            Mis à jour en temps réel ·{' '}
-            <span className="font-semibold text-primary">{groups.length}</span> groupe{groups.length !== 1 ? 's' : ''}
+            {t('standings.updated_live')} ·{' '}
+            <span className="font-semibold text-primary">{groups.length}</span> {t('standings.groups_count')}
           </p>
         </div>
         <div className="flex items-center gap-1.5 text-xs bg-primary/5 border border-primary/20 text-primary px-3 py-1.5 rounded-full font-semibold">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          Live
+          {t('match.live')}
         </div>
       </div>
 
@@ -173,8 +174,8 @@ export default function Standings() {
         <div className="card">
           <EmptyState
             icon="📊"
-            title="Classement indisponible"
-            subtitle="Le tirage au sort n'a pas encore eu lieu. Revenez après la cérémonie des groupes."
+            title={t('standings.no_title')}
+            subtitle={t('standings.no_sub')}
             color="blue"
             size="lg"
           />

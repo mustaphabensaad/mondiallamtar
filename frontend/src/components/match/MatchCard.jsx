@@ -15,8 +15,8 @@ export default function MatchCard({ match, compact = false }) {
   const dateStr = dateObj?.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) ?? '';
 
   const phaseLabel = {
-    group: 'Phase de groupes', round_of_16: '1/8 finale',
-    quarter_final: 'Quart', semi_final: 'Demi-finale', final: '🏆 Finale',
+    group: t('match.phases.group'), round_of_16: t('match.phases.r16'),
+    quarter_final: t('match.phases.qf'), semi_final: t('match.phases.sf'), final: `🏆 ${t('match.phases.final')}`,
   }[match.phase] || '';
 
   return (

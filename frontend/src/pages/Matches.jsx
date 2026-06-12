@@ -7,10 +7,10 @@ import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 
 const FILTERS = [
-  { key: 'all',       labelKey: null,             label: 'Tous',        icon: '⚽' },
-  { key: 'live',      labelKey: 'match.live',      label: null,          icon: '🔴' },
-  { key: 'scheduled', labelKey: 'match.scheduled', label: null,          icon: '📅' },
-  { key: 'finished',  labelKey: 'match.finished',  label: 'Terminés',   icon: '✓'  },
+  { key: 'all',       labelKey: 'match.all',       icon: '⚽' },
+  { key: 'live',      labelKey: 'match.live',      icon: '🔴' },
+  { key: 'scheduled', labelKey: 'match.scheduled', icon: '📅' },
+  { key: 'finished',  labelKey: 'match.finished_pl', icon: '✓' },
 ];
 
 export default function Matches() {
@@ -35,14 +35,14 @@ export default function Matches() {
           <h1 className="page-header mb-0.5">{t('nav.matches')}</h1>
           {!isLoading && (
             <p className="text-sm text-gray-500">
-              <span className="font-semibold text-primary">{matches.length}</span> résultat{matches.length !== 1 ? 's' : ''}
+              <span className="font-semibold text-primary">{matches.length}</span> {t('player.registered_count')}
             </p>
           )}
         </div>
         {liveCount > 0 && (
           <span className="live-badge">
             <span className="w-1.5 h-1.5 rounded-full bg-white" />
-            {liveCount} en direct
+            {liveCount} {t('match.live_count')}
           </span>
         )}
       </div>
@@ -50,7 +50,7 @@ export default function Matches() {
       {/* ── Filter tabs ── */}
       <div className="flex gap-1.5 mb-6 p-1 bg-gray-100 dark:bg-gray-800/60 rounded-2xl">
         {FILTERS.map(f => {
-          const label = f.label || t(f.labelKey || '');
+          const label = t(f.labelKey || '');
           const isActive = filter === f.key;
           return (
             <button
@@ -82,16 +82,16 @@ export default function Matches() {
         <EmptyState
           icon={filter === 'live' ? '🔴' : filter === 'scheduled' ? '📅' : filter === 'finished' ? '🏁' : '⚽'}
           title={
-            filter === 'live'      ? 'Aucun match en direct' :
-            filter === 'scheduled' ? 'Aucun match programmé' :
-            filter === 'finished'  ? 'Aucun résultat' :
-            'Aucun match disponible'
+            filter === 'live'      ? t('match.no_live') :
+            filter === 'scheduled' ? t('match.no_scheduled') :
+            filter === 'finished'  ? t('match.no_results') :
+            t('match.no_matches')
           }
           subtitle={
-            filter === 'live'      ? 'Il n\'y a pas de match en cours pour l\'instant.' :
-            filter === 'scheduled' ? 'Les matchs seront programmés prochainement par l\'admin.' :
-            filter === 'finished'  ? 'Les résultats apparaîtront ici après les rencontres.' :
-            'Aucun match n\'a encore été créé pour ce tournoi.'
+            filter === 'live'      ? t('match.no_live_sub') :
+            filter === 'scheduled' ? t('match.no_scheduled_sub') :
+            filter === 'finished'  ? t('match.no_results_sub') :
+            t('match.no_matches_sub')
           }
           color={filter === 'live' ? 'red' : filter === 'scheduled' ? 'blue' : 'gray'}
           size="lg"

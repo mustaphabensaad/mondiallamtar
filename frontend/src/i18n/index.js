@@ -11,6 +11,7 @@ i18n
     supportedLngs: ['ar', 'fr', 'en'],
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',
+      requestOptions: { cache: 'no-store' },
     },
     interpolation: { escapeValue: false },
   });

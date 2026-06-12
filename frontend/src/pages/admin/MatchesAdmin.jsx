@@ -352,9 +352,33 @@ function LivePanel({ match, onClose }) {
       {/* ── Events timeline ── */}
       {events.length > 0 && (
         <div className="space-y-3">
-          {goalEvents.length > 0 && <EventGroup title="Buts" icon="⚽" events={goalEvents} isLive={isLive} onDelete={delEventMut.mutate} />}
-          {cardEvents.length > 0 && <EventGroup title="Cartons" icon="🟨" events={cardEvents} isLive={isLive} onDelete={delEventMut.mutate} />}
-          {subEvents.length  > 0 && <EventGroup title="Remplacements" icon="↕" events={subEvents} isLive={isLive} onDelete={delEventMut.mutate} />}
+          {goalEvents.length > 0 && (
+            <EventGroup
+              title="Buts" icon="⚽"
+              events={goalEvents}
+              canDelete={isLive || isDone}
+              onDelete={delEventMut.mutate}
+              isPending={delEventMut.isPending}
+            />
+          )}
+          {cardEvents.length > 0 && (
+            <EventGroup
+              title="Cartons" icon="🟨"
+              events={cardEvents}
+              canDelete={isLive || isDone}
+              onDelete={delEventMut.mutate}
+              isPending={delEventMut.isPending}
+            />
+          )}
+          {subEvents.length > 0 && (
+            <EventGroup
+              title="Remplacements" icon="↕"
+              events={subEvents}
+              canDelete={isLive}
+              onDelete={delEventMut.mutate}
+              isPending={delEventMut.isPending}
+            />
+          )}
         </div>
       )}
     </div>
@@ -362,7 +386,7 @@ function LivePanel({ match, onClose }) {
 }
 
 // ── Event group ────────────────────────────────────────────────────────────────
-function EventGroup({ title, icon, events, isLive, onDelete }) {
+function EventGroup({ title, icon, events, canDelete, onDelete, isPending }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700">
       <div className="px-4 py-2.5 bg-gray-50 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
@@ -382,11 +406,15 @@ function EventGroup({ title, icon, events, isLive, onDelete }) {
                 <p className="text-xs text-gray-400">{meta.label}</p>
               </div>
               <span className="text-[10px] text-gray-400 shrink-0 hidden sm:block">{ev.team_name || ''}</span>
-              {isLive && (
+              {canDelete && (
                 <button
-                  onClick={() => onDelete(ev.id)}
-                  className="text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-colors text-base leading-none shrink-0"
-                  title="Supprimer"
+                  onClick={() => {
+                    if (confirm(`Supprimer cet événement (${meta.label} — ${ev.minute}' — ${ev.player_name}) ?`))
+                      onDelete(ev.id);
+                  }}
+                  disabled={isPending}
+                  className="text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 disabled:opacity-40 transition-colors text-base leading-none shrink-0 p-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
+                  title="Supprimer cet événement"
                 >✕</button>
               )}
             </div>
