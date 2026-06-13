@@ -182,7 +182,7 @@ CREATE TABLE match_events (
   match_id    INT NOT NULL,
   player_id   INT NOT NULL,
   team_id     INT NOT NULL,
-  event_type  ENUM('goal','own_goal','yellow_card','red_card','substitution_in','substitution_out','penalty_scored','penalty_missed') NOT NULL,
+  event_type  ENUM('goal','own_goal','yellow_card','red_card','white_card','substitution_in','substitution_out','penalty_scored','penalty_missed') NOT NULL,
   minute      TINYINT UNSIGNED,
   extra_time  BOOLEAN DEFAULT FALSE,
   description TEXT,

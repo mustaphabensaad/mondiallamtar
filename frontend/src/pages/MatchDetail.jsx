@@ -41,6 +41,7 @@ const EVENT_META = {
   penalty_missed:   { icon: '✗',  labelKey: 'match.penalty_missed', color: 'text-red-400'    },
   yellow_card:      { icon: '🟨', labelKey: 'match.warning',        color: 'text-yellow-500' },
   red_card:         { icon: '🟥', labelKey: 'match.expulsion',      color: 'text-red-500'    },
+  white_card:       { icon: '⬜', labelKey: 'match.white_card',     color: 'text-gray-300'   },
   substitution_in:  { icon: '↑',  labelKey: 'match.sub_in',         color: 'text-blue-400'   },
   substitution_out: { icon: '↓',  labelKey: 'match.sub_out',        color: 'text-orange-400' },
 };

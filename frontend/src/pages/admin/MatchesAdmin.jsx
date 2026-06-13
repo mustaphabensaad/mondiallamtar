@@ -12,12 +12,13 @@ import ShareCardModal from '../../components/share/ShareCardModal';
 import MatchResultCard from '../../components/share/cards/MatchResultCard';
 
 const QUICK_ACTIONS = [
-  { key: 'goal',            icon: '⚽', label: 'Goal',       bg: 'bg-emerald-500 hover:bg-emerald-600', ring: 'ring-emerald-400' },
-  { key: 'own_goal',        icon: '⚽', label: 'Own Goal',   bg: 'bg-orange-500 hover:bg-orange-600',  ring: 'ring-orange-400'  },
-  { key: 'penalty_scored',  icon: '⚽', label: 'Penalty',    bg: 'bg-teal-500 hover:bg-teal-600',      ring: 'ring-teal-400'    },
-  { key: 'yellow_card',     icon: '🟨', label: 'Yellow',     bg: 'bg-yellow-500 hover:bg-yellow-600',  ring: 'ring-yellow-400'  },
-  { key: 'red_card',        icon: '🟥', label: 'Red Card',   bg: 'bg-red-600 hover:bg-red-700',        ring: 'ring-red-400'     },
-  { key: 'substitution_in', icon: '↕',  label: 'Sub',        bg: 'bg-blue-500 hover:bg-blue-600',      ring: 'ring-blue-400'    },
+  { key: 'goal',            icon: '⚽', label: 'Goal',        bg: 'bg-emerald-500 hover:bg-emerald-600', ring: 'ring-emerald-400' },
+  { key: 'own_goal',        icon: '⚽', label: 'Own Goal',    bg: 'bg-orange-500 hover:bg-orange-600',  ring: 'ring-orange-400'  },
+  { key: 'penalty_scored',  icon: '⚽', label: 'Penalty',     bg: 'bg-teal-500 hover:bg-teal-600',      ring: 'ring-teal-400'    },
+  { key: 'yellow_card',     icon: '🟨', label: 'Yellow',      bg: 'bg-yellow-500 hover:bg-yellow-600',  ring: 'ring-yellow-400'  },
+  { key: 'red_card',        icon: '🟥', label: 'Red Card',    bg: 'bg-red-600 hover:bg-red-700',        ring: 'ring-red-400'     },
+  { key: 'white_card',      icon: '⬜', label: 'White Card',  bg: 'bg-gray-200 hover:bg-gray-300',      ring: 'ring-gray-300'    },
+  { key: 'substitution_in', icon: '↕',  label: 'Sub',         bg: 'bg-blue-500 hover:bg-blue-600',      ring: 'ring-blue-400'    },
 ];
 
 const EVENT_META = {
@@ -27,6 +28,7 @@ const EVENT_META = {
   penalty_missed:   { icon: '✗',  label: 'Penalty ✗',     row: 'bg-gray-50 dark:bg-gray-800/50 border-l-2 border-gray-400'        },
   yellow_card:      { icon: '🟨', label: 'Yellow Card',   row: 'bg-yellow-50 dark:bg-yellow-900/20 border-l-2 border-yellow-400'  },
   red_card:         { icon: '🟥', label: 'Red Card',      row: 'bg-red-50 dark:bg-red-900/20 border-l-2 border-red-400'           },
+  white_card:       { icon: '⬜', label: 'White Card',    row: 'bg-gray-50 dark:bg-gray-800/30 border-l-2 border-gray-400'         },
   substitution_in:  { icon: '↑',  label: 'Sub In',        row: 'bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-400'        },
   substitution_out: { icon: '↓',  label: 'Sub Out',       row: 'bg-indigo-50 dark:bg-indigo-900/20 border-l-2 border-indigo-400'  },
 };
@@ -34,7 +36,7 @@ const EVENT_META = {
 // ── Quick action mini-form ─────────────────────────────────────────────────────
 function ActionForm({ actionKey, homePlayers, awayPlayers, homeTeam, awayTeam, onSubmit, onCancel, isPending }) {
   const { register, handleSubmit } = useForm({ defaultValues: { minute: 1, event_type: actionKey } });
-  const isCard = actionKey === 'yellow_card' || actionKey === 'red_card';
+  const isCard = actionKey === 'yellow_card' || actionKey === 'red_card' || actionKey === 'white_card';
   const isSub  = actionKey === 'substitution_in';
   const meta   = QUICK_ACTIONS.find(a => a.key === actionKey) || {};
 
@@ -134,11 +136,13 @@ function TeamStatBadges({ events, teamId }) {
   const goals   = events.filter(e => e.team_id === teamId && ['goal','penalty_scored'].includes(e.event_type)).length;
   const yellows = events.filter(e => e.team_id === teamId && e.event_type === 'yellow_card').length;
   const reds    = events.filter(e => e.team_id === teamId && e.event_type === 'red_card').length;
+  const whites  = events.filter(e => e.team_id === teamId && e.event_type === 'white_card').length;
   return (
     <div className="flex items-center gap-1.5 flex-wrap justify-center mt-1">
       {goals   > 0 && <span className="text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-1.5 py-0.5 rounded-full">⚽ {goals}</span>}
       {yellows > 0 && <span className="text-[10px] font-bold bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-1.5 py-0.5 rounded-full">🟨 {yellows}</span>}
       {reds    > 0 && <span className="text-[10px] font-bold bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-1.5 py-0.5 rounded-full">🟥 {reds}</span>}
+      {whites  > 0 && <span className="text-[10px] font-bold bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded-full">⬜ {whites}</span>}
     </div>
   );
 }
@@ -212,7 +216,7 @@ function LivePanel({ match, onClose, onMatchEnded }) {
   const allPlayers = [...homePlayers, ...awayPlayers];
 
   const goalEvents = events.filter(e => ['goal','own_goal','penalty_scored','penalty_missed'].includes(e.event_type));
-  const cardEvents = events.filter(e => ['yellow_card','red_card'].includes(e.event_type));
+  const cardEvents = events.filter(e => ['yellow_card','red_card','white_card'].includes(e.event_type));
   const subEvents  = events.filter(e => ['substitution_in','substitution_out'].includes(e.event_type));
 
   return (
