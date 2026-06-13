@@ -47,7 +47,7 @@ export default function HeroCarousel() {
           مونديال لمطار 2026
         </h2>
         <p className="relative text-primary font-bold text-sm sm:text-base mb-1">#مونديال_لمطار_2026</p>
-        <p className="relative text-gray-400 text-xs italic mb-3">From us to all – Creativity sans limite</p>
+        <p className="relative text-gray-400 text-xs italic mb-3">From us to all – Créativité sans limite</p>
         <div className="relative px-4 py-2 bg-amber-500/10 border border-amber-500/25 rounded-xl text-xs text-amber-400 font-medium">
           🦅 طبعة الوفاء — إلى روح الشهيد الطيار بن نجة يوسف
         </div>

@@ -102,14 +102,41 @@ export default function InviteForm() {
           <p className="text-xs font-bold text-blue-500 uppercase tracking-widest text-center mb-3">
             {t('invite_form.photo_example')}
           </p>
-          <div className="flex flex-col items-center gap-1.5">
-            <img
-              src="/person2.jpeg"
-              alt="Exemple photo joueur"
-              className="w-20 h-20 rounded-full object-cover ring-2 ring-blue-300 dark:ring-blue-700 shadow-md"
-            />
-            <span className="text-[10px] text-blue-500 font-semibold">{t('invite_form.good_photo')}</span>
+          <div className="flex items-end justify-center gap-4">
+            {/* Photo 1 — headshot */}
+            <div className="flex flex-col items-center gap-1.5">
+              <div className="relative">
+                <img
+                  src="/mahrez1.jpeg"
+                  alt="Exemple photo portrait"
+                  className="w-20 h-20 rounded-full object-cover ring-2 ring-blue-400 dark:ring-blue-600 shadow-lg"
+                />
+                <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-900 flex items-center justify-center text-[9px] text-white font-black">✓</span>
+              </div>
+              <span className="text-[10px] text-green-600 dark:text-green-400 font-bold">Portrait</span>
+            </div>
+
+            <div className="flex flex-col items-center gap-1 pb-1">
+              <span className="text-[10px] text-gray-400 font-bold">ou</span>
+            </div>
+
+            {/* Photo 2 — full body */}
+            <div className="flex flex-col items-center gap-1.5">
+              <div className="relative">
+                <img
+                  src="/mahrez2.jpeg"
+                  alt="Exemple photo entière"
+                  className="w-20 h-20 rounded-full object-cover ring-2 ring-blue-400 dark:ring-blue-600 shadow-lg object-top"
+                />
+                <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-900 flex items-center justify-center text-[9px] text-white font-black">✓</span>
+              </div>
+              <span className="text-[10px] text-green-600 dark:text-green-400 font-bold">Pleine pose</span>
+            </div>
           </div>
+
+          <p className="text-center text-[10px] text-blue-400 mt-3 font-medium">
+            Riyad Mahrez — Al Ahli FC · نادي الاهلي
+          </p>
         </div>
 
         <form onSubmit={handleSubmit(d => submitMut.mutate(d))} className="space-y-4">
@@ -171,12 +198,9 @@ export default function InviteForm() {
             {/* Bio example */}
             <div className="mt-2 rounded-xl border border-dashed border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-900/10 p-2.5">
               <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1.5">{t('invite_form.bio_example')}</p>
-              <div className="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed space-y-1" dir="rtl">
-                <p>لعبت لفريق سريع لمطار صنف أشبال u17 موسم 2016/2017</p>
-                <p className="text-gray-400">مشارك في عدة دورات كروية:</p>
-                <p>🏆 فائز كقائد فريق لمطار بدورة بملعب المدينة المنورة بسيدي بلعباس</p>
-                <p>🏆 فائز بدورة في بلدية لمطار 2025</p>
-                <p>⚽ مشارك في عدة دورات في بلدية لمطار مع الوصول لنهائي 8 مرات منها 5 متتالية مع فريق نابولي لمطار</p>
+              <div className="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed" dir="rtl">
+                <p className="font-semibold text-gray-700 dark:text-gray-300 mb-1">رياض محرز — نادي الاهلي · Al Ahli FC</p>
+                <p>جناح أيمن. رحلتي بدأت من ملاعب سارسل وصولاً إلى منصات التتويج العالمية. بطل الدوري الإنجليزي (5 مرات)، بطل دوري أبطال أوروبا، بطل إفريقيا، وحامل لقب دوري أبطال آسيا. مهاراتي ليست مجرد مراوغات، بل هي لغة أتحدث بها في الملعب؛ دقة، إبداع، وحسم. جئت إلى 'مونديال لمطار' لأشارككم الشغف، ولأثبت أن كرة القدم، مهما تغيرت الملاعب، تظل دائماً فنّاً يُلعب بالقدم والقلب. جاهز لصناعة الفارق</p>
               </div>
             </div>
           </div>

@@ -113,21 +113,27 @@ export default function TeamSetup() {
           </p>
           <div className="flex items-center justify-center gap-4">
             <div className="flex flex-col items-center gap-1.5">
-              <img
-                src="/logo1.jpeg"
-                alt="Exemple logo 1"
-                className="w-20 h-20 rounded-2xl object-cover ring-2 ring-blue-200 dark:ring-blue-900 shadow-md"
-              />
-              <span className="text-[10px] text-gray-400 font-medium">Napoli Lamtar</span>
+              <div className="relative">
+                <img
+                  src="/team1.jpeg"
+                  alt="Algérie FAF"
+                  className="w-20 h-20 rounded-2xl object-cover ring-2 ring-green-300 dark:ring-green-800 shadow-md"
+                />
+                <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-900 flex items-center justify-center text-[9px] text-white font-black">✓</span>
+              </div>
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-semibold">المنتخب الجزائري</span>
             </div>
             <div className="w-px h-16 bg-gray-200 dark:bg-gray-700" />
             <div className="flex flex-col items-center gap-1.5">
-              <img
-                src="/logo2.jpeg"
-                alt="Exemple logo 2"
-                className="w-20 h-20 rounded-2xl object-cover ring-2 ring-amber-200 dark:ring-amber-900 shadow-md"
-              />
-              <span className="text-[10px] text-gray-400 font-medium">Shabka</span>
+              <div className="relative">
+                <img
+                  src="/team2.jpeg"
+                  alt="Al Ahli FC"
+                  className="w-20 h-20 rounded-2xl object-cover ring-2 ring-green-300 dark:ring-green-800 shadow-md"
+                />
+                <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-900 flex items-center justify-center text-[9px] text-white font-black">✓</span>
+              </div>
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-semibold">Al Ahli FC · نادي الاهلي</span>
             </div>
           </div>
           <p className="text-[11px] text-gray-400 text-center mt-3 leading-relaxed">

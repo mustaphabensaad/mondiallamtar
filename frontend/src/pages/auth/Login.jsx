@@ -50,7 +50,7 @@ export default function Login() {
           />
           <h1 className="font-display font-black text-4xl mb-2">مونديال لمطار</h1>
           <p className="text-2xl font-bold text-primary-light mb-3">2026</p>
-          <p className="text-green-400/80 italic text-sm mb-8">From us to all – Creativity sans limite</p>
+          <p className="text-green-400/80 italic text-sm mb-8">From us to all – Créativité sans limite</p>
 
           <div className="flex items-center justify-center gap-2 bg-amber-500/20 border border-amber-500/30 rounded-2xl px-5 py-3 text-amber-300 text-sm">
             <span className="text-lg">🦅</span>
