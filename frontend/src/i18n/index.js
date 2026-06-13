@@ -10,7 +10,7 @@ i18n
     fallbackLng:   'fr',
     supportedLngs: ['ar', 'fr', 'en'],
     backend: {
-      loadPath: '/locales/{{lng}}/translation.json',
+      loadPath: '/locales/{{lng}}/translation.json?v=2',
       requestOptions: { cache: 'no-store' },
     },
     interpolation: { escapeValue: false },

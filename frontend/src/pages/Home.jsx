@@ -7,6 +7,7 @@ import TopScorers      from '../components/home/TopScorers';
 import PastMatches     from '../components/home/PastMatches';
 import SponsorsSidebar from '../components/home/SponsorsSidebar';
 import MotmSidebar     from '../components/home/MotmSidebar';
+import PostsFeed       from '../components/home/PostsFeed';
 import MatchCard       from '../components/match/MatchCard';
 
 function SectionCard({ title, icon, children, accent, className = '' }) {
@@ -93,6 +94,16 @@ export default function Home() {
           </SectionCard>
         </aside>
 
+      </div>
+
+      {/* ── Actualités — full width below grid ── */}
+      <div className="mt-6">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-base shrink-0">📰</span>
+          <h2 className="font-display font-bold text-lg text-gray-900 dark:text-white">{t('home.posts_title')}</h2>
+          <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+        </div>
+        <PostsFeed />
       </div>
     </div>
   );

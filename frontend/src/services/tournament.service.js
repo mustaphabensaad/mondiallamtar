@@ -76,6 +76,15 @@ export const drawService = {
   reset:     ()                    => api.post('/api/draw/reset').then(r => r.data),
 };
 
+export const postService = {
+  getPublished: (limit = 6) => api.get('/api/posts', { params: { limit } }).then(r => r.data.posts),
+  getById:      (id)         => api.get(`/api/posts/${id}`).then(r => r.data.post),
+  getAll:       ()           => api.get('/api/posts/all').then(r => r.data.posts),
+  create:       (form)       => api.post('/api/posts', form, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data.post),
+  update:       (id, form)   => api.put(`/api/posts/${id}`, form, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data.post),
+  remove:       (id)         => api.delete(`/api/posts/${id}`).then(r => r.data),
+};
+
 export const adminService = {
   getDashboard:        ()       => api.get('/api/admin/dashboard').then(r => r.data.stats),
   getPending:          ()       => api.get('/api/admin/teams/pending').then(r => r.data.teams),

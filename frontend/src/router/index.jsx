@@ -14,6 +14,7 @@ import LiveMatch         from '../pages/LiveMatch';
 import Terms             from '../pages/Terms';
 import InviteForm        from '../pages/InviteForm';
 import Players          from '../pages/Players';
+import PostDetail       from '../pages/PostDetail';
 
 // ── Auth pages ─────────────────────────────────────────────────────────────────
 import Login    from '../pages/auth/Login';
@@ -38,6 +39,7 @@ import GroupDrawAdmin  from '../pages/admin/GroupDrawAdmin';
 import GroupSchedule   from '../pages/admin/GroupSchedule';
 import GroupDraw       from '../pages/GroupDraw';
 import SponsorsAdmin   from '../pages/admin/SponsorsAdmin';
+import PostsAdmin      from '../pages/admin/PostsAdmin';
 
 // ── Protected route wrapper ───────────────────────────────────────────────────
 function ProtectedRoute({ children, roles }) {
@@ -64,6 +66,7 @@ export const router = createBrowserRouter([
       { path: 'live',            element: <LiveMatch /> },
       { path: 'terms',           element: <Terms /> },
       { path: 'draw',            element: <GroupDraw /> },
+      { path: 'posts/:id',       element: <PostDetail /> },
 
       // Auth
       { path: 'login',    element: <Login /> },
@@ -142,6 +145,10 @@ export const router = createBrowserRouter([
           {
             path: 'sponsors',
             element: <ProtectedRoute roles={['admin']}><SponsorsAdmin /></ProtectedRoute>,
+          },
+          {
+            path: 'posts',
+            element: <ProtectedRoute roles={['admin']}><PostsAdmin /></ProtectedRoute>,
           },
         ],
       },

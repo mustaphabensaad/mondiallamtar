@@ -41,6 +41,7 @@ app.use('/api/referees',    require('./routes/referee.routes'));
 app.use('/api/knockout',    require('./routes/knockout.routes'));
 app.use('/api/draw',       require('./routes/draw.routes'));
 app.use('/api/association-images', require('./routes/association.routes'));
+app.use('/api/posts',              require('./routes/posts.routes'));
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
