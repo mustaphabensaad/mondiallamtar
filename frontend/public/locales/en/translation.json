@@ -123,7 +123,13 @@
     "page_title": "Players",
     "registered_count": "registered players",
     "goals_total": "total goals",
-    "reset": "Reset"
+    "reset": "Reset",
+    "set_captain": "Set as captain",
+    "is_captain": "Captain",
+    "captain_set": "Captain updated!",
+    "suspend": "Suspend player",
+    "unsuspend": "Reactivate player",
+    "suspended": "Suspended"
   },
   "payment": {
     "title": "Registration Payment",
@@ -237,8 +243,10 @@
     "good_logo_text": "A good logo is square, readable and represents your team.",
     "team_name_label": "Team Name",
     "coach_name_label": "Coach Name",
+    "captain_name_label": "Captain Name",
     "team_placeholder": "e.g. FC Alger Stars",
     "coach_placeholder": "Coach full name",
+    "captain_placeholder": "Captain full name",
     "status_label": "Status",
     "group_label": "Group",
     "save_changes": "Save Changes",

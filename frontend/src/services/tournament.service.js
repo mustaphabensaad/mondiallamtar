@@ -32,6 +32,8 @@ export const teamService = {
   update:         (id,d)   => api.put(`/api/teams/${id}`, d).then(r => r.data.team),
   generateInvites:(id,cnt) => api.post(`/api/teams/${id}/invites`, { count: cnt }).then(r => r.data.links),
   getInvites:     (id)     => api.get(`/api/teams/${id}/invites`).then(r => r.data.players),
+  setCaptain:     (teamId, playerId) => api.put(`/api/teams/${teamId}/players/${playerId}/set-captain`).then(r => r.data),
+  toggleSuspend:  (teamId, playerId) => api.put(`/api/teams/${teamId}/players/${playerId}/toggle-suspend`).then(r => r.data),
 };
 
 export const playerService = {

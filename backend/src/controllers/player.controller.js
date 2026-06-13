@@ -56,7 +56,7 @@ async function submitInviteForm(req, res, next) {
     // Build SET clause dynamically so missing optional columns don't cause SQL errors
     const setClauses = [
       'first_name = ?', 'last_name = ?', 'date_of_birth = ?', 'phone = ?',
-      'jersey_number = ?', 'position = ?', 'token_used = TRUE',
+      'jersey_number = ?', 'position = ?', 'token_used = TRUE', 'is_validated = TRUE',
     ];
     const updateParams = [first_name, last_name, date_of_birth || null, phone, jersey_number, position];
     if (photo_path) { setClauses.push('photo_path = ?'); updateParams.push(photo_path); }
@@ -106,4 +106,57 @@ async function getAllPlayers(req, res, next) {
   }
 }
 
-module.exports = { getTopScorers, getInviteInfo, submitInviteForm, getAllPlayers, getPlayerById };
+async function toggleSuspend(req, res, next) {
+  try {
+    const playerId = parseInt(req.params.playerId);
+    const teamId   = parseInt(req.params.teamId);
+
+    // Verify team ownership
+    const [teams] = await db.query('SELECT * FROM teams WHERE id = ?', [teamId]);
+    if (!teams.length) return res.status(404).json({ message: 'Team not found' });
+    if (teams[0].captain_id !== req.user.id && req.user.role !== 'admin')
+      return res.status(403).json({ message: 'Forbidden' });
+
+    // Verify player belongs to team
+    const [players] = await db.query('SELECT * FROM players WHERE id = ? AND team_id = ?', [playerId, teamId]);
+    if (!players.length) return res.status(404).json({ message: 'Player not found in this team' });
+
+    const newStatus = players[0].status === 'suspended' ? 'active' : 'suspended';
+    await db.query('UPDATE players SET status = ? WHERE id = ?', [newStatus, playerId]);
+    res.json({ message: `Player ${newStatus}`, status: newStatus });
+  } catch (err) { next(err); }
+}
+
+async function setCaptain(req, res, next) {
+  try {
+    const teamId   = parseInt(req.params.teamId);
+    const playerId = parseInt(req.params.playerId);
+
+    // Verify team ownership (captain or admin)
+    const [teams] = await db.query('SELECT * FROM teams WHERE id = ?', [teamId]);
+    if (!teams.length) return res.status(404).json({ message: 'Team not found' });
+    if (teams[0].captain_id !== req.user.id && req.user.role !== 'admin')
+      return res.status(403).json({ message: 'Forbidden' });
+
+    // Verify player belongs to team
+    const [players] = await db.query(
+      'SELECT * FROM players WHERE id = ? AND team_id = ?', [playerId, teamId]
+    );
+    if (!players.length) return res.status(404).json({ message: 'Player not found in this team' });
+
+    const player = players[0];
+    if (!player.first_name) return res.status(400).json({ message: 'Player has not completed their profile yet' });
+
+    // Clear previous captain flag for the team
+    await db.query('UPDATE players SET is_captain = FALSE WHERE team_id = ?', [teamId]);
+    // Set new captain
+    await db.query('UPDATE players SET is_captain = TRUE WHERE id = ?', [playerId]);
+    // Sync captain_name on team
+    const captainName = `${player.first_name} ${player.last_name}`.trim();
+    await db.query('UPDATE teams SET captain_name = ? WHERE id = ?', [captainName, teamId]);
+
+    res.json({ message: 'Captain updated', captain_name: captainName });
+  } catch (err) { next(err); }
+}
+
+module.exports = { getTopScorers, getInviteInfo, submitInviteForm, getAllPlayers, getPlayerById, setCaptain, toggleSuspend };

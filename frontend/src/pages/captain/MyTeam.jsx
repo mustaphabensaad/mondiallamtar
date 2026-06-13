@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { teamService, matchService } from '../../services/tournament.service';
+import toast from 'react-hot-toast';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
 import EmptyState from '../../components/ui/EmptyState';
@@ -14,6 +15,7 @@ const POSITION_ORDER = { GK: 0, DEF: 1, MID: 2, FWD: 3 };
 
 export default function MyTeam() {
   const { t } = useTranslation();
+  const qc    = useQueryClient();
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
 
   const { data: myTeam, isLoading } = useQuery({
@@ -33,6 +35,25 @@ export default function MyTeam() {
     queryKey: ['matches-all'],
     queryFn:  matchService.getAll,
     enabled:  !!teamId,
+  });
+
+  const captainMut = useMutation({
+    mutationFn: ({ playerId }) => teamService.setCaptain(teamId, playerId),
+    onSuccess: () => {
+      qc.invalidateQueries(['my-team']);
+      qc.invalidateQueries(['team-players', teamId]);
+      toast.success(t('player.captain_set'));
+    },
+    onError: (e) => toast.error(e?.response?.data?.message || 'Error'),
+  });
+
+  const suspendMut = useMutation({
+    mutationFn: ({ playerId }) => teamService.toggleSuspend(teamId, playerId),
+    onSuccess: (data) => {
+      qc.invalidateQueries(['team-players', teamId]);
+      toast.success(data.message);
+    },
+    onError: (e) => toast.error(e?.response?.data?.message || 'Error'),
   });
 
   if (isLoading) return <div className="flex justify-center py-24"><Spinner size="lg" /></div>;
@@ -119,19 +140,51 @@ export default function MyTeam() {
           ) : (
             <div className="divide-y divide-border-light dark:divide-border-dark">
               {sorted.map(p => (
-                <div key={p.id} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/30 cursor-pointer transition-colors" onClick={() => setSelectedPlayerId(p.id)}>
+                <div key={p.id} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
                   <span className="w-7 text-center text-xs font-bold text-gray-400 shrink-0">{p.jersey_number ?? '—'}</span>
                   <img
                     src={imgUrl(p.photo_path) || `https://placehold.co/40x40/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
                     alt={`${p.first_name} ${p.last_name}`}
-                    className="w-10 h-10 rounded-full object-cover shrink-0"
+                    className="w-10 h-10 rounded-full object-cover shrink-0 cursor-pointer"
+                    onClick={() => setSelectedPlayerId(p.id)}
                   />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold truncate">{p.first_name} {p.last_name}</p>
+                  <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setSelectedPlayerId(p.id)}>
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-semibold truncate">{p.first_name} {p.last_name}</p>
+                      {p.is_captain ? (
+                        <span className="text-amber-500 text-xs font-bold shrink-0" title={t('player.is_captain')}>👑</span>
+                      ) : null}
+                    </div>
                     <p className="text-xs text-gray-500">{t(`player.positions.${p.position}`)}</p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <Badge variant={p.validation_status} className="text-[10px]">{p.validation_status}</Badge>
+                    {p.first_name && !p.is_captain && (
+                      <button
+                        onClick={() => captainMut.mutate({ playerId: p.id })}
+                        disabled={captainMut.isPending}
+                        title={t('player.set_captain')}
+                        className="text-xs px-2 py-1 rounded-lg border border-amber-300 dark:border-amber-600 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors shrink-0"
+                      >
+                        👑
+                      </button>
+                    )}
+                    {p.first_name && (
+                      <button
+                        onClick={() => suspendMut.mutate({ playerId: p.id })}
+                        disabled={suspendMut.isPending}
+                        title={p.status === 'suspended' ? t('player.unsuspend') : t('player.suspend')}
+                        className={`text-xs px-2 py-1 rounded-lg border transition-colors shrink-0 ${
+                          p.status === 'suspended'
+                            ? 'border-green-300 dark:border-green-600 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20'
+                            : 'border-red-200 dark:border-red-800 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
+                        }`}
+                      >
+                        {p.status === 'suspended' ? '▶' : '⛔'}
+                      </button>
+                    )}
+                    <Badge variant={p.status === 'suspended' ? 'rejected' : p.validation_status} className="text-[10px]">
+                      {p.status === 'suspended' ? t('player.suspended') : p.validation_status}
+                    </Badge>
                     {p.goals > 0 && <span className="text-primary font-bold text-xs">⚽ {p.goals}</span>}
                     {p.yellow_cards > 0 && <span className="bg-yellow-400 text-black font-bold px-1.5 py-0.5 rounded text-[10px]">{p.yellow_cards}</span>}
                     {p.red_cards > 0 && <span className="bg-red-600 text-white font-bold px-1.5 py-0.5 rounded text-[10px]">{p.red_cards}</span>}

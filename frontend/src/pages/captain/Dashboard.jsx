@@ -1,8 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { teamService } from '../../services/tournament.service';
 import { useAuth } from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
 import EmptyState from '../../components/ui/EmptyState';
@@ -42,6 +43,7 @@ function ActionCard({ to, icon, label, desc, color }) {
 export default function CaptainDashboard() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const qc = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ['my-team'],
@@ -50,6 +52,18 @@ export default function CaptainDashboard() {
 
   const team    = data?.team;
   const players = data?.players || [];
+
+  const captainMut = useMutation({
+    mutationFn: (playerId) => teamService.setCaptain(team?.id, playerId),
+    onSuccess: () => { qc.invalidateQueries(['my-team']); toast.success(t('player.captain_set')); },
+    onError: (e) => toast.error(e?.response?.data?.message || 'Error'),
+  });
+
+  const suspendMut = useMutation({
+    mutationFn: (playerId) => teamService.toggleSuspend(team?.id, playerId),
+    onSuccess: (data) => { qc.invalidateQueries(['my-team']); toast.success(data.message); },
+    onError: (e) => toast.error(e?.response?.data?.message || 'Error'),
+  });
 
   if (isLoading) return <div className="flex justify-center py-24"><Spinner size="lg" /></div>;
 
@@ -166,17 +180,46 @@ export default function CaptainDashboard() {
                   className="w-9 h-9 rounded-full object-cover shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                    {p.first_name} {p.last_name}
-                  </p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                      {p.first_name} {p.last_name}
+                    </p>
+                    {p.is_captain && <span className="text-amber-500 text-xs shrink-0" title={t('player.is_captain')}>👑</span>}
+                  </div>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className={`w-1.5 h-1.5 rounded-full ${POS_COLOR[p.position] || 'bg-gray-400'}`} />
                     <p className="text-xs text-gray-500">{t(`player.positions.${p.position}`)}</p>
                   </div>
                 </div>
-                <Badge variant={p.is_validated ? 'approved' : 'pending'}>
-                  {p.is_validated ? t('captain.active') : t('captain.pending')}
-                </Badge>
+                <div className="flex items-center gap-2 shrink-0">
+                  {p.first_name && !p.is_captain && (
+                    <button
+                      onClick={() => captainMut.mutate(p.id)}
+                      disabled={captainMut.isPending}
+                      title={t('player.set_captain')}
+                      className="text-xs px-2 py-1 rounded-lg border border-amber-300 dark:border-amber-600 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
+                    >
+                      👑
+                    </button>
+                  )}
+                  {p.first_name && (
+                    <button
+                      onClick={() => suspendMut.mutate(p.id)}
+                      disabled={suspendMut.isPending}
+                      title={p.status === 'suspended' ? t('player.unsuspend') : t('player.suspend')}
+                      className={`text-xs px-2 py-1 rounded-lg border transition-colors ${
+                        p.status === 'suspended'
+                          ? 'border-green-300 dark:border-green-600 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20'
+                          : 'border-red-200 dark:border-red-800 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
+                      }`}
+                    >
+                      {p.status === 'suspended' ? '▶' : '⛔'}
+                    </button>
+                  )}
+                  <Badge variant={p.status === 'suspended' ? 'rejected' : (p.is_validated ? 'approved' : 'pending')}>
+                    {p.status === 'suspended' ? t('player.suspended') : (p.is_validated ? t('captain.active') : t('captain.pending'))}
+                  </Badge>
+                </div>
               </div>
             ))}
           </div>

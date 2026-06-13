@@ -55,6 +55,7 @@ CREATE TABLE teams (
   logo_path      VARCHAR(255),
   coach_name     VARCHAR(100),
   coach_phone    VARCHAR(30),
+  captain_name   VARCHAR(100),
   status         ENUM('pending','approved','rejected','disqualified') DEFAULT 'pending',
   group_letter   VARCHAR(2),
   payment_status ENUM('unpaid','pending_review','paid') DEFAULT 'unpaid',

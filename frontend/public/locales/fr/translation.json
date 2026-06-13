@@ -123,7 +123,13 @@
     "page_title": "Joueurs",
     "registered_count": "joueurs inscrits",
     "goals_total": "buts au total",
-    "reset": "Réinitialiser"
+    "reset": "Réinitialiser",
+    "set_captain": "Définir comme capitaine",
+    "is_captain": "Capitaine",
+    "captain_set": "Capitaine mis à jour !",
+    "suspend": "Suspendre le joueur",
+    "unsuspend": "Réactiver le joueur",
+    "suspended": "Suspendu"
   },
   "payment": {
     "title": "Paiement de l'inscription",
@@ -237,8 +243,10 @@
     "good_logo_text": "Un bon logo est carré, lisible et représente votre équipe.",
     "team_name_label": "Nom de l'équipe",
     "coach_name_label": "Nom du coach",
+    "captain_name_label": "Nom du capitaine",
     "team_placeholder": "ex: FC Alger Stars",
     "coach_placeholder": "Nom complet du coach",
+    "captain_placeholder": "Nom complet du capitaine",
     "status_label": "Statut",
     "group_label": "Groupe",
     "save_changes": "Sauvegarder",

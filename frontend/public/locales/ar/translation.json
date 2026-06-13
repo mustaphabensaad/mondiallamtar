@@ -123,7 +123,13 @@
     "page_title": "اللاعبون",
     "registered_count": "لاعب مسجل",
     "goals_total": "هدف إجمالي",
-    "reset": "إعادة تعيين"
+    "reset": "إعادة تعيين",
+    "set_captain": "تعيين قائداً للفريق",
+    "is_captain": "قائد الفريق",
+    "captain_set": "تم تحديث القائد!",
+    "suspend": "إيقاف اللاعب",
+    "unsuspend": "إعادة تفعيل اللاعب",
+    "suspended": "موقوف"
   },
   "payment": {
     "title": "دفع رسوم التسجيل",
@@ -237,8 +243,10 @@
     "good_logo_text": "الشعار الجيد مربع وواضح ويمثل فريقك.",
     "team_name_label": "اسم الفريق",
     "coach_name_label": "اسم المدرب",
+    "captain_name_label": "اسم القائد",
     "team_placeholder": "مثال: نجوم الجزائر",
     "coach_placeholder": "الاسم الكامل للمدرب",
+    "captain_placeholder": "الاسم الكامل لقائد الفريق",
     "status_label": "الحالة",
     "group_label": "المجموعة",
     "save_changes": "حفظ التغييرات",

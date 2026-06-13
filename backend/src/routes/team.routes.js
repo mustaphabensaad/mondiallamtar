@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const auth   = require('../middleware/auth.middleware');
 const role   = require('../middleware/role.middleware');
-const ctrl   = require('../controllers/team.controller');
+const ctrl         = require('../controllers/team.controller');
+const playerCtrl   = require('../controllers/player.controller');
 const upload = require('../middleware/upload.middleware');
 
 const logoUpload = (req, res, next) => { req.uploadType = 'logos'; next(); };
@@ -19,5 +20,7 @@ router.get('/:id/players',   ctrl.getTeamPlayers);
 router.put('/:id',           auth, role('captain', 'admin'), logoUpload, upload.single('logo'), ctrl.updateTeam);
 router.post('/:id/invites',  auth, role('captain'), ctrl.generateInvites);
 router.get('/:id/invites',   auth, role('captain', 'admin'), ctrl.getInviteLinks);
+router.put('/:teamId/players/:playerId/set-captain',    auth, role('captain', 'admin'), playerCtrl.setCaptain);
+router.put('/:teamId/players/:playerId/toggle-suspend', auth, role('captain', 'admin'), playerCtrl.toggleSuspend);
 
 module.exports = router;

@@ -51,7 +51,10 @@ export default function TeamDetail() {
         />
         <div className="flex-1 text-center sm:text-left">
           <h1 className="font-display text-3xl font-black">{team.name}</h1>
-          <p className="text-gray-500 mt-1">{t('team.coach')}: <span className="font-medium text-gray-700 dark:text-gray-300">{team.coach_name}</span></p>
+          {team.captain_name && (
+            <p className="text-gray-500 mt-1">{t('team.captain')}: <span className="font-medium text-gray-700 dark:text-gray-300">{team.captain_name}</span></p>
+          )}
+          <p className="text-gray-500 mt-0.5">{t('team.coach')}: <span className="font-medium text-gray-700 dark:text-gray-300">{team.coach_name}</span></p>
           <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
             <Badge variant={team.status}>{t(`team.status.${team.status}`)}</Badge>
             {team.group_letter && (
@@ -105,7 +108,10 @@ export default function TeamDetail() {
                     className="w-10 h-10 rounded-full object-cover shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold truncate">{p.first_name} {p.last_name}</p>
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-semibold truncate">{p.first_name} {p.last_name}</p>
+                      {p.is_captain && <span className="text-amber-500 text-xs shrink-0" title={t('player.is_captain')}>👑</span>}
+                    </div>
                     <p className="text-xs text-gray-500">{t(`player.positions.${p.position}`)}</p>
                   </div>
                   <div className="flex items-center gap-3 text-xs shrink-0">

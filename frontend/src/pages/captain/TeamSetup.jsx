@@ -12,8 +12,9 @@ import TermsAcceptModal from '../../components/ui/TermsAcceptModal';
 import { imgUrl } from '../../utils/imageUrl';
 
 const schema = z.object({
-  name:       z.string().min(2, 'Team name is required'),
-  coach_name: z.string().min(2, 'Coach name is required'),
+  name:         z.string().min(2, 'Team name is required'),
+  coach_name:   z.string().min(2, 'Coach name is required'),
+  captain_name: z.string().min(2, 'Captain name is required'),
 });
 
 export default function TeamSetup() {
@@ -31,7 +32,7 @@ export default function TeamSetup() {
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
-    values:   myTeam?.team ? { name: myTeam.team.name, coach_name: myTeam.team.coach_name } : undefined,
+    values:   myTeam?.team ? { name: myTeam.team.name, coach_name: myTeam.team.coach_name, captain_name: myTeam.team.captain_name } : undefined,
   });
 
   const saveMut = useMutation({
@@ -152,6 +153,11 @@ export default function TeamSetup() {
             <label className="block text-sm font-semibold mb-1">{t('captain.coach_name_label')}</label>
             <input {...register('coach_name')} className="input w-full" placeholder={t('captain.coach_placeholder')} />
             {errors.coach_name && <p className="text-red-500 text-xs mt-1">{errors.coach_name.message}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-1">{t('captain.captain_name_label')}</label>
+            <input {...register('captain_name')} className="input w-full" placeholder={t('captain.captain_placeholder')} />
+            {errors.captain_name && <p className="text-red-500 text-xs mt-1">{errors.captain_name.message}</p>}
           </div>
 
           {team && (

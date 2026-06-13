@@ -4,10 +4,11 @@ const { generateInviteToken, buildInviteLink } = require('../utils/helpers');
 
 // ─── Validation ───────────────────────────────────────────────────────────────
 const createSchema = Joi.object({
-  name:        Joi.string().min(2).max(100).required(),
-  coach_name:  Joi.string().allow('').optional(),
-  coach_phone: Joi.string().allow('').optional(),
-  logo_path:   Joi.string().allow('').optional(),
+  name:          Joi.string().min(2).max(100).required(),
+  coach_name:    Joi.string().allow('').optional(),
+  coach_phone:   Joi.string().allow('').optional(),
+  captain_name:  Joi.string().min(2).max(100).required(),
+  logo_path:     Joi.string().allow('').optional(),
 });
 
 // ─── Public ───────────────────────────────────────────────────────────────────
@@ -101,10 +102,10 @@ async function createTeam(req, res, next) {
 
     const logo_path = req.file ? `/uploads/logos/${req.file.filename}` : (value.logo_path || null);
     const [result] = await db.query(
-      `INSERT INTO teams (tournament_id, captain_id, name, coach_name, coach_phone, logo_path, status)
-       VALUES (?, ?, ?, ?, ?, ?, 'pending')`,
+      `INSERT INTO teams (tournament_id, captain_id, name, coach_name, coach_phone, captain_name, logo_path, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')`,
       [tournamentId, req.user.id, value.name, value.coach_name || null,
-       value.coach_phone || null, logo_path]
+       value.coach_phone || null, value.captain_name, logo_path]
     );
     const [team] = await db.query('SELECT * FROM teams WHERE id = ?', [result.insertId]);
     res.status(201).json({ team: team[0] });
@@ -118,12 +119,13 @@ async function updateTeam(req, res, next) {
     if (rows[0].captain_id !== req.user.id && req.user.role !== 'admin')
       return res.status(403).json({ message: 'Forbidden' });
 
-    const { name, coach_name, coach_phone } = req.body;
+    const { name, coach_name, coach_phone, captain_name } = req.body;
     const logo_path = req.file ? `/uploads/logos/${req.file.filename}` : (req.body.logo_path ?? rows[0].logo_path);
     await db.query(
-      'UPDATE teams SET name=?, coach_name=?, coach_phone=?, logo_path=? WHERE id=?',
+      'UPDATE teams SET name=?, coach_name=?, coach_phone=?, captain_name=?, logo_path=? WHERE id=?',
       [name || rows[0].name, coach_name ?? rows[0].coach_name,
-       coach_phone ?? rows[0].coach_phone, logo_path, req.params.id]
+       coach_phone ?? rows[0].coach_phone, captain_name ?? rows[0].captain_name,
+       logo_path, req.params.id]
     );
     const [updated] = await db.query('SELECT * FROM teams WHERE id = ?', [req.params.id]);
     res.json({ team: updated[0] });
