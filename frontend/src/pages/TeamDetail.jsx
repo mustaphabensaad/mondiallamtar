@@ -8,6 +8,8 @@ import MatchCard from '../components/match/MatchCard';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 import PlayerModal from '../components/ui/PlayerModal';
+import ShareCardModal from '../components/share/ShareCardModal';
+import TeamShareCard from '../components/share/cards/TeamShareCard';
 
 const POSITION_ORDER = { GK: 0, DEF: 1, MID: 2, FWD: 3 };
 
@@ -15,6 +17,7 @@ export default function TeamDetail() {
   const { id }    = useParams();
   const { t }     = useTranslation();
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
+  const [showExport, setShowExport]             = useState(false);
 
   const { data: team,    isLoading: tLoading } = useQuery({ queryKey: ['team', id],         queryFn: () => teamService.getById(id) });
   const { data: players, isLoading: pLoading } = useQuery({ queryKey: ['team-players', id], queryFn: () => teamService.getPlayers(id) });
@@ -57,10 +60,18 @@ export default function TeamDetail() {
             )}
           </div>
         </div>
-        {/* Quick stats */}
-        <div className="flex gap-6 text-center shrink-0">
-          <div><p className="text-2xl font-black text-primary">{sorted.length}</p><p className="text-xs text-gray-400">{t('team.players')}</p></div>
-          <div><p className="text-2xl font-black text-gold">{goals}</p><p className="text-xs text-gray-400">Goals</p></div>
+        {/* Quick stats + export */}
+        <div className="flex flex-col items-end gap-3 shrink-0">
+          <div className="flex gap-6 text-center">
+            <div><p className="text-2xl font-black text-primary">{sorted.length}</p><p className="text-xs text-gray-400">{t('team.players')}</p></div>
+            <div><p className="text-2xl font-black text-gold">{goals}</p><p className="text-xs text-gray-400">Goals</p></div>
+          </div>
+          <button
+            onClick={() => setShowExport(true)}
+            className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors"
+          >
+            📤 {t('share.export_card', { defaultValue: 'Carte équipe' })}
+          </button>
         </div>
       </div>
 
@@ -127,6 +138,15 @@ export default function TeamDetail() {
           )}
         </div>
       </div>
+
+      <ShareCardModal
+        isOpen={showExport}
+        onClose={() => setShowExport(false)}
+        title={team.name}
+        filename={`equipe-${team.name.replace(/\s+/g, '-')}.png`}
+      >
+        <TeamShareCard team={team} players={sorted} />
+      </ShareCardModal>
     </div>
   );
 }

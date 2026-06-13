@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { tournamentService } from '../services/tournament.service';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
+import ShareCardModal from '../components/share/ShareCardModal';
+import GroupShareCard from '../components/share/cards/GroupShareCard';
 
 const COL_HEADER_KEYS = [
   { key: 'played',        label: 'J',   titleKey: 'standings.col_played' },
@@ -26,7 +29,7 @@ const GROUP_GRADIENTS = [
 
 const RANK_ICONS = { 1: '🥇', 2: '🥈' };
 
-function StandingsTable({ group, gi }) {
+function StandingsTable({ group, gi, onExport }) {
   const { t } = useTranslation();
   const [grad, rowBg] = GROUP_GRADIENTS[gi % GROUP_GRADIENTS.length];
   const COL_HEADERS = COL_HEADER_KEYS.map(h => ({ ...h, title: t(h.titleKey) }));
@@ -44,9 +47,18 @@ function StandingsTable({ group, gi }) {
           <h2 className="font-display font-bold text-white leading-tight">{t('team.group')} {group.letter}</h2>
           <p className="text-white/60 text-[11px]">{group.teams.length} {t('team.teams_count')}</p>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-full">
-          <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse" />
-          <span className="text-[10px] text-white/70 font-semibold uppercase tracking-wide">{t('match.live')}</span>
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={() => onExport(group)}
+            title="Exporter la carte"
+            className="flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-full text-[10px] text-white/80 font-semibold transition-colors"
+          >
+            📤
+          </button>
+          <div className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse" />
+            <span className="text-[10px] text-white/70 font-semibold uppercase tracking-wide">{t('match.live')}</span>
+          </div>
         </div>
       </div>
 
@@ -139,12 +151,15 @@ function StandingsTable({ group, gi }) {
         <span>🥇🥈</span>
         <span>{t('standings.top2_legend')}</span>
       </div>
+
     </div>
   );
 }
 
 export default function Standings() {
   const { t } = useTranslation();
+  const [exportGroup, setExportGroup] = useState(null);
+
   const { data: groups = [], isLoading } = useQuery({
     queryKey: ['groups'],
     queryFn:  tournamentService.getGroups,
@@ -182,9 +197,21 @@ export default function Standings() {
         </div>
       ) : (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          {groups.map((g, i) => <StandingsTable key={g.letter} group={g} gi={i} />)}
+          {groups.map((g, i) => (
+            <StandingsTable key={g.letter} group={g} gi={i} onExport={setExportGroup} />
+          ))}
         </div>
       )}
+
+      {/* Modal lives here — outside any transformed ancestor */}
+      <ShareCardModal
+        isOpen={!!exportGroup}
+        onClose={() => setExportGroup(null)}
+        title={exportGroup ? `Groupe ${exportGroup.letter}` : ''}
+        filename={exportGroup ? `groupe-${exportGroup.letter}.png` : 'groupe.png'}
+      >
+        {exportGroup && <GroupShareCard group={exportGroup} />}
+      </ShareCardModal>
     </div>
   );
 }

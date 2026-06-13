@@ -8,6 +8,8 @@ import Spinner from '../../components/ui/Spinner';
 import Modal from '../../components/ui/Modal';
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
+import ShareCardModal from '../../components/share/ShareCardModal';
+import MatchResultCard from '../../components/share/cards/MatchResultCard';
 
 const QUICK_ACTIONS = [
   { key: 'goal',            icon: '⚽', label: 'Goal',       bg: 'bg-emerald-500 hover:bg-emerald-600', ring: 'ring-emerald-400' },
@@ -142,7 +144,7 @@ function TeamStatBadges({ events, teamId }) {
 }
 
 // ── Live scoring panel ─────────────────────────────────────────────────────────
-function LivePanel({ match, onClose }) {
+function LivePanel({ match, onClose, onMatchEnded }) {
   const qc = useQueryClient();
   const [activeAction, setActiveAction] = useState(null);
   const { register: regMotm } = useForm();
@@ -173,7 +175,18 @@ function LivePanel({ match, onClose }) {
   });
   const endMut = useMutation({
     mutationFn: () => matchService.end(match.id, {}),
-    onSuccess: () => { invalidate(); toast.success('Match terminé'); onClose(); },
+    onSuccess: async () => {
+      invalidate();
+      toast.success('Match terminé');
+      // fetch final match data for share card
+      try {
+        const finalData = await matchService.getById(match.id);
+        onMatchEnded?.(finalData.match || match, finalData.events || []);
+      } catch {
+        onMatchEnded?.(match, []);
+      }
+      onClose();
+    },
     onError:   (e) => toast.error(e?.response?.data?.message || 'Erreur'),
   });
   const eventMut = useMutation({
@@ -531,9 +544,10 @@ export default function MatchesAdmin() {
   const { t } = useTranslation();
   const qc    = useQueryClient();
   const [tab, setTab]             = useState('all');
-  const [liveMatch, setLiveMatch] = useState(null);
-  const [creating, setCreating]   = useState(false);
-  const [editMatch, setEditMatch] = useState(null);  // match being edited
+  const [liveMatch, setLiveMatch]       = useState(null);
+  const [creating, setCreating]         = useState(false);
+  const [editMatch, setEditMatch]       = useState(null);
+  const [exportData, setExportData]     = useState(null); // { match, events }
 
   const { data: matches = [], isLoading } = useQuery({
     queryKey: ['admin-matches'],
@@ -665,7 +679,13 @@ export default function MatchesAdmin() {
         title={liveMatch ? `${liveMatch.home_team_name} vs ${liveMatch.away_team_name}` : ''}
         size="lg"
       >
-        {liveMatch && <LivePanel match={liveMatch} onClose={() => setLiveMatch(null)} />}
+        {liveMatch && (
+          <LivePanel
+            match={liveMatch}
+            onClose={() => setLiveMatch(null)}
+            onMatchEnded={(m, evs) => setExportData({ match: m, events: evs })}
+          />
+        )}
       </Modal>
 
       {/* Edit match modal */}
@@ -764,6 +784,18 @@ export default function MatchesAdmin() {
           </div>
         </form>
       </Modal>
+
+      {/* Share card modal — auto-opens when match ends */}
+      <ShareCardModal
+        isOpen={!!exportData}
+        onClose={() => setExportData(null)}
+        title="Carte de résultat"
+        filename={exportData ? `match-${exportData.match.home_team_name}-vs-${exportData.match.away_team_name}.png`.replace(/\s+/g, '-') : 'match-result.png'}
+      >
+        {exportData && (
+          <MatchResultCard match={exportData.match} events={exportData.events} />
+        )}
+      </ShareCardModal>
     </div>
   );
 }

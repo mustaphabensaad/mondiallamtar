@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { playerService } from '../../services/tournament.service';
 import Spinner from './Spinner';
+import ShareCardModal from '../share/ShareCardModal';
+import PlayerShareCard from '../share/cards/PlayerShareCard';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -32,6 +35,7 @@ function StatBox({ icon, value, label, color, highlight }) {
 }
 
 export default function PlayerModal({ playerId, onClose }) {
+  const [showExport, setShowExport] = useState(false);
   const { data: player, isLoading } = useQuery({
     queryKey: ['player', playerId],
     queryFn:  () => playerService.getById(playerId),
@@ -151,10 +155,29 @@ export default function PlayerModal({ playerId, onClose }) {
                 <StatBox icon="🟨" value={player.yellow_cards} label="Jaunes" color="text-yellow-500" highlight={player.yellow_cards > 0} />
                 <StatBox icon="🟥" value={player.red_cards}    label="Rouges" color="text-red-500"    highlight={player.red_cards > 0} />
               </div>
+
+              {/* Export */}
+              <button
+                onClick={() => setShowExport(true)}
+                className="mt-3 w-full flex items-center justify-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors"
+              >
+                📤 Exporter la carte joueur
+              </button>
             </div>
           </>
         )}
       </div>
+
+      {player && (
+        <ShareCardModal
+          isOpen={showExport}
+          onClose={() => setShowExport(false)}
+          title={`${player.first_name} ${player.last_name}`}
+          filename={`joueur-${player.first_name}-${player.last_name}.png`.replace(/\s+/g, '-')}
+        >
+          <PlayerShareCard player={player} />
+        </ShareCardModal>
+      )}
     </div>
   );
 }
