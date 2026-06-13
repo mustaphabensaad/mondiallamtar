@@ -29,14 +29,16 @@ function StatBox({ icon, value, label, color, highlight }) {
 
 export default function PlayerModal({ playerId, onClose }) {
   const [showExport, setShowExport] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const { data: player, isLoading } = useQuery({
     queryKey: ['player', playerId],
     queryFn:  () => playerService.getById(playerId),
     enabled:  !!playerId,
   });
 
-  const pos      = POSITION_META[player?.position] || POSITION_META.MID;
-  const photo    = imgUrl(player?.photo_path);
+  const pos       = POSITION_META[player?.position] || POSITION_META.MID;
+  const photo     = imgUrl(player?.photo_path);
+  const showPhoto = photo && !imgError;
   const initials = player
     ? `${(player.first_name || '?')[0]}${(player.last_name || '')[0] || ''}`.toUpperCase()
     : '?';
@@ -75,17 +77,18 @@ export default function PlayerModal({ playerId, onClose }) {
               {/* Photo — overlaps banner */}
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2">
                 <div className={`w-20 h-20 rounded-2xl overflow-hidden ring-4 ring-white dark:ring-gray-900 shadow-xl ${pos.glow} shadow-lg`}>
-                  {photo ? (
+                  {showPhoto ? (
                     <img
                       src={photo}
                       alt={`${player.first_name} ${player.last_name}`}
                       className="w-full h-full object-cover"
-                      onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                      onError={() => setImgError(true)}
                     />
-                  ) : null}
-                  <div className={`${photo ? 'hidden' : 'flex'} w-full h-full items-center justify-center text-white font-black text-xl ${pos.color}`}>
-                    {initials}
-                  </div>
+                  ) : (
+                    <div className={`w-full h-full flex items-center justify-center text-white font-black text-xl ${pos.color}`}>
+                      {initials}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

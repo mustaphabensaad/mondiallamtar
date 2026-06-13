@@ -93,9 +93,7 @@ async function getPlayerById(req, res, next) {
 async function getAllPlayers(req, res, next) {
   try {
     const [rows] = await db.query(
-      `SELECT p.id, p.first_name, p.last_name, p.photo_path, p.jersey_number,
-              p.position, p.goals, p.yellow_cards, p.red_cards, p.is_validated,
-              p.status, p.bio, p.date_of_birth,
+      `SELECT p.*,
               t.id AS team_id, t.name AS team_name, t.logo_path AS team_logo
        FROM players p
        JOIN teams t ON t.id = p.team_id

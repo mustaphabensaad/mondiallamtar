@@ -20,12 +20,14 @@ const POSITIONS = ['all', 'GK', 'DEF', 'MID', 'FWD'];
 // ── Single player card ─────────────────────────────────────────────────────────
 function PlayerCard({ player, onClick }) {
   const { t } = useTranslation();
+  const [imgError, setImgError] = useState(false);
   const pos  = POSITION_META[player.position] || POSITION_META.MID;
   const age  = player.date_of_birth
     ? Math.floor((Date.now() - new Date(player.date_of_birth)) / (365.25 * 24 * 3600 * 1000))
     : null;
   const photo = imgUrl(player.photo_path);
   const initials = `${(player.first_name || '?')[0]}${(player.last_name || '')[0] || ''}`.toUpperCase();
+  const showPhoto = photo && !imgError;
 
   return (
     <div
@@ -55,19 +57,18 @@ function PlayerCard({ player, onClick }) {
       {/* Photo + identity */}
       <div className="flex flex-col items-center pt-6 pb-4 px-5">
         <div className={`relative w-20 h-20 rounded-2xl overflow-hidden ring-2 ${pos.border} shadow-lg mb-3 shrink-0`}>
-          {photo ? (
+          {showPhoto ? (
             <img
               src={photo}
               alt={`${player.first_name} ${player.last_name}`}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+              onError={() => setImgError(true)}
             />
-          ) : null}
-          <div
-            className={`${photo ? 'hidden' : 'flex'} w-full h-full items-center justify-center text-white font-black text-xl ${pos.color}`}
-          >
-            {initials}
-          </div>
+          ) : (
+            <div className={`w-full h-full flex items-center justify-center text-white font-black text-xl ${pos.color}`}>
+              {initials}
+            </div>
+          )}
         </div>
 
         <h3 className="font-display font-black text-base text-gray-900 dark:text-white text-center leading-tight">
