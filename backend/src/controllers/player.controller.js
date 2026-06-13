@@ -51,17 +51,25 @@ async function submitInviteForm(req, res, next) {
     if (player.token_used && player.first_name) {
       return res.status(409).json({ message: 'Already submitted' });
     }
-    const photo_path = req.file ? `uploads/players/${req.file.filename}` : null;
-    await db.query(
-      `UPDATE players SET
-         first_name = ?, last_name = ?, date_of_birth = ?, phone = ?,
-         jersey_number = ?, position = ?, bio = ?, token_used = TRUE
-         ${photo_path ? ', photo_path = ?' : ''}
-       WHERE id = ?`,
-      photo_path
-        ? [first_name, last_name, date_of_birth || null, phone, jersey_number, position, bio || null, photo_path, player.id]
-        : [first_name, last_name, date_of_birth || null, phone, jersey_number, position, bio || null, player.id]
-    );
+    const photo_path = req.file ? `/uploads/players/${req.file.filename}` : null;
+
+    // Build SET clause dynamically so missing optional columns don't cause SQL errors
+    const setClauses = [
+      'first_name = ?', 'last_name = ?', 'date_of_birth = ?', 'phone = ?',
+      'jersey_number = ?', 'position = ?', 'token_used = TRUE',
+    ];
+    const updateParams = [first_name, last_name, date_of_birth || null, phone, jersey_number, position];
+    if (photo_path) { setClauses.push('photo_path = ?'); updateParams.push(photo_path); }
+    updateParams.push(player.id);
+
+    await db.query(`UPDATE players SET ${setClauses.join(', ')} WHERE id = ?`, updateParams);
+
+    // Bio update is separate: the column may not exist on older installs
+    if (bio) {
+      try {
+        await db.query('UPDATE players SET bio = ? WHERE id = ?', [bio, player.id]);
+      } catch (_) { /* bio column not yet added — ignore */ }
+    }
     res.json({ message: 'Profile submitted successfully' });
   } catch (err) {
     next(err);

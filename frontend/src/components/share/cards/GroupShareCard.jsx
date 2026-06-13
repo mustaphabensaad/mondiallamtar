@@ -1,3 +1,5 @@
+import { imgUrl } from '../../../utils/imageUrl';
+
 const BG     = '#0a0f1e';
 const CARD   = '#111827';
 const GREEN  = '#16a34a';
@@ -81,12 +83,8 @@ export default function GroupShareCard({ group, forwardRef }) {
         {/* Team rows */}
         {teams.map((team, i) => {
           const rank = RANK_STYLE[i + 1];
-          // team_logo can be a relative path from backend
-          const logoSrc = team.team_logo
-            ? (team.team_logo.startsWith('http')
-                ? team.team_logo
-                : `${import.meta.env.VITE_API_URL || ''}${team.team_logo}`)
-            : `https://placehold.co/28x28/111827/16a34a?text=${encodeURIComponent((team.team_name||'?')[0])}`;
+          const logoSrc = imgUrl(team.team_logo)
+            || `https://placehold.co/28x28/111827/16a34a?text=${encodeURIComponent((team.team_name||'?')[0])}`;
 
           const gd = (team.goals_for ?? 0) - (team.goals_against ?? 0);
 

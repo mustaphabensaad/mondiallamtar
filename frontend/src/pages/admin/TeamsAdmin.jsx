@@ -8,6 +8,8 @@ import Spinner from '../../components/ui/Spinner';
 import toast from 'react-hot-toast';
 
 const TABS = ['all', 'pending'];
+import { imgUrl } from '../../utils/imageUrl';
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 function proofUrl(path) {
@@ -47,7 +49,7 @@ function TeamDetailModal({ team, onClose, onApprove, onReject, onConfirmPayment,
           {/* Team identity */}
           <div className="flex items-center gap-4">
             <img
-              src={team.logo_path || `https://placehold.co/64x64/16a34a/ffffff?text=${encodeURIComponent((team.name || '?')[0])}`}
+              src={imgUrl(team.logo_path) || `https://placehold.co/64x64/16a34a/ffffff?text=${encodeURIComponent((team.name || '?')[0])}`}
               alt={team.name}
               className="w-16 h-16 rounded-2xl object-cover shrink-0 border border-gray-100 dark:border-gray-800"
             />
@@ -248,7 +250,7 @@ export default function TeamsAdmin() {
                 onClick={() => setSelected(team)}
               >
                 <img
-                  src={team.logo_path || `https://placehold.co/44x44/16a34a/ffffff?text=${encodeURIComponent((team.name || '?')[0])}`}
+                  src={imgUrl(team.logo_path) || `https://placehold.co/44x44/16a34a/ffffff?text=${encodeURIComponent((team.name || '?')[0])}`}
                   alt={team.name}
                   className="w-11 h-11 rounded-xl object-cover shrink-0"
                 />

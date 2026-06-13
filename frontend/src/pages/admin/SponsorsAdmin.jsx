@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { sponsorService } from '../../services/tournament.service';
 import Button from '../../components/ui/Button';
 import Spinner from '../../components/ui/Spinner';
+import { imgUrl } from '../../utils/imageUrl';
 
 const TIERS = [
   {
@@ -138,7 +139,7 @@ function SponsorModal({ initial, onClose, onSave, loading }) {
             {form.logo_path && (
               <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl flex items-center justify-center h-16 border border-gray-200 dark:border-gray-700">
                 <img
-                  src={form.logo_path}
+                  src={imgUrl(form.logo_path) || form.logo_path}
                   alt="preview"
                   className="max-h-10 max-w-full object-contain"
                   onError={e => e.target.style.display = 'none'}
@@ -341,7 +342,7 @@ export default function SponsorsAdmin() {
                         {/* Logo preview */}
                         <div className="w-20 h-11 shrink-0 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-1.5 overflow-hidden">
                           <img
-                            src={s.logo_path || `https://placehold.co/80x32/e5e7eb/6b7280?text=${encodeURIComponent((s.name || '?')[0])}`}
+                            src={imgUrl(s.logo_path) || `https://placehold.co/80x32/e5e7eb/6b7280?text=${encodeURIComponent((s.name || '?')[0])}`}
                             alt={s.name}
                             className="max-w-full max-h-full object-contain"
                             onError={e => { e.target.src = `https://placehold.co/80x32/f3f4f6/9ca3af?text=${encodeURIComponent((s.name||'?')[0])}`; }}

@@ -8,6 +8,7 @@ import Spinner from '../../components/ui/Spinner';
 import Modal from '../../components/ui/Modal';
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
+import { imgUrl } from '../../utils/imageUrl';
 
 export default function PlayersAdmin() {
   const { t }  = useTranslation();
@@ -63,7 +64,7 @@ export default function PlayersAdmin() {
             ).map(p => (
               <div key={p.id} className="flex items-center gap-3 px-4 py-3">
                 <img
-                  src={p.photo_path || `https://placehold.co/40x40/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
+                  src={imgUrl(p.photo_path) || `https://placehold.co/40x40/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
                   alt=""
                   className="w-10 h-10 rounded-full object-cover shrink-0"
                 />

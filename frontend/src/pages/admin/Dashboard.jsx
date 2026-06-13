@@ -6,6 +6,7 @@ import { adminService } from '../../services/tournament.service';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import Spinner from '../../components/ui/Spinner';
+import { imgUrl } from '../../utils/imageUrl';
 
 const STAT_CONFIG = [
   { key: 'total_teams',    label: 'Équipes',       icon: '🏟️',  gradient: 'from-blue-500/10 to-indigo-500/10',   border: 'border-blue-200 dark:border-blue-800',   text: 'text-blue-600 dark:text-blue-400' },
@@ -134,7 +135,7 @@ export default function AdminDashboard() {
             {pending.map(team => (
               <div key={team.id} className="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
                 <img
-                  src={team.logo_path || `https://placehold.co/48x48/16a34a/ffffff?text=${encodeURIComponent((team.name||'?')[0])}`}
+                  src={imgUrl(team.logo_path) || `https://placehold.co/48x48/16a34a/ffffff?text=${encodeURIComponent((team.name||'?')[0])}`}
                   alt={team.name}
                   className="w-12 h-12 rounded-xl object-cover shadow-sm shrink-0"
                 />

@@ -6,6 +6,7 @@ import { teamService } from '../services/tournament.service';
 import Badge from '../components/ui/Badge';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
+import { imgUrl } from '../utils/imageUrl';
 
 const GROUP_GRADIENTS = [
   'from-blue-500 to-indigo-600',
@@ -36,7 +37,7 @@ function TeamCard({ team }) {
         {/* Logo */}
         <div className="relative shrink-0">
           <img
-            src={team.logo_path || `https://placehold.co/56x56/16a34a/ffffff?text=${encodeURIComponent((team.name || '?')[0])}`}
+            src={imgUrl(team.logo_path) || `https://placehold.co/56x56/16a34a/ffffff?text=${encodeURIComponent((team.name || '?')[0])}`}
             alt={team.name}
             className="w-14 h-14 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform duration-200"
           />

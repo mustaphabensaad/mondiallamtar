@@ -10,6 +10,7 @@ import EmptyState from '../components/ui/EmptyState';
 import PlayerModal from '../components/ui/PlayerModal';
 import ShareCardModal from '../components/share/ShareCardModal';
 import TeamShareCard from '../components/share/cards/TeamShareCard';
+import { imgUrl } from '../utils/imageUrl';
 
 const POSITION_ORDER = { GK: 0, DEF: 1, MID: 2, FWD: 3 };
 
@@ -44,7 +45,7 @@ export default function TeamDetail() {
       {/* Header */}
       <div className="card p-6 flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-6">
         <img
-          src={team.logo_path || `https://placehold.co/96x96/16a34a/ffffff?text=${encodeURIComponent((team.name||'?')[0])}`}
+          src={imgUrl(team.logo_path) || `https://placehold.co/96x96/16a34a/ffffff?text=${encodeURIComponent((team.name||'?')[0])}`}
           alt={team.name}
           className="w-24 h-24 rounded-2xl object-cover shrink-0"
         />
@@ -99,7 +100,7 @@ export default function TeamDetail() {
                     {p.jersey_number ?? '—'}
                   </span>
                   <img
-                    src={p.photo_path || `https://placehold.co/40x40/1e40af/ffffff?text=${encodeURIComponent((p.first_name||'?')[0])}`}
+                    src={imgUrl(p.photo_path) || `https://placehold.co/40x40/1e40af/ffffff?text=${encodeURIComponent((p.first_name||'?')[0])}`}
                     alt={`${p.first_name} ${p.last_name}`}
                     className="w-10 h-10 rounded-full object-cover shrink-0"
                   />

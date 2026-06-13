@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { drawService } from '../../services/tournament.service';
 import Spinner from '../../components/ui/Spinner';
 import Button from '../../components/ui/Button';
+import { imgUrl } from '../../utils/imageUrl';
 
 const GROUP_COLORS = {
   A: { bg: 'bg-blue-500',   light: 'bg-blue-50 dark:bg-blue-900/20',   border: 'border-blue-200 dark:border-blue-800',   text: 'text-blue-700 dark:text-blue-300'   },
@@ -62,7 +63,7 @@ function GroupSlot({ group, teamsPerGroup, selectedTeam, onAssign, onUnassign })
                 className="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-150 group"
               >
                 <img
-                  src={team.logo_path || `https://placehold.co/32x32/16a34a/fff?text=${encodeURIComponent((team.name||'?')[0])}`}
+                  src={imgUrl(team.logo_path) || `https://placehold.co/32x32/16a34a/fff?text=${encodeURIComponent((team.name||'?')[0])}`}
                   className="w-7 h-7 rounded-lg object-cover shrink-0"
                   alt={team.name}
                 />
@@ -230,7 +231,7 @@ export default function GroupDrawAdmin() {
                 <div className="p-2 space-y-1.5">
                   {group.teams.map(team => (
                     <div key={team.id} className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 rounded-xl">
-                      <img src={team.logo_path || `https://placehold.co/28x28/16a34a/fff?text=${encodeURIComponent((team.name||'?')[0])}`}
+                      <img src={imgUrl(team.logo_path) || `https://placehold.co/28x28/16a34a/fff?text=${encodeURIComponent((team.name||'?')[0])}`}
                         className="w-7 h-7 rounded-lg object-cover shrink-0" alt={team.name} />
                       <span className="text-xs font-semibold text-gray-800 dark:text-white truncate">{team.name}</span>
                     </div>

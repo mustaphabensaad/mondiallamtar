@@ -1,3 +1,5 @@
+import { imgUrl } from '../../../utils/imageUrl';
+
 const BG    = '#0a0f1e';
 const CARD  = '#111827';
 const GREEN = '#16a34a';
@@ -12,10 +14,8 @@ const POS_META = {
 };
 
 export default function TeamShareCard({ team, players = [], forwardRef }) {
-  const logoSrc = team.logo_path
-    ? (team.logo_path.startsWith('http') ? team.logo_path
-       : `${import.meta.env.VITE_API_URL||''}${team.logo_path}`)
-    : `https://placehold.co/100x100/111827/16a34a?text=${encodeURIComponent((team.name||'?')[0])}`;
+  const logoSrc = imgUrl(team.logo_path)
+    || `https://placehold.co/100x100/111827/16a34a?text=${encodeURIComponent((team.name||'?')[0])}`;
 
   const stats = [
     { label:'PTS', value:team.points??0,     color:GOLD,    highlight:true },

@@ -9,6 +9,7 @@ import Spinner from '../../components/ui/Spinner';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import TermsAcceptModal from '../../components/ui/TermsAcceptModal';
+import { imgUrl } from '../../utils/imageUrl';
 
 const schema = z.object({
   name:       z.string().min(2, 'Team name is required'),
@@ -95,7 +96,7 @@ export default function TeamSetup() {
         {/* Logo preview */}
         <div className="flex flex-col items-center mb-4">
           <img
-            src={preview || team?.logo_path || `https://placehold.co/96x96/16a34a/ffffff?text=${encodeURIComponent((team?.name || 'T')[0])}`}
+            src={preview || imgUrl(team?.logo_path) || `https://placehold.co/96x96/16a34a/ffffff?text=${encodeURIComponent((team?.name || 'T')[0])}`}
             alt="Logo"
             className="w-24 h-24 rounded-2xl object-cover mb-3 ring-2 ring-primary/30"
           />

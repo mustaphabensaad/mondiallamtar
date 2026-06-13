@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
 import EmptyState from '../../components/ui/EmptyState';
+import { imgUrl } from '../../utils/imageUrl';
 
 const POS_COLOR = { GK: 'bg-yellow-500', DEF: 'bg-blue-500', MID: 'bg-green-500', FWD: 'bg-red-500' };
 
@@ -93,7 +94,7 @@ export default function CaptainDashboard() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(22,163,74,0.15),transparent_60%)] pointer-events-none" />
         <div className="relative flex items-center gap-5">
           <img
-            src={team.logo_path || `https://placehold.co/72x72/16a34a/ffffff?text=${encodeURIComponent((team.name||'?')[0])}`}
+            src={imgUrl(team.logo_path) || `https://placehold.co/72x72/16a34a/ffffff?text=${encodeURIComponent((team.name||'?')[0])}`}
             alt={team.name}
             className="w-18 h-18 rounded-2xl object-cover shadow-lg ring-2 ring-white/10 shrink-0"
             style={{ width: 72, height: 72 }}
@@ -160,7 +161,7 @@ export default function CaptainDashboard() {
                   {p.jersey_number ? `#${p.jersey_number}` : '—'}
                 </span>
                 <img
-                  src={p.photo_path || `https://placehold.co/36x36/1e40af/ffffff?text=${encodeURIComponent((p.first_name||'?')[0])}`}
+                  src={imgUrl(p.photo_path) || `https://placehold.co/36x36/1e40af/ffffff?text=${encodeURIComponent((p.first_name||'?')[0])}`}
                   alt={`${p.first_name} ${p.last_name}`}
                   className="w-9 h-9 rounded-full object-cover shrink-0"
                 />

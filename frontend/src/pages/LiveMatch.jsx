@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { matchService } from '../services/tournament.service';
 import { useSocket } from '../hooks/useSocket';
 import Spinner from '../components/ui/Spinner';
+import { imgUrl } from '../utils/imageUrl';
 
 function LiveTimer({ startedAt }) {
   const [minutes, setMinutes] = useState(0);
@@ -66,7 +67,7 @@ function LiveMatchCard({ match }) {
           <Link to={`/teams/${match.home_team_id}`} className="flex flex-col items-center gap-3 group">
             <div className={`relative rounded-2xl overflow-hidden shadow-lg transition-transform group-hover:scale-105 ${homeLeads ? 'ring-2 ring-primary glow-primary' : ''}`}>
               <img
-                src={match.home_team_logo || `https://placehold.co/80x80/16a34a/ffffff?text=H`}
+                src={imgUrl(match.home_team_logo) || `https://placehold.co/80x80/16a34a/ffffff?text=H`}
                 alt={match.home_team_name}
                 className="w-20 h-20 object-cover"
               />
@@ -90,7 +91,7 @@ function LiveMatchCard({ match }) {
           <Link to={`/teams/${match.away_team_id}`} className="flex flex-col items-center gap-3 group">
             <div className={`relative rounded-2xl overflow-hidden shadow-lg transition-transform group-hover:scale-105 ${awayLeads ? 'ring-2 ring-primary glow-primary' : ''}`}>
               <img
-                src={match.away_team_logo || `https://placehold.co/80x80/1e40af/ffffff?text=A`}
+                src={imgUrl(match.away_team_logo) || `https://placehold.co/80x80/1e40af/ffffff?text=A`}
                 alt={match.away_team_name}
                 className="w-20 h-20 object-cover"
               />

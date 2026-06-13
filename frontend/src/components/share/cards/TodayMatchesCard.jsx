@@ -1,3 +1,5 @@
+import { imgUrl } from '../../../utils/imageUrl';
+
 const BG    = '#0a0f1e';
 const CARD  = '#111827';
 const GREEN = '#16a34a';
@@ -12,7 +14,7 @@ function MatchRow({ match, isLast }) {
   const isDone = match.status==='finished';
 
   const logoOrPh = (url, name) =>
-    url || `https://placehold.co/36x36/111827/16a34a?text=${encodeURIComponent((name||'?')[0])}`;
+    imgUrl(url) || `https://placehold.co/36x36/111827/16a34a?text=${encodeURIComponent((name||'?')[0])}`;
 
   return (
     <div style={{

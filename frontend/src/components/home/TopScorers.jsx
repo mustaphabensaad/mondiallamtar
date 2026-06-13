@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { playerService } from '../../services/tournament.service';
 import Spinner from '../ui/Spinner';
 import EmptyState from '../ui/EmptyState';
+import { imgUrl } from '../../utils/imageUrl';
 
 const PODIUM = [
   {
@@ -81,7 +82,7 @@ export default function TopScorers({ limit = 8 }) {
 
                 <div className="relative inline-block">
                   <img
-                    src={p.photo_path || `https://placehold.co/56x56/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
+                    src={imgUrl(p.photo_path) || `https://placehold.co/56x56/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
                     alt={`${p.first_name} ${p.last_name}`}
                     className={`w-14 h-14 rounded-2xl object-cover mx-auto shadow-md
                       ${podium.ring} ring-offset-white dark:ring-offset-[#111827]`}
@@ -116,7 +117,7 @@ export default function TopScorers({ limit = 8 }) {
                 {i + 4}
               </span>
               <img
-                src={p.photo_path || `https://placehold.co/32x32/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
+                src={imgUrl(p.photo_path) || `https://placehold.co/32x32/1e40af/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
                 alt={`${p.first_name} ${p.last_name}`}
                 className="w-8 h-8 rounded-lg object-cover shrink-0"
               />

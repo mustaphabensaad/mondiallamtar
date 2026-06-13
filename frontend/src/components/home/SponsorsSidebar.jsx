@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { tournamentService } from '../../services/tournament.service';
 import Spinner from '../ui/Spinner';
+import { imgUrl } from '../../utils/imageUrl';
 
 /* ─── helpers ─────────────────────────────────────────────── */
 function placeholder(name, w, h, bg, fg) {
@@ -39,7 +40,7 @@ function GoldHero({ sponsor }) {
         {/* logo area */}
         <div className="flex items-center justify-center px-6 py-6 min-h-[80px]">
           <img
-            src={sponsor.logo_path || placeholder(sponsor.name, 160, 64, '1a1200', 'eab308')}
+            src={imgUrl(sponsor.logo_path) || placeholder(sponsor.name, 160, 64, '1a1200', 'eab308')}
             alt={sponsor.name}
             className="max-h-16 w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_0_12px_rgba(234,179,8,0.4)]"
             onError={e => { e.target.src = placeholder(sponsor.name, 160, 64, '1a1200', 'eab308'); }}
@@ -88,7 +89,7 @@ function SilverLogo({ sponsor }) {
       "
     >
       <img
-        src={sponsor.logo_path || placeholder(sponsor.name, 100, 40, 'f3f4f6', '6b7280')}
+        src={imgUrl(sponsor.logo_path) || placeholder(sponsor.name, 100, 40, 'f3f4f6', '6b7280')}
         alt={sponsor.name}
         className="max-h-7 w-full object-contain opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-200 dark:invert dark:opacity-50 dark:group-hover:opacity-80"
         onError={e => { e.target.src = placeholder(sponsor.name, 100, 40, 'f3f4f6', '6b7280'); }}
@@ -118,7 +119,7 @@ function BronzeTag({ sponsor }) {
     >
       {sponsor.logo_path ? (
         <img
-          src={sponsor.logo_path}
+          src={imgUrl(sponsor.logo_path)}
           alt={sponsor.name}
           className="w-4 h-4 object-contain rounded-sm shrink-0"
           onError={e => { e.target.style.display = 'none'; }}

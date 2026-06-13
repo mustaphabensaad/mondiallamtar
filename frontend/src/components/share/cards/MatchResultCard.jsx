@@ -2,6 +2,8 @@
  * MatchResultCard — cinematic match result card.
  * Design system: #0a0f1e bg · #16a34a green · #d97706 gold · Cairo font
  */
+import { imgUrl } from '../../../utils/imageUrl';
+
 const BG      = '#0a0f1e';
 const CARD    = '#111827';
 const GREEN   = '#16a34a';
@@ -10,7 +12,7 @@ const GOLD_L  = '#f59e0b';
 const BORDER  = '#1f2937';
 
 function TeamCol({ name, logo, goals, isWinner }) {
-  const src = logo || `https://placehold.co/80x80/111827/16a34a?text=${encodeURIComponent((name||'?')[0])}`;
+  const src = imgUrl(logo) || `https://placehold.co/80x80/111827/16a34a?text=${encodeURIComponent((name||'?')[0])}`;
   return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:10, flex:1 }}>
       {/* Logo ring */}

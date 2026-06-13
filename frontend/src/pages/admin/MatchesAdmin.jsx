@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import ShareCardModal from '../../components/share/ShareCardModal';
 import MatchResultCard from '../../components/share/cards/MatchResultCard';
+import { imgUrl } from '../../utils/imageUrl';
 
 const QUICK_ACTIONS = [
   { key: 'goal',            icon: '⚽', label: 'Goal',        bg: 'bg-emerald-500 hover:bg-emerald-600', ring: 'ring-emerald-400' },
@@ -230,7 +231,7 @@ function LivePanel({ match, onClose, onMatchEnded }) {
 
         <div className="grid grid-cols-3 items-center gap-4">
           <div className="flex flex-col items-center gap-1">
-            <img src={m.home_team_logo || `https://placehold.co/56x56/16a34a/ffffff?text=H`} alt=""
+            <img src={imgUrl(m.home_team_logo) || `https://placehold.co/56x56/16a34a/ffffff?text=H`} alt=""
               className="w-14 h-14 rounded-2xl object-cover shadow-md" />
             <p className={`text-xs font-bold truncate w-28 text-center ${isLive ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
               {m.home_team_name}
@@ -264,7 +265,7 @@ function LivePanel({ match, onClose, onMatchEnded }) {
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <img src={m.away_team_logo || `https://placehold.co/56x56/1e40af/ffffff?text=A`} alt=""
+            <img src={imgUrl(m.away_team_logo) || `https://placehold.co/56x56/1e40af/ffffff?text=A`} alt=""
               className="w-14 h-14 rounded-2xl object-cover shadow-md" />
             <p className={`text-xs font-bold truncate w-28 text-center ${isLive ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
               {m.away_team_name}
@@ -455,7 +456,7 @@ function MatchRow({ m, onManage, onEdit, onQuickStart }) {
       {/* Teams + score */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <img src={m.home_team_logo || `https://placehold.co/28x28/16a34a/ffffff?text=H`} alt=""
+          <img src={imgUrl(m.home_team_logo) || `https://placehold.co/28x28/16a34a/ffffff?text=H`} alt=""
             className="w-7 h-7 rounded-lg object-cover shrink-0" />
           <span className="font-semibold text-sm truncate max-w-[90px] text-gray-900 dark:text-white">{m.home_team_name}</span>
 
@@ -468,7 +469,7 @@ function MatchRow({ m, onManage, onEdit, onQuickStart }) {
           )}
 
           <span className="font-semibold text-sm truncate max-w-[90px] text-gray-900 dark:text-white">{m.away_team_name}</span>
-          <img src={m.away_team_logo || `https://placehold.co/28x28/1e40af/ffffff?text=A`} alt=""
+          <img src={imgUrl(m.away_team_logo) || `https://placehold.co/28x28/1e40af/ffffff?text=A`} alt=""
             className="w-7 h-7 rounded-lg object-cover shrink-0" />
         </div>
 

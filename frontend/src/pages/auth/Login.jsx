@@ -54,7 +54,7 @@ export default function Login() {
 
           <div className="flex items-center justify-center gap-2 bg-amber-500/20 border border-amber-500/30 rounded-2xl px-5 py-3 text-amber-300 text-sm">
             <span className="text-lg">🦅</span>
-            <span>طبعة الوفاء — بن نجة يوسف</span>
+            <span>  طبعة الوفاء — بن نجة يوسف و بوجمعة سليمان</span>
           </div>
 
           <div className="mt-10 grid grid-cols-2 gap-3 text-left">

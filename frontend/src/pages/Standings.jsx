@@ -6,6 +6,7 @@ import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 import ShareCardModal from '../components/share/ShareCardModal';
 import GroupShareCard from '../components/share/cards/GroupShareCard';
+import { imgUrl } from '../utils/imageUrl';
 
 const COL_HEADER_KEYS = [
   { key: 'played',        label: 'J',   titleKey: 'standings.col_played' },
@@ -100,7 +101,7 @@ function StandingsTable({ group, gi, onExport }) {
                   <td className="px-2 py-2.5">
                     <div className="flex items-center gap-2">
                       <img
-                        src={row.team_logo || `https://placehold.co/28x28/16a34a/ffffff?text=${encodeURIComponent((row.team_name || '?')[0])}`}
+                        src={imgUrl(row.team_logo) || `https://placehold.co/28x28/16a34a/ffffff?text=${encodeURIComponent((row.team_name || '?')[0])}`}
                         alt={row.team_name}
                         className="w-7 h-7 rounded-lg object-cover shrink-0 shadow-sm"
                       />

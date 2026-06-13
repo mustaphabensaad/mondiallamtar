@@ -83,6 +83,7 @@ CREATE TABLE players (
   phone         VARCHAR(30),
   email         VARCHAR(150),
   jersey_number TINYINT UNSIGNED,
+  bio           VARCHAR(500),
   position      ENUM('GK','DEF','MID','FWD') DEFAULT 'MID',
   is_captain    BOOLEAN DEFAULT FALSE,
   is_validated  BOOLEAN DEFAULT FALSE,

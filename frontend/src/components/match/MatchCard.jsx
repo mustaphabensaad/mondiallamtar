@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { imgUrl } from '../../utils/imageUrl';
 
 export default function MatchCard({ match, compact = false }) {
   const { t } = useTranslation();
@@ -68,7 +69,7 @@ export default function MatchCard({ match, compact = false }) {
               {/* Home */}
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 <img
-                  src={match.home_team_logo || `https://placehold.co/44x44/16a34a/ffffff?text=${encodeURIComponent((match.home_team_name || '?')[0])}`}
+                  src={imgUrl(match.home_team_logo) || `https://placehold.co/44x44/16a34a/ffffff?text=${encodeURIComponent((match.home_team_name || '?')[0])}`}
                   alt={match.home_team_name}
                   className={`w-10 h-10 rounded-xl object-cover shadow-sm shrink-0 transition-all duration-200
                     ${homeWins ? 'ring-2 ring-primary ring-offset-1 ring-offset-white dark:ring-offset-[#111827] scale-105' : ''}`}
@@ -99,7 +100,7 @@ export default function MatchCard({ match, compact = false }) {
               {/* Away */}
               <div className="flex items-center gap-2 flex-1 min-w-0 flex-row-reverse">
                 <img
-                  src={match.away_team_logo || `https://placehold.co/44x44/1e40af/ffffff?text=${encodeURIComponent((match.away_team_name || '?')[0])}`}
+                  src={imgUrl(match.away_team_logo) || `https://placehold.co/44x44/1e40af/ffffff?text=${encodeURIComponent((match.away_team_name || '?')[0])}`}
                   alt={match.away_team_name}
                   className={`w-10 h-10 rounded-xl object-cover shadow-sm shrink-0 transition-all duration-200
                     ${awayWins ? 'ring-2 ring-primary ring-offset-1 ring-offset-white dark:ring-offset-[#111827] scale-105' : ''}`}
@@ -115,7 +116,7 @@ export default function MatchCard({ match, compact = false }) {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 <img
-                  src={match.home_team_logo || `https://placehold.co/44x44/16a34a/ffffff?text=${encodeURIComponent((match.home_team_name || '?')[0])}`}
+                  src={imgUrl(match.home_team_logo) || `https://placehold.co/44x44/16a34a/ffffff?text=${encodeURIComponent((match.home_team_name || '?')[0])}`}
                   alt={match.home_team_name}
                   className="w-10 h-10 rounded-xl object-cover shadow-sm shrink-0"
                 />
@@ -130,7 +131,7 @@ export default function MatchCard({ match, compact = false }) {
 
               <div className="flex items-center gap-2 flex-1 min-w-0 flex-row-reverse">
                 <img
-                  src={match.away_team_logo || `https://placehold.co/44x44/1e40af/ffffff?text=${encodeURIComponent((match.away_team_name || '?')[0])}`}
+                  src={imgUrl(match.away_team_logo) || `https://placehold.co/44x44/1e40af/ffffff?text=${encodeURIComponent((match.away_team_name || '?')[0])}`}
                   alt={match.away_team_name}
                   className="w-10 h-10 rounded-xl object-cover shadow-sm shrink-0"
                 />

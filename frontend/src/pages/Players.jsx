@@ -6,8 +6,7 @@ import { playerService } from '../services/tournament.service';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 import PlayerModal from '../components/ui/PlayerModal';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+import { imgUrl } from '../utils/imageUrl';
 
 const POSITION_META = {
   GK:  { color: 'bg-yellow-500',  text: 'text-yellow-600 dark:text-yellow-400',  border: 'border-yellow-400/40', glow: 'shadow-yellow-200/50 dark:shadow-yellow-900/20' },
@@ -18,13 +17,6 @@ const POSITION_META = {
 
 const POSITIONS = ['all', 'GK', 'DEF', 'MID', 'FWD'];
 
-function photoUrl(path) {
-  if (!path) return null;
-  if (path.startsWith('http')) return path;
-  const rel = path.replace(/\\/g, '/');
-  return `${API_URL}/${rel.startsWith('/') ? rel.slice(1) : rel}`;
-}
-
 // ── Single player card ─────────────────────────────────────────────────────────
 function PlayerCard({ player, onClick }) {
   const { t } = useTranslation();
@@ -32,7 +24,7 @@ function PlayerCard({ player, onClick }) {
   const age  = player.date_of_birth
     ? Math.floor((Date.now() - new Date(player.date_of_birth)) / (365.25 * 24 * 3600 * 1000))
     : null;
-  const photo = photoUrl(player.photo_path);
+  const photo = imgUrl(player.photo_path);
   const initials = `${(player.first_name || '?')[0]}${(player.last_name || '')[0] || ''}`.toUpperCase();
 
   return (
@@ -103,7 +95,7 @@ function PlayerCard({ player, onClick }) {
         className="mx-4 mb-3 flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800/60 hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors group/team"
       >
         <img
-          src={player.team_logo || `https://placehold.co/28x28/16a34a/ffffff?text=${encodeURIComponent((player.team_name || '?')[0])}`}
+          src={imgUrl(player.team_logo) || `https://placehold.co/28x28/16a34a/ffffff?text=${encodeURIComponent((player.team_name || '?')[0])}`}
           alt={player.team_name}
           className="w-7 h-7 rounded-lg object-cover shrink-0"
         />

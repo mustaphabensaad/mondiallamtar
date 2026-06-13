@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { adminService } from '../../services/tournament.service';
 import Spinner from '../../components/ui/Spinner';
+import { imgUrl } from '../../utils/imageUrl';
 
 function StatBox({ label, value, color = 'text-primary' }) {
   return (
@@ -54,7 +55,7 @@ export default function ReportsAdmin() {
                     {i + 1}
                   </span>
                   <img
-                    src={p.photo_path || `https://placehold.co/36x36/16a34a/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
+                    src={imgUrl(p.photo_path) || `https://placehold.co/36x36/16a34a/ffffff?text=${encodeURIComponent((p.first_name || '?')[0])}`}
                     alt=""
                     className="w-9 h-9 rounded-full object-cover shrink-0"
                   />

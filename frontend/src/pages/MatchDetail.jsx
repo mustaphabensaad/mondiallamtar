@@ -6,6 +6,7 @@ import { matchService } from '../services/tournament.service';
 import { useSocket } from '../hooks/useSocket';
 import Badge from '../components/ui/Badge';
 import Spinner from '../components/ui/Spinner';
+import { imgUrl } from '../utils/imageUrl';
 
 function LiveTimer({ startedAt }) {
   const [minutes, setMinutes] = useState(0);
@@ -124,7 +125,7 @@ export default function MatchDetail() {
           <div className="grid grid-cols-3 items-center gap-4">
             <Link to={`/teams/${match.home_team_id}`} className="flex flex-col items-center gap-2.5 group">
               <div className={`rounded-2xl overflow-hidden shadow-md transition-transform group-hover:scale-105 ${homeWins ? 'ring-2 ring-primary' : ''}`}>
-                <img src={match.home_team_logo || `https://placehold.co/72x72/16a34a/ffffff?text=H`} alt={match.home_team_name}
+                <img src={imgUrl(match.home_team_logo) || `https://placehold.co/72x72/16a34a/ffffff?text=H`} alt={match.home_team_name}
                   className={`w-16 h-16 sm:w-20 sm:h-20 object-cover ${isFinished && !homeWins ? 'opacity-50' : ''}`} />
               </div>
               <p className={`font-display font-bold text-center text-sm sm:text-base leading-tight ${isFinished && !homeWins ? 'text-gray-400' : 'text-white'}`}>
@@ -153,7 +154,7 @@ export default function MatchDetail() {
 
             <Link to={`/teams/${match.away_team_id}`} className="flex flex-col items-center gap-2.5 group">
               <div className={`rounded-2xl overflow-hidden shadow-md transition-transform group-hover:scale-105 ${awayWins ? 'ring-2 ring-primary' : ''}`}>
-                <img src={match.away_team_logo || `https://placehold.co/72x72/1e40af/ffffff?text=A`} alt={match.away_team_name}
+                <img src={imgUrl(match.away_team_logo) || `https://placehold.co/72x72/1e40af/ffffff?text=A`} alt={match.away_team_name}
                   className={`w-16 h-16 sm:w-20 sm:h-20 object-cover ${isFinished && !awayWins ? 'opacity-50' : ''}`} />
               </div>
               <p className={`font-display font-bold text-center text-sm sm:text-base leading-tight ${isFinished && !awayWins ? 'text-gray-400' : 'text-white'}`}>
@@ -165,7 +166,7 @@ export default function MatchDetail() {
           {/* MOTM */}
           {isFinished && match.motm_name && (
             <div className="mt-6 pt-5 border-t border-white/10 flex items-center justify-center gap-3">
-              <img src={match.motm_photo || `https://placehold.co/40x40/d97706/ffffff?text=M`} alt={match.motm_name}
+              <img src={imgUrl(match.motm_photo) || `https://placehold.co/40x40/d97706/ffffff?text=M`} alt={match.motm_name}
                 className="w-10 h-10 rounded-full object-cover ring-2 ring-gold" />
               <div className="text-center">
                 <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-0.5">{t('match.motm')}</p>

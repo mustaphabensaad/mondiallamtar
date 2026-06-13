@@ -1,3 +1,5 @@
+import { imgUrl } from '../../../utils/imageUrl';
+
 const BG    = '#0a0f1e';
 const CARD  = '#111827';
 const GREEN = '#16a34a';
@@ -13,10 +15,7 @@ const POS = {
 
 export default function PlayerShareCard({ player, forwardRef }) {
   const pos  = POS[player.position] || POS.MID;
-  const photo = player.photo_path
-    ? (player.photo_path.startsWith('http') ? player.photo_path
-       : `${import.meta.env.VITE_API_URL||''}${player.photo_path}`)
-    : null;
+  const photo = imgUrl(player.photo_path);
 
   const age = player.date_of_birth
     ? Math.floor((Date.now()-new Date(player.date_of_birth))/(365.25*24*3600*1000))
