@@ -106,13 +106,12 @@ export default function PlayerModal({ playerId, onClose }) {
                     {pos.label}
                   </span>
                   {age && <span className="text-xs text-gray-400 font-medium">{age} ans</span>}
-                  {player.is_validated ? (
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">✓ Validé</span>
+                  {player.status === 'suspended' ? (
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600">{t('player.suspended')}</span>
+                  ) : player.is_validated ? (
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">✓ {t('captain.active')}</span>
                   ) : (
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">En attente</span>
-                  )}
-                  {player.status === 'suspended' && (
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600">Suspendu</span>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">{t('captain.pending')}</span>
                   )}
                 </div>
               </div>

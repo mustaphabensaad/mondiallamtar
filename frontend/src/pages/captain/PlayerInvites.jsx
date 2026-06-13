@@ -142,7 +142,15 @@ export default function PlayerInvites() {
                     <p className="text-gray-400 text-sm italic">{t('invites.pending_reg')}</p>
                   )}
                 </div>
-                <Badge variant={p.validation_status}>{p.validation_status}</Badge>
+                <Badge variant={p.validation_status}>
+                  {p.validation_status === 'suspended'
+                    ? t('player.suspended')
+                    : p.validation_status === 'validated'
+                      ? t('captain.active')
+                      : p.validation_status === 'invited'
+                        ? t('captain.invited')
+                        : t('captain.pending')}
+                </Badge>
               </div>
             ))}
           </div>
