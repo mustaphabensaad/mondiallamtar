@@ -73,7 +73,7 @@ function PlayerCard({ player, onClick }) {
 
         <h3 className="font-display font-black text-base text-gray-900 dark:text-white text-center leading-tight flex items-center justify-center gap-1.5">
           {player.first_name} {player.last_name}
-          {player.is_captain && <span className="text-amber-500 text-sm" title={t('player.is_captain')}>👑</span>}
+          {!!player.is_captain && <span className="text-amber-500 text-sm" title={t('player.is_captain')}>👑</span>}
         </h3>
 
         <div className="flex items-center gap-2 mt-1.5 flex-wrap justify-center">

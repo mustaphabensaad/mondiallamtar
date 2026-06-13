@@ -68,7 +68,7 @@ export default function TeamDetail() {
         <div className="flex flex-col items-end gap-3 shrink-0">
           <div className="flex gap-6 text-center">
             <div><p className="text-2xl font-black text-primary">{sorted.length}</p><p className="text-xs text-gray-400">{t('team.players')}</p></div>
-            <div><p className="text-2xl font-black text-gold">{goals}</p><p className="text-xs text-gray-400">Goals</p></div>
+            <div><p className="text-2xl font-black text-gold">{goals}</p><p className="text-xs text-gray-400">{t('captain.goals')}</p></div>
           </div>
           <button
             onClick={() => setShowExport(true)}
@@ -90,8 +90,8 @@ export default function TeamDetail() {
           ) : sorted.length === 0 ? (
             <EmptyState
               icon="👥"
-              title="Effectif non complété"
-              subtitle="Les joueurs rejoindront cette équipe via invitation du capitaine."
+              title={t('captain.no_players')}
+              subtitle={t('captain.no_players_sub')}
               color="blue"
               size="md"
             />
@@ -110,7 +110,7 @@ export default function TeamDetail() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
                       <p className="font-semibold truncate">{p.first_name} {p.last_name}</p>
-                      {p.is_captain && <span className="text-amber-500 text-xs shrink-0" title={t('player.is_captain')}>👑</span>}
+                      {!!p.is_captain && <span className="text-amber-500 text-xs shrink-0" title={t('player.is_captain')}>👑</span>}
                     </div>
                     <p className="text-xs text-gray-500">{t(`player.positions.${p.position}`)}</p>
                   </div>
@@ -127,14 +127,14 @@ export default function TeamDetail() {
 
         {/* Matches */}
         <div>
-          <h2 className="font-display font-bold mb-3">Matches</h2>
+          <h2 className="font-display font-bold mb-3">{t('nav.matches')}</h2>
           {mLoading ? (
             <div className="flex justify-center py-6"><Spinner /></div>
           ) : !matches?.length ? (
             <EmptyState
               icon="⚽"
-              title="Aucun match programmé"
-              subtitle="Les matchs de cette équipe apparaîtront ici après le tirage au sort."
+              title={t('match.no_scheduled')}
+              subtitle={t('match.no_scheduled_sub')}
               color="gray"
               size="sm"
             />

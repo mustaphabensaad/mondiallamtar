@@ -184,7 +184,7 @@ export default function CaptainDashboard() {
                     <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                       {p.first_name} {p.last_name}
                     </p>
-                    {p.is_captain && <span className="text-amber-500 text-xs shrink-0" title={t('player.is_captain')}>👑</span>}
+                    {!!p.is_captain && <span className="text-amber-500 text-xs shrink-0" title={t('player.is_captain')}>👑</span>}
                   </div>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className={`w-1.5 h-1.5 rounded-full ${POS_COLOR[p.position] || 'bg-gray-400'}`} />

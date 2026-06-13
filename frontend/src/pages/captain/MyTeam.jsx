@@ -63,13 +63,13 @@ export default function MyTeam() {
       <div className="card">
         <EmptyState
           icon="🏟️"
-          title="Pas encore d'équipe"
-          subtitle="Créez votre équipe pour participer au Mundial Lamtar 2026 et inviter vos joueurs."
+          title={t('captain.no_team')}
+          subtitle={t('captain.no_team_sub')}
           color="green"
           size="lg"
           action={
             <Link to="/captain/team" className="btn-primary inline-flex items-center gap-2">
-              <span>+</span> Créer mon équipe
+              <span>+</span> {t('captain.create_team')}
             </Link>
           }
         />
@@ -99,19 +99,19 @@ export default function MyTeam() {
         />
         <div className="flex-1 text-center sm:text-left">
           <h1 className="font-display text-3xl font-black">{team.name}</h1>
-          <p className="text-gray-500 mt-1">Coach: <span className="font-medium text-gray-700 dark:text-gray-300">{team.coach_name}</span></p>
+          <p className="text-gray-500 mt-1">{t('team.coach')}: <span className="font-medium text-gray-700 dark:text-gray-300">{team.coach_name}</span></p>
           <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
             <Badge variant={team.status}>{t(`team.status.${team.status}`)}</Badge>
             {team.group_letter && (
               <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full">
-                Group {team.group_letter}
+                {t('team.group')} {team.group_letter}
               </span>
             )}
           </div>
         </div>
         <div className="flex gap-6 text-center shrink-0">
-          <div><p className="text-2xl font-black text-primary">{sorted.length}</p><p className="text-xs text-gray-400">Players</p></div>
-          <div><p className="text-2xl font-black text-gold">{goals}</p><p className="text-xs text-gray-400">Goals</p></div>
+          <div><p className="text-2xl font-black text-primary">{sorted.length}</p><p className="text-xs text-gray-400">{t('team.players')}</p></div>
+          <div><p className="text-2xl font-black text-gold">{goals}</p><p className="text-xs text-gray-400">{t('captain.goals')}</p></div>
         </div>
       </div>
 
@@ -120,20 +120,20 @@ export default function MyTeam() {
         <div className="card overflow-hidden">
           <div className="px-4 py-3 border-b border-border-light dark:border-border-dark flex items-center justify-between">
             <h2 className="font-display font-bold">{t('team.players')}</h2>
-            <Link to="/captain/invites" className="text-xs text-primary hover:underline">+ Invite Players</Link>
+            <Link to="/captain/invites" className="text-xs text-primary hover:underline">{t('captain.invite_players')}</Link>
           </div>
           {pLoading ? (
             <div className="flex justify-center py-10"><Spinner /></div>
           ) : sorted.length === 0 ? (
             <EmptyState
               icon="👥"
-              title="Aucun joueur pour l'instant"
-              subtitle="Invitez vos joueurs via des liens uniques pour compléter votre effectif."
+              title={t('captain.no_players')}
+              subtitle={t('captain.no_players_sub')}
               color="blue"
               size="md"
               action={
                 <Link to="/captain/invites" className="btn-primary text-sm py-2 px-4 inline-flex items-center gap-1.5">
-                  <span>🔗</span> Générer des invitations
+                  <span>🔗</span> {t('invites.generate_btn')}
                 </Link>
               }
             />
@@ -151,9 +151,9 @@ export default function MyTeam() {
                   <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setSelectedPlayerId(p.id)}>
                     <div className="flex items-center gap-1.5">
                       <p className="font-semibold truncate">{p.first_name} {p.last_name}</p>
-                      {p.is_captain ? (
+                      {!!p.is_captain && (
                         <span className="text-amber-500 text-xs font-bold shrink-0" title={t('player.is_captain')}>👑</span>
-                      ) : null}
+                      )}
                     </div>
                     <p className="text-xs text-gray-500">{t(`player.positions.${p.position}`)}</p>
                   </div>
@@ -183,7 +183,13 @@ export default function MyTeam() {
                       </button>
                     )}
                     <Badge variant={p.status === 'suspended' ? 'rejected' : p.validation_status} className="text-[10px]">
-                      {p.status === 'suspended' ? t('player.suspended') : p.validation_status}
+                      {p.status === 'suspended'
+                        ? t('player.suspended')
+                        : p.validation_status === 'validated'
+                          ? t('captain.active')
+                          : p.validation_status === 'invited'
+                            ? t('captain.invited')
+                            : t('captain.pending')}
                     </Badge>
                     {p.goals > 0 && <span className="text-primary font-bold text-xs">⚽ {p.goals}</span>}
                     {p.yellow_cards > 0 && <span className="bg-yellow-400 text-black font-bold px-1.5 py-0.5 rounded text-[10px]">{p.yellow_cards}</span>}
@@ -197,14 +203,14 @@ export default function MyTeam() {
 
         {/* Matches */}
         <div>
-          <h2 className="font-display font-bold mb-3">Matches</h2>
+          <h2 className="font-display font-bold mb-3">{t('nav.matches')}</h2>
           {mLoading ? (
             <div className="flex justify-center py-6"><Spinner /></div>
           ) : matches.length === 0 ? (
             <EmptyState
               icon="⚽"
-              title="Pas encore de matchs"
-              subtitle="Vos matchs apparaîtront ici après le tirage au sort."
+              title={t('captain.no_matches')}
+              subtitle={t('captain.no_matches_sub')}
               color="gray"
               size="sm"
             />
