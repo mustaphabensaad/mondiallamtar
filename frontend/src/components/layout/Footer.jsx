@@ -70,7 +70,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <span>📱</span>
-                <span className="text-xs">0665 18 15 13</span>
+                <span className="text-xs">0665181513</span>
               </li>
               <li className="mt-3">
                 <Link to="/terms"

@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 const CONTACTS = [
   { name: 'حماني أيوب',  role: 'رئاسة مشتركة — اللجنة المنظمة', phone: '0670062056', whatsapp: true,  telegram: true },
   { name: 'عبادة محمد',  role: 'رئاسة مشتركة — اللجنة المنظمة', phone: '0665181513', whatsapp: true,  telegram: true },
-  { name: 'حمودة حليش', role: 'مسؤول انضمام الفرق',              phone: '0698748579', whatsapp: false, telegram: false },
 ];
 
 const CHAPTERS = [
@@ -365,32 +364,7 @@ export default function Terms() {
         </div>
       </div>
 
-      {/* ── COMMITMENT FORM ── */}
-      <div className="mb-10 rounded-2xl border border-border-light dark:border-border-dark overflow-hidden">
-        <div className="bg-gradient-to-r from-slate-700 to-gray-800 px-5 py-4 flex items-center gap-3">
-          <span className="text-2xl">📝</span>
-          <p className="font-display font-black text-white text-sm">{t('terms.commitment_title')}</p>
-        </div>
-        <div className="bg-white dark:bg-[#111827] px-5 py-5 text-sm text-gray-600 dark:text-gray-400 space-y-3 leading-relaxed" dir={isRtl ? 'rtl' : 'ltr'}>
-          <p>
-            {t('terms.commitment_p1')} <span className="inline-block border-b border-dashed border-gray-400 w-40 align-bottom" />&nbsp;
-            {t('terms.commitment_p2_pre')}{' '}
-            <span className="font-bold text-gray-800 dark:text-gray-200">{t('terms.commitment_doc')}</span>{' '}
-            {t('terms.commitment_p2_post')}
-          </p>
-          <p>{t('terms.commitment_p3')}</p>
-          <div className="flex flex-col sm:flex-row gap-4 pt-2">
-            <div className="flex-1">
-              <p className="text-xs text-gray-400 mb-1">{t('terms.commitment_sig_label')}</p>
-              <div className="border-b border-dashed border-gray-300 dark:border-gray-700 h-8" />
-            </div>
-            <div className="sm:w-44">
-              <p className="text-xs text-gray-400 mb-1">{t('terms.commitment_date_label')}</p>
-              <p className="text-sm text-gray-500 border-b border-dashed border-gray-300 dark:border-gray-700 h-8 flex items-end pb-0.5">.... / .... / 2026</p>
-            </div>
-          </div>
-        </div>
-      </div>
+   
 
       {/* ── MEDIA & REFEREEING ── */}
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
