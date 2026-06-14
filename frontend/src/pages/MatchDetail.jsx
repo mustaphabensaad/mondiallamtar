@@ -6,6 +6,8 @@ import { matchService } from '../services/tournament.service';
 import { useSocket } from '../hooks/useSocket';
 import Badge from '../components/ui/Badge';
 import Spinner from '../components/ui/Spinner';
+import ShareCardModal from '../components/share/ShareCardModal';
+import MotmShareCard from '../components/share/cards/MotmShareCard';
 import { imgUrl } from '../utils/imageUrl';
 
 function LiveTimer({ startedAt }) {
@@ -51,6 +53,8 @@ export default function MatchDetail() {
   const { id }  = useParams();
   const { t }   = useTranslation();
   const qc      = useQueryClient();
+
+  const [showMotmExport, setShowMotmExport] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['match', id],
@@ -165,18 +169,38 @@ export default function MatchDetail() {
 
           {/* MOTM */}
           {isFinished && match.motm_name && (
-            <div className="mt-6 pt-5 border-t border-white/10 flex items-center justify-center gap-3">
-              <img src={imgUrl(match.motm_photo) || `https://placehold.co/40x40/d97706/ffffff?text=M`} alt={match.motm_name}
-                className="w-10 h-10 rounded-full object-cover ring-2 ring-gold" />
-              <div className="text-center">
-                <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-0.5">{t('match.motm')}</p>
-                <p className="font-bold text-gold">{match.motm_name}</p>
+            <div className="mt-6 pt-5 border-t border-white/10 flex flex-col items-center gap-3">
+              <div className="flex items-center justify-center gap-3">
+                <img src={imgUrl(match.motm_photo) || `https://placehold.co/40x40/d97706/ffffff?text=M`} alt={match.motm_name}
+                  className="w-10 h-10 rounded-full object-cover ring-2 ring-gold" />
+                <div className="text-center">
+                  <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-0.5">{t('match.motm')}</p>
+                  <p className="font-bold text-gold">{match.motm_name}</p>
+                </div>
+                <span className="text-2xl">⭐</span>
               </div>
-              <span className="text-2xl">⭐</span>
+              <button
+                onClick={() => setShowMotmExport(true)}
+                className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-colors"
+              >
+                📤 Exporter la carte MOTM
+              </button>
             </div>
           )}
         </div>
       </div>
+
+      {/* MOTM export modal */}
+      {isFinished && match?.motm_name && (
+        <ShareCardModal
+          isOpen={showMotmExport}
+          onClose={() => setShowMotmExport(false)}
+          title={`MOTM — ${match.motm_name}`}
+          filename={`motm-${match.motm_name.replace(/\s+/g, '-')}.png`}
+        >
+          <MotmShareCard match={match} />
+        </ShareCardModal>
+      )}
 
       {/* Events timeline */}
       {events.length > 0 && (

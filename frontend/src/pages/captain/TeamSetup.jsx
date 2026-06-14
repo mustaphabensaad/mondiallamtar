@@ -135,7 +135,7 @@ export default function TeamSetup() {
                 />
                 <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-900 flex items-center justify-center text-[9px] text-white font-black">✓</span>
               </div>
-              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-semibold">Al Ahli FC · نادي الاهلي</span>
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-semibold">Al Ahli FC · نادي الاهلي · المنتخب الجزائري</span>
             </div>
           </div>
           <p className="text-[11px] text-gray-400 text-center mt-3 leading-relaxed">

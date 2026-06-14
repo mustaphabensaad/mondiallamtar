@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { playerService } from '../../services/tournament.service';
 import Spinner from './Spinner';
 import ShareCardModal from '../share/ShareCardModal';
@@ -28,6 +29,7 @@ function StatBox({ icon, value, label, color, highlight }) {
 }
 
 export default function PlayerModal({ playerId, onClose }) {
+  const { t } = useTranslation();
   const [showExport, setShowExport] = useState(false);
   const [imgError, setImgError] = useState(false);
   const { data: player, isLoading } = useQuery({

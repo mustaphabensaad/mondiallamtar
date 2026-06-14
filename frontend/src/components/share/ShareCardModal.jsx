@@ -21,38 +21,76 @@ export default function ShareCardModal({ isOpen, onClose, title, filename = 'car
   const { t } = useTranslation();
 
   const handleDownload = useCallback(async () => {
-    if (!cardRef.current || state === 'capturing') return;
+    const el = cardRef.current;
+    if (!el || !(el instanceof Element) || state === 'capturing') return;
     setState('capturing');
 
+    // Off-screen container — position:fixed far left, NO visibility/opacity
+    // tricks so html2canvas renders all children normally
+    const offscreen = document.createElement('div');
+    offscreen.style.cssText =
+      'position:fixed;left:-10000px;top:0;width:540px;z-index:0;pointer-events:none;';
+    document.body.appendChild(offscreen);
+
     try {
-      // Small delay so React finishes painting before we capture
+      // Deep-clone the card (first child of el, which is the actual card div)
+      const cardEl = el.firstElementChild || el;
+      offscreen.appendChild(cardEl.cloneNode(true));
+
+      // Convert every <img> src → base64 data URI so html2canvas never
+      // needs cross-origin fetches (which fail from inside its iframe context)
+      await Promise.all(
+        Array.from(offscreen.querySelectorAll('img')).map(async img => {
+          const src = img.getAttribute('src');
+          if (!src || src.startsWith('data:')) return;
+          try {
+            const abs = src.startsWith('http') ? src : new URL(src, location.href).href;
+            const res  = await fetch(abs, { mode: 'cors', credentials: 'omit' });
+            const blob = await res.blob();
+            img.src    = await new Promise((ok, fail) => {
+              const r = new FileReader();
+              r.onload  = () => ok(r.result);
+              r.onerror = fail;
+              r.readAsDataURL(blob);
+            });
+          } catch {
+            // leave as-is — broken image is better than a crashed export
+          }
+        })
+      );
+
+      // Brief pause for the browser to paint the off-screen clone
       await new Promise(r => setTimeout(r, 80));
 
-      const canvas = await html2canvas(cardRef.current, {
+      const canvas = await html2canvas(offscreen.firstElementChild, {
         scale: 2,
-        useCORS: true,
+        useCORS: false,
         allowTaint: true,
-        backgroundColor: null,
+        backgroundColor: '#0a0f1e',
         logging: false,
-        imageTimeout: 3000,
-        removeContainer: true,
+        imageTimeout: 0,
+        scrollX: 0,
+        scrollY: 0,
       });
 
-      canvas.toBlob(blob => {
-        if (!blob) { setState('error'); return; }
-        const url = URL.createObjectURL(blob);
-        const a   = Object.assign(document.createElement('a'), { href: url, download: filename });
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        setState('done');
-        setTimeout(() => setState('idle'), 2500);
-      }, 'image/png');
+      const blob = await new Promise((resolve, reject) =>
+        canvas.toBlob(b => (b ? resolve(b) : reject(new Error('toBlob null'))), 'image/png')
+      );
+
+      const url = URL.createObjectURL(blob);
+      const a   = Object.assign(document.createElement('a'), { href: url, download: filename });
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setState('done');
+      setTimeout(() => setState('idle'), 2500);
     } catch (err) {
       console.error('Export failed:', err);
       setState('error');
       setTimeout(() => setState('idle'), 2500);
+    } finally {
+      document.body.removeChild(offscreen);
     }
   }, [filename, state]);
 

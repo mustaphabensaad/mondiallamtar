@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { matchService } from '../../services/tournament.service';
 import Spinner from '../ui/Spinner';
+import ShareCardModal from '../share/ShareCardModal';
+import MotmShareCard from '../share/cards/MotmShareCard';
 
 export default function MotmSidebar() {
   const { t } = useTranslation();
+  const [showExport, setShowExport] = useState(false);
   const { data: matches = [], isLoading } = useQuery({
     queryKey: ['matches-motm'],
     queryFn:  () => matchService.getAll({ status: 'finished', limit: 5 }),
@@ -65,6 +69,24 @@ export default function MotmSidebar() {
           {t('home.motm')}
         </span>
       </div>
+
+      {/* Export button */}
+      <button
+        onClick={() => setShowExport(true)}
+        className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-colors"
+      >
+        📤 Exporter la carte MOTM
+      </button>
+
+      {/* Export modal */}
+      <ShareCardModal
+        isOpen={showExport}
+        onClose={() => setShowExport(false)}
+        title={`MOTM — ${last.motm_name}`}
+        filename={`motm-${last.motm_name.replace(/\s+/g, '-')}.png`}
+      >
+        <MotmShareCard match={last} />
+      </ShareCardModal>
     </div>
   );
 }

@@ -135,7 +135,7 @@ export default function InviteForm() {
           </div>
 
           <p className="text-center text-[10px] text-blue-400 mt-3 font-medium">
-            Riyad Mahrez — Al Ahli FC · نادي الاهلي
+            Riyad Mahrez — Al Ahli FC · نادي الاهلي · المنتخب الجزائري
           </p>
         </div>
 
@@ -199,7 +199,7 @@ export default function InviteForm() {
             <div className="mt-2 rounded-xl border border-dashed border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-900/10 p-2.5">
               <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1.5">{t('invite_form.bio_example')}</p>
               <div className="text-[11px] text-gray-600 dark:text-gray-400 leading-relaxed" dir="rtl">
-                <p className="font-semibold text-gray-700 dark:text-gray-300 mb-1">رياض محرز — نادي الاهلي · Al Ahli FC</p>
+                <p className="font-semibold text-gray-700 dark:text-gray-300 mb-1">رياض محرز — نادي الاهلي · Al Ahli FC · المنتخب الجزائري</p>
                 <p>جناح أيمن. رحلتي بدأت من ملاعب سارسل وصولاً إلى منصات التتويج العالمية. بطل الدوري الإنجليزي (5 مرات)، بطل دوري أبطال أوروبا، بطل إفريقيا، وحامل لقب دوري أبطال آسيا. مهاراتي ليست مجرد مراوغات، بل هي لغة أتحدث بها في الملعب؛ دقة، إبداع، وحسم. جئت إلى 'مونديال لمطار' لأشارككم الشغف، ولأثبت أن كرة القدم، مهما تغيرت الملاعب، تظل دائماً فنّاً يُلعب بالقدم والقلب. جاهز لصناعة الفارق</p>
               </div>
             </div>
